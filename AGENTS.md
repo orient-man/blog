@@ -182,3 +182,10 @@ No remote is currently configured. No CI/CD pipeline exists.
   automatically once the project reaches the planning phase. Manual edits
   may be overwritten.
 - There is no `.gitignore`, `.editorconfig`, or CI configuration yet.
+
+## Active Technologies
+- TypeScript 5.x, Node.js 20 LTS + Next.js 14 (`output: 'export'`), `@next/mdx`, `gray-matter`, `rehype-pretty-code` (Shiki), Tailwind CSS, `@tailwindcss/typography`, Pagefind (001-wordpress-blog-migration)
+- Filesystem only — MDX files in `content/posts/`, images in `public/images/` (001-wordpress-blog-migration)
+
+## Recent Changes
+- 001-wordpress-blog-migration: Added TypeScript 5.x, Node.js 20 LTS + Next.js 14 (`output: 'export'`), `@next/mdx`, `gray-matter`, `rehype-pretty-code` (Shiki), Tailwind CSS, `@tailwindcss/typography`, Pagefind
