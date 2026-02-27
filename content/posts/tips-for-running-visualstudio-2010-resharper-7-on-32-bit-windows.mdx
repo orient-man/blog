@@ -1,0 +1,35 @@
+---
+title: Tips for running VisualStudio 2010 + Resharper 7 on 32-bit Windows
+date: 2013-03-10
+author: orientman
+slug: tips-for-running-visualstudio-2010-resharper-7-on-32-bit-windows
+wordpressUrl: /2013/03/10/tips-for-running-visualstudio-2010-resharper-7-on-32-bit-windows/
+category: posts-in-english
+tags:
+- resharper
+- tools
+- visualstudio
+format: standard
+---
+
+### TL;DR
+
+On 32-bit operating systems Visual Studio can easily run out of memory (especially with memory hungry plugins like [R#](http://www.jetbrains.com/resharper/) or [NCrunch](http://www.ncrunch.net/)). But there are ways to reduce this problem.
+
+## Why oh why?
+
+All desktop versions of Windows suffer from 3 GB barrier (see more [here](http://en.wikipedia.org/wiki/3_GB_barrier "3 GB barrier")). It prevents the operating systems from using more than about 3 GB of RAM. But 3 GB is a lot and should be enough for VS et consortes, right? It appears not. I have decent machine with SSD, but running VS+R# with non trivial solutions \_is\_ constant pain. VS crashes throwing OutOfMemory exceptions or just stops responding for a few seconds (very annoying) all the time.  If - for whatever reason - you cannot upgrade to 64-bit Windows try following tips:
+
+## Make Visual Studio large address aware
+
+Well, 3 GB limit is not enough because it's not reached. YES, there is another limit of 2 GB address space, but luckily it can be easily lifted:
+
+editbin /LARGEADDRESSAWARE devenv.exe
+
+## Use JetBrains patch for Visual Studio to lessen address space fragmentation
+
+Another problem is address space fragmentation. Default Visual Studio memory allocation is very... generous. But you can override its behavior with this patch: [http://confluence.jetbrains.com/display/ReSharper/OutOfMemoryException+Fix](http://confluence.jetbrains.com/display/ReSharper/OutOfMemoryException+Fix)
+
+## Results after 1 month
+
+No more crashes or mysterious slowdowns! Now I can fully appreciate "alt-enter driven development" with R#. Hurray!

@@ -1,0 +1,24 @@
+---
+title: "HOWTO: Publish Your reveal.js Presentations on GitHub Pages"
+date: 2015-06-24
+author: orientman
+slug: howto-publish-your-reveal-js-presentations-on-github-pages
+wordpressUrl: /2015/06/24/howto-publish-your-reveal-js-presentations-on-github-pages/
+category: posts-in-english
+tags:
+- git
+- github
+- presentations
+- tools
+format: standard
+---
+
+Every now and then I need to publish my presentation on the Web and - of course - each time I have to figure it out. So here is my recipe:
+
+1.  I prepare my presentation on the branch in forked [reveal.js repo](https://github.com/hakimel/reveal.js). For example: [this is source code for my talk](https://github.com/orient-man/reveal.js/tree/4dev) at [4Developers Conference](http://4developers.org.pl/).
+2.  When I'm done, I create new repo with a meaningful name (the name will be part of the url) - _mytalk_ is just an example: `git init git remote add origin https://github.com/username/mytalk git checkout -b gh-pages git remote add reveal.js https://github.com/username/reveal.js git fetch reveal.js git merge --ff-only reveal.js/mytalk git push -u origin gh-pages` After some time (needed by GitHub to process repo) my presentation will show up at: http://username.github.io/mytalk/
+
+You can also set custom (sub)domain for GitHub Pages:
+
+1.  Add CNAME record via your DNS provider pointing from _mytalk.mydomain.com_ to _username.github.io_.
+2.  Add CNAME file to your repo (on gh-pages branch) containing single line with your domain (_mytalk.mydomain.com_). See working example: https://github.com/orient-man/4Dev2015/blob/gh-pages/CNAME

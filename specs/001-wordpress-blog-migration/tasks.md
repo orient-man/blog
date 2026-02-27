@@ -27,14 +27,14 @@
 
 **Purpose**: Project initialization, dependency installation, and configuration files
 
-- [ ] T001 Initialize Next.js 14 project with TypeScript: `package.json`, `tsconfig.json`, `next.config.mjs` (set `output: 'export'`, `trailingSlash: true`, `images: { unoptimized: true }`)
-- [ ] T002 Install production dependencies: `@next/mdx`, `@mdx-js/loader`, `@mdx-js/react`, `gray-matter`, `rehype-pretty-code`, `shiki`, `@tailwindcss/typography`
-- [ ] T003 Install dev dependencies: `tailwindcss`, `postcss`, `autoprefixer`, `fast-xml-parser`, `turndown`, `@types/turndown`, `tsx`
-- [ ] T004 [P] Configure Tailwind CSS: `tailwind.config.ts` with `@tailwindcss/typography` plugin, dark mode (`class` strategy), content paths
-- [ ] T005 [P] Create `src/styles/globals.css` with Tailwind directives (`@tailwind base/components/utilities`) and custom dark mode styles
-- [ ] T006 [P] Create `mdx-components.tsx` at project root with initial MDX component mapping (empty overrides, will be populated later)
-- [ ] T007 [P] Create directory structure: `content/posts/`, `content/pages/`, `content/data/`, `public/images/posts/`, `src/app/`, `src/components/`, `src/lib/`, `scripts/`
-- [ ] T008 Configure `@next/mdx` in `next.config.mjs` with `rehype-pretty-code` and Shiki for build-time syntax highlighting
+- [x] T001 Initialize Next.js 14 project with TypeScript: `package.json`, `tsconfig.json`, `next.config.mjs` (set `output: 'export'`, `trailingSlash: true`, `images: { unoptimized: true }`)
+- [x] T002 Install production dependencies: `@next/mdx`, `@mdx-js/loader`, `@mdx-js/react`, `gray-matter`, `rehype-pretty-code`, `shiki`, `@tailwindcss/typography`
+- [x] T003 Install dev dependencies: `tailwindcss`, `postcss`, `autoprefixer`, `fast-xml-parser`, `turndown`, `@types/turndown`, `tsx`
+- [x] T004 [P] Configure Tailwind CSS: `tailwind.config.ts` with `@tailwindcss/typography` plugin, dark mode (`class` strategy), content paths
+- [x] T005 [P] Create `src/styles/globals.css` with Tailwind directives (`@tailwind base/components/utilities`) and custom dark mode styles
+- [x] T006 [P] Create `mdx-components.tsx` at project root with initial MDX component mapping (empty overrides, will be populated later)
+- [x] T007 [P] Create directory structure: `content/posts/`, `content/pages/`, `content/data/`, `public/images/posts/`, `src/app/`, `src/components/`, `src/lib/`, `scripts/`
+- [x] T008 Configure `@next/mdx` in `next.config.mjs` with `rehype-pretty-code` and Shiki for build-time syntax highlighting
 
 ---
 
@@ -44,15 +44,15 @@
 
 **CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T009 Create TypeScript interfaces in `src/lib/types.ts`: `Post`, `CategorySlug`, `Category`, `Tag`, `Comment`, `StaticPage`, `BlogrollEntry` (per data-model.md)
-- [ ] T010 Create constants in `src/lib/types.ts`: `CATEGORIES` array (2 fixed categories) and `TAG_SLUG_MAP` for special character tags (F# -> fsharp, C# -> csharp, etc.)
-- [ ] T011 [P] Create utility functions in `src/lib/utils.ts`: date formatting (`formatDate`), slug generation (`slugify`), reading time estimation, excerpt generation (first 160 chars)
-- [ ] T012 Implement content loading API in `src/lib/content.ts`: `getAllPosts()`, `getPostBySlug()`, `getPostsByCategory()`, `getPostsByTag()`, `getPostsByMonth()`, `getAllTags()`, `getAllCategories()`, `getArchiveMonths()`, `getAllPages()`, `getPageBySlug()`, `getBlogroll()` — using `fs.readFileSync` + `gray-matter` (per data-model.md Content Loading API)
-- [ ] T013 Create WordPress WXR migration script `scripts/migrate.ts`: parse WXR XML with `fast-xml-parser`, convert HTML to MDX with `turndown`, extract frontmatter fields per Migration Field Mapping in data-model.md, emit MDX files to `content/posts/` and `content/pages/`
-- [ ] T014 [P] Create image download script `scripts/download-images.ts`: scan migrated MDX files for WordPress-hosted image URLs, download to `public/images/posts/{slug}/`, rewrite image paths in MDX
-- [ ] T015 [P] Create migration validation script `scripts/validate-migration.ts`: verify post count matches WXR, check for missing frontmatter fields, detect broken image references, report unhandled shortcodes
-- [ ] T016 Run migration: execute `scripts/migrate.ts` against WordPress WXR export, then `scripts/download-images.ts`, then `scripts/validate-migration.ts` — resolve any issues until validation passes
-- [ ] T017 [P] Create `content/data/blogroll.json` with 11 blogroll entries from original WordPress "Blogs I Follow" widget (name + URL for each)
+- [x] T009 Create TypeScript interfaces in `src/lib/types.ts`: `Post`, `CategorySlug`, `Category`, `Tag`, `Comment`, `StaticPage`, `BlogrollEntry` (per data-model.md)
+- [x] T010 Create constants in `src/lib/types.ts`: `CATEGORIES` array (2 fixed categories) and `TAG_SLUG_MAP` for special character tags (F# -> fsharp, C# -> csharp, etc.)
+- [x] T011 [P] Create utility functions in `src/lib/utils.ts`: date formatting (`formatDate`), slug generation (`slugify`), reading time estimation, excerpt generation (first 160 chars)
+- [x] T012 Implement content loading API in `src/lib/content.ts`: `getAllPosts()`, `getPostBySlug()`, `getPostsByCategory()`, `getPostsByTag()`, `getPostsByMonth()`, `getAllTags()`, `getAllCategories()`, `getArchiveMonths()`, `getAllPages()`, `getPageBySlug()`, `getBlogroll()` — using `fs.readFileSync` + `gray-matter` (per data-model.md Content Loading API)
+- [x] T013 Create WordPress WXR migration script `scripts/migrate.ts`: parse WXR XML with `fast-xml-parser`, convert HTML to MDX with `turndown`, extract frontmatter fields per Migration Field Mapping in data-model.md, emit MDX files to `content/posts/` and `content/pages/`
+- [x] T014 [P] Create image download script `scripts/download-images.ts`: scan migrated MDX files for WordPress-hosted image URLs, download to `public/images/posts/{slug}/`, rewrite image paths in MDX
+- [x] T015 [P] Create migration validation script `scripts/validate-migration.ts`: verify post count matches WXR, check for missing frontmatter fields, detect broken image references, report unhandled shortcodes
+- [x] T016 Run migration: execute `scripts/migrate.ts` against WordPress WXR export, then `scripts/download-images.ts`, then `scripts/validate-migration.ts` — resolve any issues until validation passes
+- [x] T017 [P] Create `content/data/blogroll.json` with 11 blogroll entries from original WordPress "Blogs I Follow" widget (name + URL for each)
 
 **Checkpoint**: Foundation ready — content is migrated, types are defined, loading API works. User story implementation can now begin.
 
@@ -66,14 +66,14 @@
 
 ### Implementation for User Story 1
 
-- [ ] T018 [US1] Create root layout `src/app/layout.tsx`: HTML head with metadata, site header ("Just A Programmer" / "Don Quixote fighting entropy"), main content area, basic responsive shell (sidebar integration deferred to US4)
-- [ ] T019 [US1] Create post page route `src/app/[year]/[month]/[day]/[slug]/page.tsx`: implement `generateStaticParams()` from `getAllPosts()` (year/month/day/slug extraction), render full MDX content, display post metadata (title, date, author, category link, tag links), previous/next post navigation
-- [ ] T020 [P] [US1] Create `src/components/GistEmbed.tsx` client component: iframe/script embed for GitHub gists, fallback link to `https://gist.github.com/{id}`, loading skeleton (props: `id`, `file?`)
-- [ ] T021 [P] [US1] Create `src/components/TweetEmbed.tsx` server component: static blockquote with tweet text + link to original URL, styled distinctly (props: `url`, `content?`, `author?`)
-- [ ] T022 [P] [US1] Create `src/components/QuotePost.tsx` server component: large blockquote styling with decorative quotation marks and distinct background/border (props: `children`)
-- [ ] T023 [US1] Update `mdx-components.tsx` to register `GistEmbed`, `TweetEmbed` in the MDX component mapping so they are available in all MDX files without explicit imports
-- [ ] T024 [US1] Verify syntax highlighting: confirm `rehype-pretty-code` renders code blocks with Shiki highlighting for C#, F#, C++, JavaScript, HTML/CSS across representative posts
-- [ ] T025 [US1] Verify URL preservation (FR-020): confirm that post routes produce URLs matching `/YYYY/MM/DD/slug/` pattern with zero-padded months and days, matching original WordPress structure
+- [x] T018 [US1] Create root layout `src/app/layout.tsx`: HTML head with metadata, site header ("Just A Programmer" / "Don Quixote fighting entropy"), main content area, basic responsive shell (sidebar integration deferred to US4)
+- [x] T019 [US1] Create post page route `src/app/[year]/[month]/[day]/[slug]/page.tsx`: implement `generateStaticParams()` from `getAllPosts()` (year/month/day/slug extraction), render full MDX content, display post metadata (title, date, author, category link, tag links), previous/next post navigation
+- [x] T020 [P] [US1] Create `src/components/GistEmbed.tsx` client component: iframe/script embed for GitHub gists, fallback link to `https://gist.github.com/{id}`, loading skeleton (props: `id`, `file?`)
+- [x] T021 [P] [US1] Create `src/components/TweetEmbed.tsx` server component: static blockquote with tweet text + link to original URL, styled distinctly (props: `url`, `content?`, `author?`)
+- [x] T022 [P] [US1] Create `src/components/QuotePost.tsx` server component: large blockquote styling with decorative quotation marks and distinct background/border (props: `children`)
+- [x] T023 [US1] Update `mdx-components.tsx` to register `GistEmbed`, `TweetEmbed` in the MDX component mapping so they are available in all MDX files without explicit imports
+- [x] T024 [US1] Verify syntax highlighting: confirm `rehype-pretty-code` renders code blocks with Shiki highlighting for C#, F#, C++, JavaScript, HTML/CSS across representative posts
+- [x] T025 [US1] Verify URL preservation (FR-020): confirm that post routes produce URLs matching `/YYYY/MM/DD/slug/` pattern with zero-padded months and days, matching original WordPress structure
 
 **Checkpoint**: Any migrated post can be read at its original URL with full content fidelity. This is the MVP.
 
@@ -87,12 +87,12 @@
 
 ### Implementation for User Story 2
 
-- [ ] T026 [P] [US2] Create `src/components/PostCard.tsx` server component: post title (linked), formatted date, excerpt, category badge, tag pills (max 5 + "+N more"), visual distinction for quote-format posts
-- [ ] T027 [US2] Create `src/components/PostList.tsx` client component: renders list of `<PostCard>`, client-side pagination (10 per page), "Newer"/"Older" buttons, post count display
-- [ ] T028 [US2] Create homepage `src/app/page.tsx`: call `getAllPosts()`, render `<PostList>` with all posts sorted newest-first
-- [ ] T029 [P] [US2] Create category page `src/app/category/[slug]/page.tsx`: `generateStaticParams()` for 2 categories, render `<PostList>` filtered by category, category name as heading
-- [ ] T030 [P] [US2] Create tag page `src/app/tag/[slug]/page.tsx`: `generateStaticParams()` from `getAllTags()`, render `<PostList>` filtered by tag, tag name as heading
-- [ ] T031 [P] [US2] Create archive page `src/app/archive/[year]/[month]/page.tsx`: `generateStaticParams()` from `getArchiveMonths()`, render `<PostList>` filtered by month, "Archive: Month Year" heading
+- [x] T026 [P] [US2] Create `src/components/PostCard.tsx` server component: post title (linked), formatted date, excerpt, category badge, tag pills (max 5 + "+N more"), visual distinction for quote-format posts
+- [x] T027 [US2] Create `src/components/PostList.tsx` client component: renders list of `<PostCard>`, client-side pagination (10 per page), "Newer"/"Older" buttons, post count display
+- [x] T028 [US2] Create homepage `src/app/page.tsx`: call `getAllPosts()`, render `<PostList>` with all posts sorted newest-first
+- [x] T029 [P] [US2] Create category page `src/app/category/[slug]/page.tsx`: `generateStaticParams()` for 2 categories, render `<PostList>` filtered by category, category name as heading
+- [x] T030 [P] [US2] Create tag page `src/app/tag/[slug]/page.tsx`: `generateStaticParams()` from `getAllTags()`, render `<PostList>` filtered by tag, tag name as heading
+- [x] T031 [P] [US2] Create archive page `src/app/archive/[year]/[month]/page.tsx`: `generateStaticParams()` from `getArchiveMonths()`, render `<PostList>` filtered by month, "Archive: Month Year" heading
 
 **Checkpoint**: Readers can browse all posts via homepage, categories, tags, and monthly archives. Combined with US1, the blog is functionally navigable.
 
@@ -106,8 +106,8 @@
 
 ### Implementation for User Story 3
 
-- [ ] T032 [US3] Migrate CV content: ensure `content/pages/curriculum-vitae.mdx` exists with correct frontmatter (`title`, `slug`) and full page content from WordPress
-- [ ] T033 [US3] Create static page route `src/app/page/[slug]/page.tsx`: `generateStaticParams()` from `getAllPages()`, render full MDX content, no date/category/tag display (visually distinct from posts per US3-2)
+- [x] T032 [US3] Migrate CV content: ensure `content/pages/curriculum-vitae.mdx` exists with correct frontmatter (`title`, `slug`) and full page content from WordPress
+- [x] T033 [US3] Create static page route `src/app/page/[slug]/page.tsx`: `generateStaticParams()` from `getAllPages()`, render full MDX content, no date/category/tag display (visually distinct from posts per US3-2)
 
 **Checkpoint**: Static pages are accessible and visually distinct from posts.
 
@@ -121,11 +121,11 @@
 
 ### Implementation for User Story 4
 
-- [ ] T034 [US4] Enhance root layout `src/app/layout.tsx`: integrate `<Sidebar>` component, responsive layout (sidebar beside content on desktop, collapsible on mobile), footer with copyright
-- [ ] T035 [US4] Create `src/components/Sidebar.tsx` server component: About section (author bio), Categories links, `<TagCloud>`, Archive monthly links, Blogroll ("Blogs I Follow"), Recent Posts (last 5) — receives `allTags`, `archiveMonths`, `blogroll` as props
-- [ ] T036 [P] [US4] Create `src/components/TagCloud.tsx` server component: tags as clickable pills linked to `/tag/{slug}/`, size/weight varies by post count, max ~20 tags with "View all tags" link
-- [ ] T037 [P] [US4] Create `src/components/DarkModeToggle.tsx` client component: reads `localStorage` preference on mount (fallback to `prefers-color-scheme`), toggles `dark` class on `<html>`, sun/moon icon button
-- [ ] T038 [US4] Pass sidebar data from layout: in `src/app/layout.tsx`, call `getAllTags()`, `getArchiveMonths()`, `getBlogroll()` and pass to `<Sidebar>`
+- [x] T034 [US4] Enhance root layout `src/app/layout.tsx`: integrate `<Sidebar>` component, responsive layout (sidebar beside content on desktop, collapsible on mobile), footer with copyright
+- [x] T035 [US4] Create `src/components/Sidebar.tsx` server component: About section (author bio), Categories links, `<TagCloud>`, Archive monthly links, Blogroll ("Blogs I Follow"), Recent Posts (last 5) — receives `allTags`, `archiveMonths`, `blogroll` as props
+- [x] T036 [P] [US4] Create `src/components/TagCloud.tsx` server component: tags as clickable pills linked to `/tag/{slug}/`, size/weight varies by post count, max ~20 tags with "View all tags" link
+- [x] T037 [P] [US4] Create `src/components/DarkModeToggle.tsx` client component: reads `localStorage` preference on mount (fallback to `prefers-color-scheme`), toggles `dark` class on `<html>`, sun/moon icon button
+- [x] T038 [US4] Pass sidebar data from layout: in `src/app/layout.tsx`, call `getAllTags()`, `getArchiveMonths()`, `getBlogroll()` and pass to `<Sidebar>`
 
 **Checkpoint**: Every page shows full site identity and navigation. The blog feels complete.
 
@@ -139,11 +139,11 @@
 
 ### Implementation for User Story 5
 
-- [ ] T039 [US5] Install Pagefind: add `pagefind` as dev dependency, add post-build script to `package.json` (`"postbuild": "npx pagefind --site out"`)
-- [ ] T040 [US5] Create `src/components/SearchInput.tsx` client component: mount Pagefind UI on client-side hydration via dynamic import of `/pagefind/pagefind-ui.js`, search input with placeholder
-- [ ] T041 [US5] Create search page `src/app/search/page.tsx`: render `<SearchInput>` component, Pagefind handles result display
-- [ ] T042 [US5] Add Pagefind `data-pagefind-body` attributes to post content area in `src/app/[year]/[month]/[day]/[slug]/page.tsx` so Pagefind indexes post content correctly
-- [ ] T043 [US5] Verify search: run build, confirm Pagefind index is generated in `out/pagefind/`, test search for known terms returns expected posts
+- [x] T039 [US5] Install Pagefind: add `pagefind` as dev dependency, add post-build script to `package.json` (`"postbuild": "npx pagefind --site out"`)
+- [x] T040 [US5] Create `src/components/SearchInput.tsx` client component: mount Pagefind UI on client-side hydration via dynamic import of `/pagefind/pagefind-ui.js`, search input with placeholder
+- [x] T041 [US5] Create search page `src/app/search/page.tsx`: render `<SearchInput>` component, Pagefind handles result display
+- [x] T042 [US5] Add Pagefind `data-pagefind-body` attributes to post content area in `src/app/[year]/[month]/[day]/[slug]/page.tsx` so Pagefind indexes post content correctly
+- [x] T043 [US5] Verify search: run build, confirm Pagefind index is generated in `out/pagefind/`, test search for known terms returns expected posts
 
 **Checkpoint**: Client-side search works across all post content. No server-side backend needed.
 
@@ -157,9 +157,9 @@
 
 ### Implementation for User Story 6
 
-- [ ] T044 [P] [US6] Create `src/components/Comment.tsx` server component: render comment author name, formatted date, content (plain text or sanitized HTML), optional avatar (Gravatar or initials)
-- [ ] T045 [US6] Create `src/components/CommentList.tsx` server component: "Comments (N)" heading, list of `<Comment>` components, note "Comments are from the original WordPress blog. New comments are not supported."
-- [ ] T046 [US6] Integrate comments into post page: in `src/app/[year]/[month]/[day]/[slug]/page.tsx`, render `<CommentList>` below post content when `post.comments` exists and is non-empty
+- [x] T044 [P] [US6] Create `src/components/Comment.tsx` server component: render comment author name, formatted date, content (plain text or sanitized HTML), optional avatar (Gravatar or initials)
+- [x] T045 [US6] Create `src/components/CommentList.tsx` server component: "Comments (N)" heading, list of `<Comment>` components, note "Comments are from the original WordPress blog. New comments are not supported."
+- [x] T046 [US6] Integrate comments into post page: in `src/app/[year]/[month]/[day]/[slug]/page.tsx`, render `<CommentList>` below post content when `post.comments` exists and is non-empty
 
 **Checkpoint**: Historical comments are preserved and visible. Migration fidelity is complete.
 
@@ -169,12 +169,12 @@
 
 **Purpose**: Final touches that improve quality across all user stories
 
-- [ ] T047 [P] Create 404 page `src/app/not-found.tsx`: friendly message with navigation links back to homepage
-- [ ] T048 [P] Generate sitemap: build-time `sitemap.xml` covering all posts, pages, categories, tags, and archive months (via `next-sitemap` or custom build script)
-- [ ] T049 [P] Generate RSS feed: build-time `public/feed.xml` with all posts (title, date, excerpt, link)
-- [ ] T050 Responsive QA: verify all pages are usable on mobile (text readable without horizontal scrolling, navigation accessible, sidebar collapses correctly) per FR-019
+- [x] T047 [P] Create 404 page `src/app/not-found.tsx`: friendly message with navigation links back to homepage
+- [x] T048 [P] Generate sitemap: build-time `sitemap.xml` covering all posts, pages, categories, tags, and archive months (via `next-sitemap` or custom build script)
+- [x] T049 [P] Generate RSS feed: build-time `public/feed.xml` with all posts (title, date, excerpt, link)
+- [x] T050 Responsive QA: verify all pages are usable on mobile (text readable without horizontal scrolling, navigation accessible, sidebar collapses correctly) per FR-019
 - [ ] T051 Lighthouse optimization: target Performance >= 90, FCP < 1.5s, total JS bundle < 200kB — optimize images, verify code splitting, minimize client component JS
-- [ ] T052 Run `scripts/validate-migration.ts` final pass: confirm 100% post count (SC-001), all code blocks highlighted (SC-002), no broken images (SC-003), all sidebar elements present (SC-006)
+- [x] T052 Run `scripts/validate-migration.ts` final pass: confirm 100% post count (SC-001), all code blocks highlighted (SC-002), no broken images (SC-003), all sidebar elements present (SC-006)
 - [ ] T053 Run quickstart.md validation: follow the quickstart.md steps from scratch to confirm a new developer can set up and build the project
 
 ---

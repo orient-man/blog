@@ -1,0 +1,37 @@
+---
+title: "Microsoft.Office.Word.Interop.dll or don't look here if you are lucky and have more interesting things to do"
+date: 2013-09-28
+author: orientman
+slug: microsoft-office-word-interop-dll-or-dont-look-here-if-you-are-lucky-and-have-more-interesting-things-to-do
+wordpressUrl: /2013/09/28/microsoft-office-word-interop-dll-or-dont-look-here-if-you-are-lucky-and-have-more-interesting-things-to-do/
+category: posts-in-english
+tags:
+- dotnet
+- microsoft-word
+- reporting
+format: standard
+comments:
+- 
+    author: huhu78
+    date: 2013-09-30
+    content: "Panie Marcinie, nie umieszcza Pan komentarzy w kodzie. Jak to tak?"
+- 
+    author: orientman
+    date: 2013-09-30
+    content: |-
+      To comment or not to comment? Well, after reading "Clean Code" by Unce Bob I'm in "comments are fails" camp (e.g. https://medium.com/on-coding/a70ca8382884) I know, it's complete opposite of what you learn in the beginning and I would like all junior programmers to write rather more than less comments but... I comment less and less over the years and I'm happy with it.
+      
+      Probably this code wouldn't suffer from more comments. Normally, instead of comments I write unit tests. Here there is only one "smoke test" (works also as an example of usage) and no unit test at all (well, it's hard to write tests for code driven by such elephant API like MSWord). I put two comments inside WordTemplateNavigator only because writing tests for these assumptions was too hard. There should be at least following tests:
+      
+       - "bookmarks are deleted after setting them"
+       - "valid field name consists of alpha numeric characters plus optional _N part where N is..."
+---
+
+I spent a day with [Microsoft.Office.Word.Interop.dll](http://msdn.microsoft.com/en-us/library/microsoft.office.interop.word\(v=office.14\).ASPX) and... surprisingly it hurt less than I expected. API is strange but does the job and it somehow improved over the years. I needed to support Word templates with following functionality:
+
+-   repeatedly filling the same field e.g., _CompanyName_ could occur multiple times (unfortunately fields/bookmarks in Word's template must have a unique names)
+-   adding rows to the existing table
+-   checkboxes (easy)
+-   export to PDF (again easy - Word 2007+ supports it OOTB)
+
+Not exactly rocket science but could be a time saver: https://github.com/orient-man/WordTemplates

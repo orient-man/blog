@@ -1,0 +1,69 @@
+---
+title: Moving Windows 7 partition to SSD drive
+date: 2012-10-27
+author: orientman
+slug: moving-windows-7-partition-to-ssd-drive
+wordpressUrl: /2012/10/27/moving-windows-7-partition-to-ssd-drive/
+category: posts-in-english
+tags:
+- ssd
+format: standard
+comments:
+- 
+    author: phil
+    date: 2013-09-25
+    content: "Hey thanks for the good guide! I have one question though - After Step 2 and Step 3 you assume to start Windows again from the old partition right? Or do you enter these commands in Arcronis? Thanks for your support!"
+- 
+    author: acitodg
+    date: 2012-10-31
+    content: "Great guide! I have Windows 7 + some key programs running from an SSD and the performance is awesome. I had trouble believing how much this helped over my old SATA setup."
+- 
+    author: orientman
+    date: 2013-09-25
+    content: No restart is needed - the only one is after last step. After step 2 you should have restored Windows partition on SSD drive. In step 3 you simple mount that partition with Windows Disk Management Tool (from Microsoft Management Console) and run following command in cmd.exe
+- 
+    author: phil
+    date: 2013-09-25
+    content: "ah now I get it - you start the program Acronis from within windows ;-) I thought you used the Boot ISO from Acronis from a CD. Thanks for your feedback!"
+---
+
+I recently upgraded my work computer with SSD drive. I recommend it to everyone - what a speed boost! :) The tricky part was to transfer partition with Windows 7. I didn't want to reinstall Windows because configuring everything again would be a very tedious task (i.e. Visual Studio 6, some emulators etc.). I had two gotchas: 1) my Windows partition was bigger than SSD drive 2) it wasn't the only partition so I couldn't just clone drive to drive. After about 2 hours I succeeded with following procedure:
+
+# STEP 1: Making an image of Windows partition
+
+I was lucky because I have Western Digital drive so I could use freely available Acronis True Image 2011 WD Edition (you need at least one such drive in your system to run it): [http://support.wdc.com/product/downloaddetail.asp?swid=119](http://support.wdc.com/product/downloaddetail.asp?swid=119 "Acronis True Image WD Edition") You can use other programs for that task but with Acronis True Image it was very easy:
+
+1.  From main screen choose "Disk and partition backup"
+2.  Select partition you want to move (usually C:\\)
+3.  In "Disk backup options" select "Sector by sector"
+4.  Set destination e.g. other partition or network drive
+
+# STEP 2: Restore backup onto SSD drive
+
+Your SSD shouldn't have any partitions. If it has, remove them with Windows Disk Management tool.
+
+1.  You should see your backup from step 1 one on Acronis main screen - click "Recover" button
+2.  Select option "Show MBR" (Master Boot Record)
+3.  Set destination for both MBR and Windows partition to SSD drive
+
+Acronis is able to shrink partition you want to restore to the size of SSD drive (another option is to shrink your partition before backup).
+
+# STEP 3: Moving data from Windows Recovery Partition
+
+It is hidden partition located before your main partition (sized usually about 100MB). I choose to combine both Recovery and Windows partition into one on my SSD drive. Well, it was by accident because didn't know how to setup them separately. ;)
+
+1.  Assign letter for that partition with Windows Disk Management Tool (e.g. X:\\)
+2.  Assuming F:\\ is SSD partition run following commands: `> reg unload HKLM\BCD00000000 > robocopy X:\ F:\ bootmgr > robocopy X:\Boot F:\Boot /s`
+
+# STEP 4: Setup boot configuration
+
+Assuming F:\\ is SSD partition run commands: `> bcdedit /store f:\boot\bcd /set {current} device partition=F: > bcdedit /store f:\boot\bcd /set {current} osdevice partition=F: > bcdedit /store f:\boot\bcd /set {bootmgr} device partition=F: > bcdedit /store f:\boot\bcd /set {memdiag} device partition=F:`
+
+# STEP 5: Fix MBR record
+
+You can use Windows 7 installation disk for that, but it's faster to use MBRFix tool from: [http://www.sysint.no/products/Download/tabid/536/language/en-US/Default.aspx](http://www.sysint.no/products/Download/tabid/536/language/en-US/Default.aspx "MBRFix")
+
+1.  Find your SSD drive number (starting from 0) e.g. check: `> MbrFix.exe /drive <num> listpartitions`
+2.  Assuming your SSD drive has number 1: `> MbrFix.exe /drive 1 fixmbr /win7`
+
+Done. Now you can restart your computer and set correct boot order in BIOS. Windows should start from the new SSD partition. Just to be 100% sure you can disconnect your old drive and check if system still boots properly.
