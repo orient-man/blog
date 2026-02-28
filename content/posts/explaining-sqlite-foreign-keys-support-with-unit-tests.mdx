@@ -18,4 +18,131 @@ Today I got confused by foreign keys support in SQLite. I couldn't explain why m
 -   When foreign keys are **off** renaming parent table **keeps constraints untouched** (i.e. pointing to the old name)
 -   With System.Data.SQLite.dll you can enable foreign keys globally (with connection string option) or per statement (via PRAGMA)
 
-And my unit tests: https://gist.github.com/4079035
+And my unit tests:
+
+```csharp
+using System;
+using System.Data;
+using System.Data.Common;
+using System.Data.SQLite;
+using NUnit.Framework;
+
+namespace MyApplication.Tests
+{
+    [TestFixture]
+    public class SQLiteForeignKeysTests
+    {
+        private DbConnection connection;
+
+        [Test]
+        [ExpectedException(
+            typeof(ConstraintException),
+            ExpectedMessage = "INSERT INTO B VALUES (3, 3)")]
+        public void WhenForeignKeysOnRenamingParentChangesConstraintDefinitions()
+        {
+            // Foreign Keys are off by default
+            using (CreateConnection("Data Source=:memory:"))
+            {
+                ExecuteNonQuery("CREATE TABLE A (a_id INTEGER NOT NULL PRIMARY KEY)");
+                ExecuteNonQuery(
+                    @"CREATE TABLE B (
+                    b_id INTEGER NOT NULL PRIMARY KEY,
+                    b_fk_a_id INTEGER NOT NULL,
+                    FOREIGN KEY(b_fk_a_id) REFERENCES A(a_id))");
+                ExecuteNonQuery("INSERT INTO A VALUES (1)");
+                ExecuteNonQuery("INSERT INTO B VALUES (1, 1)");
+                ExecuteNonQuery("PRAGMA foreign_keys = ON");
+                ExecuteNonQuery("ALTER TABLE A RENAME TO C");
+                ExecuteNonQuery("INSERT INTO C VALUES (2)");
+                ExecuteNonQuery("INSERT INTO B VALUES (2, 2)");
+                // throws: no 3 in C
+                ExecuteNonQuery("INSERT INTO B VALUES (3, 3)");
+            }
+        }
+
+        [Test]
+        [ExpectedException(
+            typeof(ConstraintException),
+            ExpectedMessage = "INSERT INTO B VALUES (3, 3)")]
+        public void WhenForeignKeysOnGloballyRenamingParentChangesConstraintDefinitions()
+        {
+            using (CreateConnection("Data Source=:memory:;foreign keys=True"))
+            {
+                ExecuteNonQuery("CREATE TABLE A (a_id INTEGER NOT NULL PRIMARY KEY)");
+                ExecuteNonQuery(
+                    @"CREATE TABLE B (
+                    b_id INTEGER NOT NULL PRIMARY KEY,
+                    b_fk_a_id INTEGER NOT NULL,
+                    FOREIGN KEY(b_fk_a_id) REFERENCES A(a_id))");
+                ExecuteNonQuery("INSERT INTO A VALUES (1)");
+                ExecuteNonQuery("INSERT INTO B VALUES (1, 1)");
+                ExecuteNonQuery("ALTER TABLE A RENAME TO C");
+                ExecuteNonQuery("INSERT INTO C VALUES (2)");
+                ExecuteNonQuery("INSERT INTO B VALUES (2, 2)");
+                // throws: no 3 in C
+                ExecuteNonQuery("INSERT INTO B VALUES (3, 3)");
+            }
+        }
+
+        [Test]
+        [ExpectedException(
+            typeof(ConstraintException),
+            ExpectedMessage = "INSERT INTO B VALUES (3, 3)")]
+        public void WhenForeignKeysOffRenamingParentTableKeepsConstraintsUntouched()
+        {
+            // Foreign Keys are off by default
+            using (CreateConnection("Data Source=:memory:"))
+            {
+                ExecuteNonQuery("CREATE TABLE A (a_id INTEGER NOT NULL PRIMARY KEY)");
+                ExecuteNonQuery(
+                    @"CREATE TABLE B (
+                    b_id INTEGER NOT NULL PRIMARY KEY,
+                    b_fk_a_id INTEGER NOT NULL,
+                    FOREIGN KEY(b_fk_a_id) REFERENCES A(a_id))");
+                ExecuteNonQuery("INSERT INTO A VALUES (1)");
+                ExecuteNonQuery("INSERT INTO B VALUES (1, 1)");
+                ExecuteNonQuery("ALTER TABLE A RENAME TO C");
+                ExecuteNonQuery("CREATE TABLE A (a_id INTEGER NOT NULL PRIMARY KEY)");
+                ExecuteNonQuery("INSERT INTO A SELECT * FROM C");
+                ExecuteNonQuery("INSERT INTO A VALUES (2)");
+                ExecuteNonQuery("PRAGMA foreign_keys = ON");
+                ExecuteNonQuery("INSERT INTO B VALUES (2, 2)");
+                ExecuteNonQuery("INSERT INTO C VALUES (3)");
+                ExecuteNonQuery("PRAGMA foreign_keys = ON");
+                // throws: 3 in C but not in A
+                ExecuteNonQuery("INSERT INTO B VALUES (3, 3)");
+            }
+        }
+
+        private IDisposable CreateConnection(string connectionString)
+        {
+            connection = SQLiteFactory.Instance.CreateConnection();
+            connection.ConnectionString = connectionString;
+            connection.Open();
+            return connection;
+        }
+
+        private int ExecuteNonQuery(string sql)
+        {
+            try
+            {
+                using (var cmd = connection.CreateCommand())
+                {
+                    cmd.CommandText = sql;
+                    cmd.CommandType = CommandType.Text;
+                    return cmd.ExecuteNonQuery();
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                if (ex.Message.Contains("Abort due to constraint violation"))
+                    throw new ConstraintException(sql);
+
+                throw ex;
+            }
+        }
+    }
+}
+```
+
+[View on GitHub](https://gist.github.com/4079035)
