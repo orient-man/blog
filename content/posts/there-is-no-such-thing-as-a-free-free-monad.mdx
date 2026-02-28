@@ -17,58 +17,247 @@ tags:
 format: standard
 ---
 
-**Disclaimer** This article was also published on [my company blog](https://finai.com/en/newsroom/there-is-no-such-thing-as-a-free-free-monad/). Random musings on managing state, side effects and decoupling.
+**Disclaimer** This article was also published on [my company blog](https://finai.com/en/newsroom/there-is-no-such-thing-as-a-free-free-monad/).
+
+Random musings on managing state, side effects and decoupling.
 
 #### Intro
 
-This post supposed to be about [DurableTask](https://github.com/Azure/durabletask) frameworklibrary and how we use it at [FinAi](https://finai.com/) to orchestrate biometric authentication process. In the meantime, I got inspired by Mark Seemann's writings about "pure interactions". Go [read it](http://blog.ploeh.dk/2017/07/10/pure-interactions/) - it's wonderful! I call DurableTask _library_ because it's very easy to _decouple_ your application logic from it (at least in F#). Yeah!, _decoupling_ is great, isn't it?  Believe me, you can go astray with _decoupling_. See for yourself.
+This post supposed to be about [DurableTask](https://github.com/Azure/durabletask) ~~framework~~library and how we use it at [FinAi](https://finai.com/) to orchestrate biometric authentication process. In the meantime, I got inspired by Mark Seemann's writings about "pure interactions". Go [read it](http://blog.ploeh.dk/2017/07/10/pure-interactions/) - it's wonderful! I call DurableTask _library_ because it's very easy to _decouple_ your application logic from it (at least in F#). Yeah!, _decoupling_ is great, isn't it?  Believe me, you can go astray with _decoupling_. See for yourself.
 
 #### Biometric authentication
 
 In essence (and vast simplification) biometric authentication process looks like this:
 
--   acquire user's identity document scan
--   verify it and if valid continue
--   acquire user's face photo
--   verify it with document
--   publish result
+- acquire user's identity document scan
+- verify it and if valid continue
+- acquire user's face photo
+- verify it with document
+- publish result
 
-Which can be written in pseudo-code: let verifyUser getDocImage verifyDoc getFaceImage verifyFace publishResult = let docId = getDocImage () let (result, docVerificationId) = verifyDoc docId if result then let faceId = getFaceImage () let result = verifyFace docVerificationId faceId publishResult result else publishResult false We have lots of dependencies (this way it's almost like using constructor injection in C#) but we can mock & test it for sure. If we want to go asynchronous we need to wrap it with _async {}_ block and add bangs (!) everywhere. But what if process is long running? For example: doc/face verification in some corner cases could be done by "mechanical Turk". What about saving state? What happens if process crashes? Can we run this code on multiple machines? And so on... The question is, can we _decouple_ it little more?
+Which can be written in pseudo-code:
+
+```fsharp
+let verifyUser getDocImage verifyDoc getFaceImage verifyFace publishResult =
+    let docId = getDocImage ()
+    let (result, docVerificationId) = verifyDoc docId
+    if result
+    then
+        let faceId = getFaceImage ()
+        let result = verifyFace docVerificationId faceId
+        publishResult result
+    else
+        publishResult false
+```
+
+We have lots of dependencies (this way it's almost like using constructor injection in C#) but we can mock & test it for sure. If we want to go asynchronous we need to wrap it with _async {}_ block and add bangs (!) everywhere. But what if process is long running? For example: doc/face verification in some corner cases could be done by "mechanical Turk". What about saving state? What happens if process crashes? Can we run this code on multiple machines? And so on...
+
+The question is, can we _decouple_ it little more?
 
 #### Going meta
 
-Biometry language definition (again thanks Mark Seemann for [inspiration](http://blog.ploeh.dk/2017/07/17/a-pure-command-line-wizard/)): type DocId = Guid type FaceId = Guid type DocVerificationId = Guid type BiometryInstruction<'a> = | GetDocImage of (DocId -> 'a) | VerifyDoc of (DocId \* (bool \* DocVerificationId -> 'a)) | GetFaceImage of (FaceId -> 'a) | VerifyFace of (DocVerificationId \* FaceId) \* (bool -> 'a) | PublishResult of bool // always last instruction -> no continuation type BiometryProgram<'a> = | Free of BiometryInstruction<BiometryProgram<'a>> | Pure of 'a BiometryProgram equivalent to pseudo-code above: let verifyUserProgram () = Free (GetDocImage ( fun docId -> Free (VerifyDoc ( docId, fun (result, docVerificationId) -> Free (GetFaceImage ( fun faceId -> if result then Free (VerifyFace ( (docVerificationId, faceId), fun result -> Free (PublishResult result))) else Free (PublishResult result))))))) Ugly, isn't it? (or beautiful if you're Lisp fanatic) Let's add some syntactic sugar (most of this code is boilerplate which languages with more powerful type systems - like Haskell - can generate): // BEGIN: Monadic stuff that Haskell does automatically module BiometryMonad = let private map f = function | GetDocImage next -> GetDocImage (next >> f) | VerifyDoc (x, next) -> VerifyDoc (x, next >> f) | GetFaceImage next -> GetFaceImage (next >> f) | VerifyFace (x, next) -> VerifyFace (x, next >> f) | PublishResult x -> PublishResult x let rec bind f = function | Free instruction -> instruction |> map (bind f) |> Free | Pure x -> f x type BiometryBuilder() = member \_\_.Bind (x, f) = BiometryMonad.bind f x member \_\_.Return x = Pure x member \_\_.ReturnFrom x = x let biometry = BiometryBuilder () // END // shortcuts for instructions let getDocImage = Free (GetDocImage Pure) let verifyDoc docId = Free (VerifyDoc (docId, Pure)) let getFaceImage = Free (GetDocImage Pure) let verifyFace docVerificationId faceId = Free (VerifyFace ((docVerificationId, faceId), Pure)) let publishResult r = Free (PublishResult r) Now we can write BiometryProgram that looks almost exactly like our pseudo-code at the beginning: let verifyUserProgram () = biometry { let! docId = getDocImage let! (result, docVerificationId) = verifyDoc docId if result then let! faceId = getFaceImage let! result = verifyFace docVerificationId faceId return! publishResult result else return! publishResult false }
+Biometry language definition (again thanks Mark Seemann for [inspiration](http://blog.ploeh.dk/2017/07/17/a-pure-command-line-wizard/)):
+
+```fsharp
+type DocId = Guid
+type FaceId = Guid
+type DocVerificationId = Guid
+
+type BiometryInstruction<'a> =
+| GetDocImage of (DocId -> 'a)
+| VerifyDoc of (DocId * (bool * DocVerificationId -> 'a))
+| GetFaceImage of (FaceId -> 'a)
+| VerifyFace of (DocVerificationId * FaceId) * (bool -> 'a)
+| PublishResult of bool // always last instruction -> no continuation
+
+type BiometryProgram<'a> =
+| Free of BiometryInstruction<BiometryProgram<'a>>
+| Pure of 'a
+```
+
+BiometryProgram equivalent to pseudo-code above:
+
+```fsharp
+let verifyUserProgram () =
+    Free (GetDocImage (
+        fun docId -> Free (VerifyDoc (
+            docId,
+            fun (result, docVerificationId) ->
+                Free (GetFaceImage (
+                    fun faceId ->
+                        if result
+                        then
+                            Free (VerifyFace (
+                                (docVerificationId, faceId),
+                                fun result -> Free (PublishResult result)))
+                        else
+                            Free (PublishResult result)))))))
+```
+
+Ugly, isn't it? (or beautiful if you're Lisp fanatic)
+
+Let's add some syntactic sugar (most of this code is boilerplate which languages with more powerful type systems - like Haskell - can generate):
+
+```fsharp
+// BEGIN: Monadic stuff that Haskell does automatically
+module BiometryMonad =
+    let private map f = function
+    | GetDocImage next -> GetDocImage (next >> f)
+    | VerifyDoc (x, next) -> VerifyDoc (x, next >> f)
+    | GetFaceImage next -> GetFaceImage (next >> f)
+    | VerifyFace (x, next) -> VerifyFace (x, next >> f)
+    | PublishResult x -> PublishResult x
+
+    let rec bind f = function
+    | Free instruction -> instruction |> map (bind f) |> Free
+    | Pure x -> f x
+
+type BiometryBuilder() =
+    member __.Bind (x, f) = BiometryMonad.bind f x
+    member __.Return x = Pure x
+    member __.ReturnFrom x = x
+
+let biometry = BiometryBuilder ()
+// END
+
+// shortcuts for instructions
+let getDocImage = Free (GetDocImage Pure)
+let verifyDoc docId = Free (VerifyDoc (docId, Pure))
+let getFaceImage = Free (GetDocImage Pure)
+let verifyFace docVerificationId faceId =
+    Free (VerifyFace ((docVerificationId, faceId), Pure))
+let publishResult r = Free (PublishResult r)
+```
+
+Now we can write BiometryProgram that looks almost exactly like our pseudo-code at the beginning:
+
+```fsharp
+let verifyUserProgram () =
+    biometry {
+        let! docId = getDocImage
+        let! (result, docVerificationId) = verifyDoc docId
+        if result
+        then
+            let! faceId = getFaceImage
+            let! result = verifyFace docVerificationId faceId
+            return! publishResult result
+        else
+            return! publishResult false
+    }
+```
 
 #### Going down
 
-Very readable but how to run it? We must write an interpreter. Let's start with basic synchronized version. Instead of taking photos & doing real verification we will generate GUIDs and return true :) module SyncInterpreter = let rec interpret = function | Pure x -> x | Free (GetDocImage next) -> Guid.NewGuid() |> next |> interpret | Free (VerifyDoc (docId, next)) -> printfn "VerifyDoc %A" docId (true, Guid.NewGuid()) |> next |> interpret | Free (GetFaceImage next) -> Guid.NewGuid() |> next |> interpret | Free (VerifyFace (request, next)) -> printfn "VerifyFace %A" request true |> next |> interpret | Free (PublishResult result) -> printfn "Result is %A" result Result of running it in REPL:
+Very readable but how to run it? We must write an interpreter. Let's start with basic synchronized version. Instead of taking photos & doing real verification we will generate GUIDs and return true :)
 
-\> verifyUserProgram () |> SyncInterpreter.interpret;;
+```fsharp
+module SyncInterpreter =
+    let rec interpret = function
+    | Pure x -> x
+    | Free (GetDocImage next) -> Guid.NewGuid() |> next |> interpret
+    | Free (VerifyDoc (docId, next)) ->
+        printfn "VerifyDoc %A" docId
+        (true, Guid.NewGuid()) |> next |> interpret
+    | Free (GetFaceImage next) -> Guid.NewGuid() |> next |> interpret
+    | Free (VerifyFace (request, next)) ->
+        printfn "VerifyFace %A" request
+        true |> next |> interpret
+    | Free (PublishResult result) -> printfn "Result is %A" result
+```
+
+Result of running it in REPL:
+
+```
+> verifyUserProgram () |> SyncInterpreter.interpret;;
 VerifyDoc 4b8b1115-4f8f-4e31-8c34-22a518064066
 VerifyFace (d6db0275-56d2-4bb0-bfdb-37e649efb0f6, e0f007c7-e822-48f2-b72d-df88e2b72823)
 Result is true
+```
 
-Now we can go asynchronous without (!) modifying original program: module AsyncInterpreter = let rec interpret = function | Pure x -> x | Free (GetDocImage next) -> async { return! Guid.NewGuid() |> next |> interpret } | Free (VerifyDoc (docId, next)) -> async { printfn "VerifyDoc %A" docId return! (true, Guid.NewGuid()) |> next |> interpret } | Free (GetFaceImage next) -> async { return! Guid.NewGuid() |> next |> interpret } | Free (VerifyFace (request, next)) -> async { printfn "VerifyFace %A" request return! true |> next |> interpret } | Free (PublishResult result) -> async { do printfn "Result is %A" result } Result of running it in REPL:
+Now we can go asynchronous without (!) modifying original program:
 
-\> verifyUserProgram () |> AsyncInterpreter.interpret |> Async.RunSynchronously;;
+```fsharp
+module AsyncInterpreter =
+    let rec interpret = function
+    | Pure x -> x
+    | Free (GetDocImage next) ->
+        async { return! Guid.NewGuid() |> next |> interpret }
+    | Free (VerifyDoc (docId, next)) ->
+        async {
+            printfn "VerifyDoc %A" docId
+            return! (true, Guid.NewGuid()) |> next |> interpret
+        }
+    | Free (GetFaceImage next) ->
+        async { return! Guid.NewGuid() |> next |> interpret }
+    | Free (VerifyFace (request, next)) ->
+        async {
+            printfn "VerifyFace %A" request
+            return! true |> next |> interpret
+        }
+    | Free (PublishResult result) ->
+        async { do printfn "Result is %A" result }
+```
+
+Result of running it in REPL:
+
+```
+> verifyUserProgram () |> AsyncInterpreter.interpret |> Async.RunSynchronously;;
 VerifyDoc 3c45965f-306b-4807-aa75-8f838e5eff67
 VerifyFace (4361da1d-3428-48f5-9b8c-b7d016519562, 271be688-e61f-4ac5-85b2-112c0aebc72b)
 Result is true
+```
 
 #### Reaping rewards
 
 At last, let's use [DurableTask](https://github.com/Azure/durabletask) to address our reliability questions. This library "allow users to write long running persistent workflows" and in our situation it makes process:
 
--   _Resilient_: State will be persisted at "checkpoints" (e.g. image capture, results of doc/face verification) and restored if needed (e.g. after crash or for audit/monitoring purposes)
--   _Scalable_: Backend leverages [Azure Service Bus](https://azure.microsoft.com/pl-pl/services/service-bus/) (or - in new version - [Service Fabric](https://azure.microsoft.com/pl-pl/services/service-fabric/)) and what started on one node can continue on another
+- _Resilient_: State will be persisted at "checkpoints" (e.g. image capture, results of doc/face verification) and restored if needed (e.g. after crash or for audit/monitoring purposes)
+- _Scalable_: Backend leverages [Azure Service Bus](https://azure.microsoft.com/pl-pl/services/service-bus/) (or - in new version - [Service Fabric](https://azure.microsoft.com/pl-pl/services/service-fabric/)) and what started on one node can continue on another
 
-DurableTask is OOP friendly and it hurts my FP eyes but thanks to _decoupling_ we can reuse _verifyUserProgram_: // abstract external dependencies serving as "checkpoints" for Orchestration type IBiometryActivities = abstract VerifyDoc: DocId -> Task<bool \* DocVerificationId> abstract VerifyFace: DocVerificationId \* FaceId -> Task<bool> abstract PublishResult: bool -> Task<unit> type BiometryOrchestration() = inherit TaskOrchestration<unit, DocId, FaceId, string>() let mutable tcs = new TaskCompletionSource<FaceId>() // bind operator (fancy Task.ContinueWith) let (>>=) (x: Task<\_>) f = task { let! x' = x in return! x' |> f } let run (activityClient: IBiometryActivities) docId = let rec interpret = function | Pure x -> x | Free (GetDocImage next) -> docId |> next |> interpret | Free (VerifyDoc (docId, next)) -> docId |> activityClient.VerifyDoc >>= (next >> interpret) | Free (GetFaceImage next) -> tcs.Task >>= (next >> interpret) | Free (VerifyFace (request, next)) -> request |> activityClient.VerifyFace >>= (next >> interpret) | Free (PublishResult result) -> result |> activityClient.PublishResult verifyUserProgram () |> interpret override \_\_.RunTask(context, docId) = let activityClient = context.CreateClient<\_>() tcs <- new TaskCompletionSource<FaceId>() run activityClient docId override \_\_.OnEvent(\_, \_, faceId) = faceId |> tcs.TrySetResult |> ignore Most interesting points:
+DurableTask is OOP friendly and it hurts my FP eyes but thanks to _decoupling_ we can reuse _verifyUserProgram_:
 
--   Orchestration process starts when identity document arrives (DocId is an input)
--   Face image (FaceId) can arrive at any time (as an event sent to Orchestration)
--   Because RunTask method can be run many times (replaying all previous events and activities results) we must reset all "state" (TaskCompletionSource) each time
--   Code inside RunTask should be side effects free (BiometryProgram is great fit here) or wrapped with Task activity (that's the job for interpreter)
--   DurableTask depends on TPL semantics and that's why [TaskBuilder.fs](https://github.com/rspeele/TaskBuilder.fs) is used instead of default F#'s async (see [Tomas Petricek post](http://tomasp.net/blog/async-csharp-differences.aspx/) on C#/F# async differences)
+```fsharp
+// abstract external dependencies serving as "checkpoints" for Orchestration
+type IBiometryActivities =
+    abstract VerifyDoc: DocId -> Task<bool * DocVerificationId>
+    abstract VerifyFace: DocVerificationId * FaceId -> Task<bool>
+    abstract PublishResult: bool -> Task<unit>
+
+type BiometryOrchestration() =
+    inherit TaskOrchestration<unit, DocId, FaceId, string>()
+
+    let mutable tcs = new TaskCompletionSource<FaceId>()
+
+    // bind operator (fancy Task.ContinueWith)
+    let (>>=) (x: Task<_>) f = task { let! x' = x in return! x' |> f }
+
+    let run (activityClient: IBiometryActivities) docId =
+        let rec interpret = function
+        | Pure x -> x
+        | Free (GetDocImage next) -> docId |> next |> interpret
+        | Free (VerifyDoc (docId, next)) ->
+            docId |> activityClient.VerifyDoc >>= (next >> interpret)
+        | Free (GetFaceImage next) -> tcs.Task >>= (next >> interpret)
+        | Free (VerifyFace (request, next)) ->
+            request |> activityClient.VerifyFace >>= (next >> interpret)
+        | Free (PublishResult result) -> result |> activityClient.PublishResult
+        verifyUserProgram () |> interpret
+
+    override __.RunTask(context, docId) =
+        let activityClient = context.CreateClient<_>()
+        tcs <- new TaskCompletionSource<FaceId>()
+        run activityClient docId
+
+    override __.OnEvent(_, _, faceId) = faceId |> tcs.TrySetResult |> ignore
+```
+
+Most interesting points:
+
+- Orchestration process starts when identity document arrives (DocId is an input)
+- Face image (FaceId) can arrive at any time (as an event sent to Orchestration)
+- Because RunTask method can be run many times (replaying all previous events and activities results) we must reset all "state" (TaskCompletionSource) each time
+- Code inside RunTask should be side effects free (BiometryProgram is great fit here) or wrapped with Task activity (that's the job for interpreter)
+- DurableTask depends on TPL semantics and that's why [TaskBuilder.fs](https://github.com/rspeele/TaskBuilder.fs) is used instead of default F#'s async (see [Tomas Petricek post](http://tomasp.net/blog/async-csharp-differences.aspx/) on C#/F# async differences)
 
 #### Final thoughts
 

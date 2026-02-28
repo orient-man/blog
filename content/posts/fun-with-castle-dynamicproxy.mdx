@@ -35,7 +35,27 @@ namespace MyCompany.Infrastructure.Validation
 
 [View on GitHub](https://gist.github.com/4079379)
 
-It works well until you need to "chain" validators: public bool Validate(IValidationListener listener) { return firstValidator.Validate(listener) && secondValidator.Validate(listener); } Validator stops on first error as it should by it doesn't collect all warnings because of "short-circuit" evaluation of "&&". I couldn't use "&" operator because it would change semantics (i.e. evaluate all validators regardless of possible errors). Instead I wanted something like this: public bool Validate(IValidationListener listener) { // stops on error but if there are only warnings reports all of them return listener.ListenAll(firstValidator, secondValidator); } How to do this without changing all implementations of IValidationListener? With extension method and dynamic proxy of course:
+It works well until you need to "chain" validators:
+
+```csharp
+public bool Validate(IValidationListener listener)
+{
+    return firstValidator.Validate(listener) &&
+        secondValidator.Validate(listener);
+}
+```
+
+Validator stops on first error as it should by it doesn't collect all warnings because of "short-circuit" evaluation of "&&". I couldn't use "&" operator because it would change semantics (i.e. evaluate all validators regardless of possible errors). Instead I wanted something like this:
+
+```csharp
+public bool Validate(IValidationListener listener)
+{
+    // stops on error but if there are only warnings reports all of them
+    return listener.ListenAll(firstValidator, secondValidator);
+}
+```
+
+How to do this without changing all implementations of IValidationListener? With extension method and dynamic proxy of course:
 
 ```csharp
 using Castle.DynamicProxy;
