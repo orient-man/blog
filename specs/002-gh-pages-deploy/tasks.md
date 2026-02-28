@@ -20,7 +20,7 @@ US1 phase because it is a single YAML line in the same `deploy.yml` file.
 
 **Purpose**: Create the directory structure required by GitHub Actions.
 
-- [ ] T001 Create `.github/workflows/` directory (e.g., add `.github/workflows/.gitkeep` or proceed directly to T002)
+- [x] T001 Create `.github/workflows/` directory (e.g., add `.github/workflows/.gitkeep` or proceed directly to T002)
 
 ---
 
@@ -35,16 +35,16 @@ is live within 5 minutes. Also click "Run workflow" in the Actions UI to confirm
 
 ### Implementation for User Stories 1 & 3
 
-- [ ] T002 [US1] Create `.github/workflows/deploy.yml` — workflow skeleton: `name`, `on` block
+- [x] T002 [US1] Create `.github/workflows/deploy.yml` — workflow skeleton: `name`, `on` block
   (`push: branches: [main]` + `workflow_dispatch: {}`), top-level `permissions`
   (`contents: read`, `pages: write`, `id-token: write`), and `concurrency` group
   (`group: "pages"`, `cancel-in-progress: true`) per data-model.md § 1
-- [ ] T003 [US1] Add `build` job to `.github/workflows/deploy.yml` — steps in order:
+- [x] T003 [US1] Add `build` job to `.github/workflows/deploy.yml` — steps in order:
   `actions/checkout@v4`, `actions/setup-node@v4` (node-version: "20", cache: "npm"),
   `actions/configure-pages@v5` (no `static_site_generator` option), `actions/cache@v4`
   (path: `.next/cache`, key pattern from research.md § 5), `npm ci`, `npm run build`,
   `actions/upload-pages-artifact@v4` (path: `./out`) per data-model.md § 1
-- [ ] T004 [US1] Add `deploy` job to `.github/workflows/deploy.yml` — `needs: [build]`,
+- [x] T004 [US1] Add `deploy` job to `.github/workflows/deploy.yml` — `needs: [build]`,
   `runs-on: ubuntu-latest`, `environment: { name: github-pages, url: ${{ steps.deployment.outputs.page_url }} }`,
   single step `actions/deploy-pages@v4` with `id: deployment` per data-model.md § 1
   and research.md § 2 (permissions scoped to deploy job only)
@@ -63,7 +63,7 @@ homepage MUST render over HTTPS with a valid certificate.
 
 ### Implementation for User Story 2
 
-- [ ] T005 [P] [US2] Create `public/CNAME` — single line, no trailing newline:
+- [x] T005 [P] [US2] Create `public/CNAME` — single line, no trailing newline:
   `blog.orientman.com` per data-model.md § 2 and research.md § 7
 
 **Checkpoint**: After T005 and a successful deployment, GitHub Pages reads `out/CNAME`
@@ -82,7 +82,7 @@ shows the correct status (green after a successful run, red after a forced failu
 
 ### Implementation for User Story 4
 
-- [ ] T006 [P] [US4] Create `README.md` at the repository root — project title
+- [x] T006 [P] [US4] Create `README.md` at the repository root — project title
   (`# orientman-blog`), deployment status badge
   (`[![Deploy](https://github.com/orient-man/orientman-blog/actions/workflows/deploy.yml/badge.svg)](https://github.com/orient-man/orientman-blog/actions/workflows/deploy.yml)`),
   and a brief description of the project per data-model.md § 3 and research.md § 8
@@ -97,7 +97,7 @@ Badge reflects live workflow status — no configuration needed beyond creating 
 **Purpose**: Validate the complete implementation against all requirements before
 considering the feature done.
 
-- [ ] T007 Validate `.github/workflows/deploy.yml` against all 13 functional requirements
+- [x] T007 Validate `.github/workflows/deploy.yml` against all 13 functional requirements
   (FR-001 through FR-013) from spec.md — confirm each FR is satisfied by the workflow
   or documented as a manual prerequisite (FR-012)
 - [ ] T008 Run the verification checklist from `specs/002-gh-pages-deploy/quickstart.md`
