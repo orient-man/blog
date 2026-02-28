@@ -1,0 +1,13 @@
+[
+  { "name": "You've Been Haacked", "url": "https://haacked.com/" },
+  { "name": "Steve Sanderson's blog", "url": "http://blog.stevensanderson.com/" },
+  { "name": "Tao of Mac", "url": "https://taoofmac.com/" },
+  { "name": "Michael O. Church", "url": "http://michaelochurch.wordpress.com" },
+  { "name": "Scott Hanselman's Blog", "url": "https://www.hanselman.com/blog/" },
+  { "name": "Krzysztof Koźmic", "url": "https://kozmic.net/" },
+  { "name": "Joel on Software", "url": "http://www.joelonsoftware.com/" },
+  { "name": "Greg Young's Blog", "url": "http://gregfyoung.wordpress.com" },
+  { "name": "Gojko's blog", "url": "https://gojko.net/" },
+  { "name": "Coding Horror", "url": "https://blog.codinghorror.com/" },
+  { "name": "addyosmani.com/blog/", "url": "http://addyosmani.com/blog/" }
+]

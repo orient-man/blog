@@ -1,0 +1,21 @@
+---
+title: Explaining SQLite foreign keys support with unit tests
+date: 2012-11-15
+author: orientman
+slug: explaining-sqlite-foreign-keys-support-with-unit-tests
+wordpressUrl: /2012/11/15/explaining-sqlite-foreign-keys-support-with-unit-tests/
+category: posts-in-english
+tags:
+- constraint-definitions
+- sqlite
+- tdd
+format: standard
+---
+
+Today I got confused by foreign keys support in SQLite. I couldn't explain why my schema migration script has failed so I wrote some unit tests to clarify my understanding. Here are my discoveries (or why I should RTFM more carefully):
+
+-   When foreign keys are **on** renaming parent table **changes constraint definitions** on child tables
+-   When foreign keys are **off** renaming parent table **keeps constraints untouched** (i.e. pointing to the old name)
+-   With System.Data.SQLite.dll you can enable foreign keys globally (with connection string option) or per statement (via PRAGMA)
+
+And my unit tests: https://gist.github.com/4079035

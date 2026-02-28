@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Next.js build outputs
+.next/
+out/
+
+# TypeScript incremental build info
+tsconfig.tsbuildinfo
+
+# Generated at build time (prebuild script)
+public/sitemap.xml
+public/feed.xml
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp

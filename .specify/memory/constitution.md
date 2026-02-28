@@ -1,50 +1,53 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!-- Sync Impact Report
+  Version change: 1.0.0 → 1.0.1
+  Modified principles:
+    - I. Simplicity — removed Astro framework reference, now framework-agnostic
+  Added sections: None
+  Removed sections: None
+  Templates requiring updates:
+    - .specify/templates/plan-template.md — ✅ no update needed
+    - .specify/templates/spec-template.md — ✅ no update needed
+    - .specify/templates/tasks-template.md — ✅ no update needed
+    - .specify/templates/commands/*.md — ✅ no files exist
+  Follow-up TODOs: None
+-->
+
+# OrientMan Blog Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Simplicity
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+The blog MUST remain a static site. No server-side runtime, no
+databases, no dynamic backends. Dependencies MUST be kept to a
+minimum. If a feature can be achieved with plain HTML, CSS, or
+Markdown, that approach MUST be preferred over adding a library or
+framework dependency.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+**Rationale**: A static blog has near-zero operational cost and
+attack surface. Complexity is the primary risk for a personal blog.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### II. Content-First
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+Markdown is the canonical content format. All blog posts MUST be
+authored in Markdown. Site structure, styling, and tooling MUST
+serve content readability and authoring ease. Design decisions MUST
+prioritize the reading experience over visual complexity.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
-
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
-
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
-
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+**Rationale**: The blog exists to publish written content. Every
+technical choice should reduce friction between writing and
+publishing.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution is the authoritative reference for project
+decisions. It supersedes ad-hoc preferences when conflicts arise.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+- **Amendments**: Update this file, increment the version, and
+  record the date. MAJOR version for principle removal/redefinition,
+  MINOR for new principles or sections, PATCH for wording fixes.
+- **Compliance**: Any new feature or dependency addition MUST be
+  checked against the Simplicity and Content-First principles before
+  adoption.
+
+**Version**: 1.0.1 | **Ratified**: 2026-02-26 | **Last Amended**: 2026-02-26
