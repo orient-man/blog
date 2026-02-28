@@ -2,6 +2,7 @@
 
 **Purpose**: Validate specification completeness and quality before proceeding to planning
 **Created**: 2026-02-28
+**Updated**: 2026-02-28 (post-clarification session)
 **Feature**: [spec.md](../spec.md)
 
 ## Content Quality
@@ -31,7 +32,9 @@
 
 ## Notes
 
-- All checklist items pass. Spec is ready for `/speckit.clarify` or `/speckit.plan`.
-- FR-001 through FR-009 map directly to SC-001 through SC-005 (all requirements are covered by at least one success criterion).
-- The Assumptions section explicitly records the `format: 'md'` constraint so the planner understands the solution space.
-- Scope Boundaries section cleanly separates this fix from the 4 other related audit items (tag display names, fenced code blocks, tweet embeds, internal links).
+- All checklist items pass. Spec is ready for `/speckit.plan`.
+- Clarification session (2026-02-28) resolved two critical ambiguities:
+  1. Embed strategy resolved to manual inline (fenced code blocks pasted into post files).
+  2. Attribution resolved to `[View on GitHub](url)` link after each code block.
+- FR-001–FR-010 and SC-001–SC-006 are fully consistent with clarified decisions.
+- No automated fetching, no build-time API dependency, no rendering pipeline changes required.
