@@ -5,6 +5,13 @@
 **Status**: Draft  
 **Input**: User description: "Publish the static Next.js blog on GitHub Pages with automated CI/CD deployment and custom domain blog.orientman.com"
 
+## Clarifications
+
+### Session 2026-02-28
+
+- Q: How is the author notified of build failures? → A: Default GitHub email notifications only (zero config). No additional notification infrastructure (Slack, webhooks) is needed.
+- Q: Should the GitHub Pages "Source" prerequisite (Settings > Pages > Source = "GitHub Actions") be documented? → A: Yes, add as a documented prerequisite in the spec.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Automated Deployment on Push (Priority: P1)
@@ -23,7 +30,7 @@ This is the foundational requirement — every other feature depends on the site
 1. **Given** the GitHub repository has the Actions workflow configured, **When** the author pushes a commit to `main`, **Then** the workflow triggers automatically, builds the static site, and deploys it to GitHub Pages.
 2. **Given** the workflow is running, **When** the build step executes, **Then** it runs `npm ci`, the prebuild script (feed/sitemap generation), `next build` (static export), and the postbuild script (Pagefind indexing) — producing the `out/` directory.
 3. **Given** the build completes successfully, **When** the deployment step executes, **Then** the contents of `out/` are published to GitHub Pages and the site is accessible at the public URL.
-4. **Given** the build fails (e.g., TypeScript error, missing dependency), **When** the workflow completes, **Then** the deployment step is skipped and the previous live site remains unchanged.
+4. **Given** the build fails (e.g., TypeScript error, missing dependency), **When** the workflow completes, **Then** the deployment step is skipped, the previous live site remains unchanged, and the author is notified via GitHub's default email notification.
 
 ---
 
@@ -85,6 +92,8 @@ This is the lowest priority because the site is either live or it is not, and th
 - What happens when DNS is not yet configured? The site will be accessible at `orient-man.github.io/orientman-blog` (with broken asset paths) until DNS propagates. DNS configuration is a one-time manual step outside the repository scope.
 - What happens when the repository is private? GitHub Pages for private repositories requires a GitHub Pro/Team/Enterprise plan. The repository SHOULD be public for free GitHub Pages hosting.
 - What happens when a concurrent push occurs during an active deployment? GitHub Actions handles this via concurrency groups — the in-progress deployment SHOULD be cancelled in favour of the newer one.
+- What happens when the GitHub Pages source is not configured? The repository Settings > Pages > Source MUST be set to "GitHub Actions" (not "Deploy from a branch") before the first deployment. Without this, the `actions/deploy-pages` step will fail with a permissions error. This is a one-time manual prerequisite performed once when the repository is first set up.
+- How does the author learn about build failures? GitHub's built-in email notifications (enabled by default for the repository owner) notify the author when a workflow run fails. No additional notification services (Slack, webhooks) are required.
 
 ## Requirements *(mandatory)*
 
@@ -101,6 +110,8 @@ This is the lowest priority because the site is either live or it is not, and th
 - **FR-009**: The workflow MUST use a concurrency group so that only one deployment runs at a time, cancelling any in-progress deployment when a newer commit is pushed.
 - **FR-010**: The workflow MUST NOT deploy if the build step fails.
 - **FR-011**: The repository README SHOULD include a GitHub Actions status badge for the deployment workflow.
+- **FR-012**: The repository's GitHub Pages source MUST be configured to "GitHub Actions" in Settings > Pages before the first deployment. This is a one-time manual prerequisite outside the automated workflow.
+- **FR-013**: Build failure notifications MUST rely on GitHub's default email notifications. No additional notification services (Slack, webhooks) are required.
 
 ### Key Entities
 
@@ -115,6 +126,6 @@ This is the lowest priority because the site is either live or it is not, and th
 - **SC-001**: A push to `main` triggers the workflow and the site is live at `blog.orientman.com` within 5 minutes.
 - **SC-002**: The deployed site serves all 120 static pages with no 404 errors on previously working routes.
 - **SC-003**: The site is accessible over HTTPS at `blog.orientman.com` with a valid certificate.
-- **SC-004**: A failed build (e.g., intentionally introduced syntax error) does NOT result in a deployment — the previous site version remains live.
+- **SC-004**: A failed build (e.g., intentionally introduced syntax error) does NOT result in a deployment — the previous site version remains live and the author receives a GitHub email notification.
 - **SC-005**: A manual `workflow_dispatch` trigger produces an identical deployment to a push-triggered run.
 - **SC-006**: The repository README displays a workflow status badge that accurately reflects the latest run.
