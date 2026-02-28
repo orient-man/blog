@@ -173,9 +173,9 @@
 - [x] T048 [P] Generate sitemap: build-time `sitemap.xml` covering all posts, pages, categories, tags, and archive months (via `next-sitemap` or custom build script)
 - [x] T049 [P] Generate RSS feed: build-time `public/feed.xml` with all posts (title, date, excerpt, link)
 - [x] T050 Responsive QA: verify all pages are usable on mobile (text readable without horizontal scrolling, navigation accessible, sidebar collapses correctly) per FR-019
-- [ ] T051 Lighthouse optimization: target Performance >= 90, FCP < 1.5s, total JS bundle < 200kB — optimize images, verify code splitting, minimize client component JS
+- [x] T051 Lighthouse optimization: target Performance >= 90, FCP < 1.5s, total JS bundle < 200kB — optimize images, verify code splitting, minimize client component JS
 - [x] T052 Run `scripts/validate-migration.ts` final pass: confirm 100% post count (SC-001), all code blocks highlighted (SC-002), no broken images (SC-003), all sidebar elements present (SC-006)
-- [ ] T053 Run quickstart.md validation: follow the quickstart.md steps from scratch to confirm a new developer can set up and build the project
+- [x] T053 Run quickstart.md validation: follow the quickstart.md steps from scratch to confirm a new developer can set up and build the project
 
 ---
 
