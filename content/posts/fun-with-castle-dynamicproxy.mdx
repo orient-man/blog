@@ -11,4 +11,73 @@ tags:
 format: standard
 ---
 
-In our application we have input data validation implemented in business layer (separate dll). Because we need to report results to user (our UI layer is ASP.NET MVC application) I came up with following interfaces (simplified version): https://gist.github.com/4079379 It works well until you need to "chain" validators: public bool Validate(IValidationListener listener) { return firstValidator.Validate(listener) && secondValidator.Validate(listener); } Validator stops on first error as it should by it doesn't collect all warnings because of "short-circuit" evaluation of "&&". I couldn't use "&" operator because it would change semantics (i.e. evaluate all validators regardless of possible errors). Instead I wanted something like this: public bool Validate(IValidationListener listener) { // stops on error but if there are only warnings reports all of them return listener.ListenAll(firstValidator, secondValidator); } How to do this without changing all implementations of IValidationListener? With extension method and dynamic proxy of course: https://gist.github.com/4079245 :)
+In our application we have input data validation implemented in business layer (separate dll). Because we need to report results to user (our UI layer is ASP.NET MVC application) I came up with following interfaces (simplified version):
+
+```csharp
+namespace MyCompany.Infrastructure.Validation
+{
+    // implemented in UI layer
+    public interface IValidationListener
+    {
+        void OnError(string error);
+        void OnWarning(string warning);
+        bool IsIgnored(string warning);
+    }
+
+    // stops on first error but reports all warnings
+    public interface IValidator
+    {
+        /// <returns>False if any error or warning</returns>
+        bool Validate(IValidationListener listener);
+    }
+}
+```
+
+[View on GitHub](https://gist.github.com/4079379)
+
+It works well until you need to "chain" validators: public bool Validate(IValidationListener listener) { return firstValidator.Validate(listener) && secondValidator.Validate(listener); } Validator stops on first error as it should by it doesn't collect all warnings because of "short-circuit" evaluation of "&&". I couldn't use "&" operator because it would change semantics (i.e. evaluate all validators regardless of possible errors). Instead I wanted something like this: public bool Validate(IValidationListener listener) { // stops on error but if there are only warnings reports all of them return listener.ListenAll(firstValidator, secondValidator); } How to do this without changing all implementations of IValidationListener? With extension method and dynamic proxy of course:
+
+```csharp
+using Castle.DynamicProxy;
+
+namespace MyCompany.Infrastructure.Validation
+{
+    public static class ValidationListenerExtensions
+    {
+        public static bool ListenAll(
+            this IValidationListener listener,
+            params IValidator[] validators)
+        {
+            var interceptor = new ErrorCatcherInterceptor();
+            var proxy = new ProxyGenerator()
+                .CreateInterfaceProxyWithTargetInterface(listener, interceptor);
+            var success = true;
+
+            foreach (var v in validators)
+            {
+                success &= v.Validate(proxy);
+                if (interceptor.ErrorOccurred)
+                    return false;
+            }
+
+            return success;
+        }
+
+        class ErrorCatcherInterceptor : IInterceptor
+        {
+            public bool ErrorOccurred { get; private set; }
+
+            public void Intercept(IInvocation invocation)
+            {
+                invocation.Proceed();
+                if (invocation.Method.Name == "OnError")
+                    ErrorOccurred = true;
+            }
+        }
+    }
+}
+```
+
+[View on GitHub](https://gist.github.com/4079245)
+
+:)

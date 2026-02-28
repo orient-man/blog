@@ -25,4 +25,90 @@ Until now we had many excuses for not writing integration tests:
 -   UI consists mostly of standard elements (aka widgets) which are tested on their [own](/2013/04/24/chutzpah-to-run-javascript-tests/)
 -   we are lazy
 
-But there was still too much space for error. From time to time a seemingly innocent change in Razor view (or HTML helper, or filter, or "something completely irrelevant") unexpectedly broke one of the pages. If all tests are green why bother starting an app at all? Our main goal is to pass all tests. Or is it? ;) There are many benefits of attending a user group meeting i.e. good excuse to drink beer. But last Thursday on [Warsaw .NET User Group](http://www.wg.net.pl/) I learned the lazy way of integration testing ASP.NET MVC applications. [Adam Kosiński](https://twitter.com/a_kosinski) showcased the MvcIntegrationTestFramework. It's probably originated from [Steven Sanderson's post](http://blog.stevensanderson.com/2009/06/11/integration-testing-your-aspnet-mvc-application/) but since then had many [mutations](https://github.com/andyedinborough/FakeHost/network) and [forks](https://github.com/gregoryjscott/MvcIntegrationTestFramework/network) on GitHub. One of them is even released as NuGet package. I went for it: `PM> Install-Package FakeHost` Which added two DLLs to my project and then I could write integration tests as simple as follows: https://gist.github.com/orient-man/7804310 It's slow, it's somewhat brittle but relatively concise, works OOTB and thanks to it we found a few bugs already. I cannot fail to mention [Maciej Aniserowicz](https://twitter.com/maniserowicz) talk which convinced me that I should have used [Nancy](http://nancyfx.org/) instead of ASP.NET MVC in the first place [but... it's to late to apologize ;)](http://www.youtube.com/watch?v=ePyRrb2-fzs)
+But there was still too much space for error. From time to time a seemingly innocent change in Razor view (or HTML helper, or filter, or "something completely irrelevant") unexpectedly broke one of the pages. If all tests are green why bother starting an app at all? Our main goal is to pass all tests. Or is it? ;) There are many benefits of attending a user group meeting i.e. good excuse to drink beer. But last Thursday on [Warsaw .NET User Group](http://www.wg.net.pl/) I learned the lazy way of integration testing ASP.NET MVC applications. [Adam Kosiński](https://twitter.com/a_kosinski) showcased the MvcIntegrationTestFramework. It's probably originated from [Steven Sanderson's post](http://blog.stevensanderson.com/2009/06/11/integration-testing-your-aspnet-mvc-application/) but since then had many [mutations](https://github.com/andyedinborough/FakeHost/network) and [forks](https://github.com/gregoryjscott/MvcIntegrationTestFramework/network) on GitHub. One of them is even released as NuGet package. I went for it: `PM> Install-Package FakeHost` Which added two DLLs to my project and then I could write integration tests as simple as follows:
+
+```csharp
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Text.RegularExpressions;
+using System.Web;
+using FakeHost;
+using FluentAssertions;
+using HtmlAgilityPack;
+using NUnit.Framework;
+
+namespace Pincasso.MvcApp.Tests.Integration
+{
+    [TestFixture, Category("Integration")]
+    public class SmokeTests
+    {
+        [TestFixtureSetUp]
+        public void SetUp()
+        {
+            Browser.InitializeAspNetRuntime(
+                Path.GetFullPath(@"..\..\..\Pincasso.MvcApp"));
+        }
+
+        [Test]
+        public void VisitMainPageAndLinksFromMainMenu()
+        {
+            using (var browser = new Browser())
+            {
+                // set up user (security disabled)
+                browser.Cookies.Add(new HttpCookie("PincassoUser", "administrator"));
+                var result = browser.Get("/");
+
+                result.StatusCode
+                    .Should().Be((int)HttpStatusCode.OK, "Main page failed");
+
+                var menuLinks = GetMenuLinks(result.ResponseText).ToList();
+
+                menuLinks.Should().NotBeEmpty("There should be some links in menu");
+
+                foreach (var link in menuLinks)
+                {
+                    System.Diagnostics.Debug.WriteLine("Visiting: " + link);
+                    result = browser.Get(link);
+                    result.StatusCode
+                        .Should().Be((int)HttpStatusCode.OK, "Wrong status code for page: " + link);
+                    // Global filter catches all exceptions and put "user friendly" Error.cshtml instead
+                    // ... which contains special maker (Yeah, I know but it works)
+                    result.ResponseText
+                        .Should()
+                        .NotContain(
+                            "<!-- error marker -->",
+                            "Page {0} contains error(s)", link);
+                }
+            }
+        }
+
+        private static IEnumerable<string> GetMenuLinks(string html)
+        {
+            var mainPage = new HtmlDocument();
+            mainPage.LoadHtml(html);
+            var menuLinks =
+                mainPage
+                    .DocumentNode
+                    .SelectNodes("//div[@class='mainmenu']//a[@href]");
+
+            // Doh!, instead of empty collection it returns null!
+            if (menuLinks == null)
+                return Enumerable.Empty<string>();
+
+            // skip empty links and special pages
+            return menuLinks
+                .Select(o => o.Attributes["href"].Value)
+                .Where(
+                    o => !string.IsNullOrWhiteSpace(o) &&
+                        !Regex.IsMatch(o, @"(^#$|^\/Tools\/.*|^\/Tests\/.*)"))
+                .Distinct();
+        }
+    }
+}
+```
+
+[View on GitHub](https://gist.github.com/orient-man/7804310)
+
+It's slow, it's somewhat brittle but relatively concise, works OOTB and thanks to it we found a few bugs already. I cannot fail to mention [Maciej Aniserowicz](https://twitter.com/maniserowicz) talk which convinced me that I should have used [Nancy](http://nancyfx.org/) instead of ASP.NET MVC in the first place [but... it's to late to apologize ;)](http://www.youtube.com/watch?v=ePyRrb2-fzs)

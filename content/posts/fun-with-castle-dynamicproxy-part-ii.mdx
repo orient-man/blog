@@ -12,4 +12,104 @@ tags:
 format: standard
 ---
 
-It's time for another adventure with [Castle.DynamicProxy](http://www.castleproject.org/projects/dynamicproxy/). One of the few things I really like in C++ is [RAII](http://en.wikipedia.org/wiki/Resource_Acquisition_Is_Initialization) - for example you can write code like this: class DatabaseContext { public: virtual ~DatabaseContext() { CloseConnectionIfOpen(); } void ExecuteNonQuery(string query) { OpenConnectionIfClosed(); // and execute query... } // ... } // somewhere else void DoSomething() { DatabaseContext db; db.ExecuteNonQuery("DELETE \* FROM tb\_users"); } `ExecuteNonQuery` opens connection to the database and `DatabaseContext` destructor takes care of closing it regardless if an exception occurred or not. Great! In C# you need more verbose `using/IDisposable` or `try/finally` and... you have a chance to forget about them. But Castle.DynamicProxy comes to the rescue: https://gist.github.com/4109938 Initially this proxy was much simpler but I wanted to support also iterators. Methods returning `IEnumerable` are tricky. The compiler rewrites them to the state machine i.e. code: IEnumerable<int> GetEnumerable() { for (int i = 0; i < 10; i++) yield return i; } List<int> GetList() { var iterator = GetEnumerable(); // for loop not reached yet! return iterator.ToList(); // iterator executed } Here `yield return` is only a promise: it will be executed later when the .ToList() is called. As a result proxying those methods is not enough in my situation. What I really need to emulate RAII is to catch the moment after execution of the iterator. But how to do that? Well, the compiler can handle using statements inside iterators: IEnumerable<int> GetEnumerable() { using (... something IDisposable ...) for (int i = 0; i < 10; i++) yield return i; } List<int> GetList() { var iterator = GetEnumerable(); return iterator.ToList(); // Dispose() called } That's because it returns control to the iterator after leaving foreach loop (ToList method is actually a foreach loop). So the easiest way to do the same is to wrap `GetEnumerable` with another iterator i.e. effectively proxying resulting iterator object. That's what I did.
+It's time for another adventure with [Castle.DynamicProxy](http://www.castleproject.org/projects/dynamicproxy/). One of the few things I really like in C++ is [RAII](http://en.wikipedia.org/wiki/Resource_Acquisition_Is_Initialization) - for example you can write code like this: class DatabaseContext { public: virtual ~DatabaseContext() { CloseConnectionIfOpen(); } void ExecuteNonQuery(string query) { OpenConnectionIfClosed(); // and execute query... } // ... } // somewhere else void DoSomething() { DatabaseContext db; db.ExecuteNonQuery("DELETE \* FROM tb\_users"); } `ExecuteNonQuery` opens connection to the database and `DatabaseContext` destructor takes care of closing it regardless if an exception occurred or not. Great! In C# you need more verbose `using/IDisposable` or `try/finally` and... you have a chance to forget about them. But Castle.DynamicProxy comes to the rescue:
+
+```csharp
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using Castle.DynamicProxy;
+
+namespace MyCompany.Infrastructure
+{
+    class CloseConnectionInterceptor : IInterceptor
+    {
+        private static readonly MethodInfo ProxyGenericIteratorMethod =
+            typeof(CloseConnectionInterceptor)
+                .GetMethod(
+                    "ProxyGenericIterator",
+                    BindingFlags.NonPublic | BindingFlags.Static);
+
+        public void Intercept(IInvocation invocation)
+        {
+            var returnType = invocation.Method.ReturnType;
+
+            if (returnType == typeof(IEnumerable))
+            {
+                HandleNonGenericIteratorInvocation(invocation);
+            }
+            else if (returnType.IsGenericType &&
+                returnType.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+            {
+                HandleGenericIteratorInvocation(invocation);
+            }
+            else
+            {
+                HandleNormalInvocation(invocation);
+            }
+        }
+
+        private static void HandleNonGenericIteratorInvocation(IInvocation invocation)
+        {
+            invocation.Proceed();
+            invocation.ReturnValue = ProxyNonGenericIterator(
+                invocation.InvocationTarget,
+                invocation.ReturnValue as IEnumerable);
+        }
+
+        private static void HandleGenericIteratorInvocation(IInvocation invocation)
+        {
+            invocation.Proceed();
+
+            var method = ProxyGenericIteratorMethod.MakeGenericMethod(
+                invocation.Method.ReturnType.GetGenericArguments()[0]);
+
+            invocation.ReturnValue = method.Invoke(
+                null,
+                new[] { invocation.InvocationTarget, invocation.ReturnValue });
+        }
+
+        private static IEnumerable<T> ProxyGenericIterator<T>(
+            object target, IEnumerable enumerable)
+        {
+            return ProxyNonGenericIterator(target, enumerable).Cast<T>();
+        }
+
+        private static IEnumerable ProxyNonGenericIterator(
+            object target, IEnumerable enumerable)
+        {
+            try
+            {
+                foreach (var element in enumerable)
+                    yield return element;
+            }
+            finally
+            {
+                CloseConnection(target);
+            }
+        }
+
+        private static void HandleNormalInvocation(IInvocation invocation)
+        {
+            try
+            {
+                invocation.Proceed();
+            }
+            finally
+            {
+                CloseConnection(invocation.InvocationTarget);
+            }
+        }
+
+        private static void CloseConnection(object target)
+        {
+            // ...
+        }
+    }
+}
+```
+
+[View on GitHub](https://gist.github.com/4109938)
+
+Initially this proxy was much simpler but I wanted to support also iterators. Methods returning `IEnumerable` are tricky. The compiler rewrites them to the state machine i.e. code: IEnumerable<int> GetEnumerable() { for (int i = 0; i < 10; i++) yield return i; } List<int> GetList() { var iterator = GetEnumerable(); // for loop not reached yet! return iterator.ToList(); // iterator executed } Here `yield return` is only a promise: it will be executed later when the .ToList() is called. As a result proxying those methods is not enough in my situation. What I really need to emulate RAII is to catch the moment after execution of the iterator. But how to do that? Well, the compiler can handle using statements inside iterators: IEnumerable<int> GetEnumerable() { using (... something IDisposable ...) for (int i = 0; i < 10; i++) yield return i; } List<int> GetList() { var iterator = GetEnumerable(); return iterator.ToList(); // Dispose() called } That's because it returns control to the iterator after leaving foreach loop (ToList method is actually a foreach loop). So the easiest way to do the same is to wrap `GetEnumerable` with another iterator i.e. effectively proxying resulting iterator object. That's what I did.

@@ -23,4 +23,45 @@ comments:
 -   My test suits must work on IE8 (that sucks, I know)
 -   and run in browser both locally (using the file:// protocol) and remotely.
 
-During development I use Chrome and IE9 (tests are run against IE8 automatically on build server) so the first point boils down to disabling Blanket.js completely for IE8: https://gist.github.com/4538958 The second one is tricky. There are some options to [run Blanket.js locally in browser](https://github.com/Migrii/blanket/blob/master/docs/special_features.md#local-uploader) but they are... not so seamless or just insecure (disabling CORS restrictions altogether). Again, the simplest solution is to disable code coverage in that situation. Blanket.js integrates with new versions of QUnit and adds _Enable coverage_ checkbox which is off by default. But I have to use an older version (v1.4.0 - forced by IE8 !#@!!) and then code coverage is always enabled. This little gist solves that problem: https://gist.github.com/4539327 Not related to Blanket.js but I encountered one more gotcha with IE: security zones. Build server refused to run my tests until I forced Local Intranet Zone by adding this line to beginning of each HTML files: https://gist.github.com/4539471 This is an obscure IE feature called [Mark of the Web (MOTW)](http://msdn.microsoft.com/en-us/library/ms537628\(v=vs.85\).aspx "Mark of the Web (MOTW)"). To sum up: all of this workarounds are caused by IE8. **Internet Explorer, please die now!**
+During development I use Chrome and IE9 (tests are run against IE8 automatically on build server) so the first point boils down to disabling Blanket.js completely for IE8:
+
+```html
+<!--[if gt IE 8]><!-->
+    <script type="text/javascript" src="blanket.js"></script>
+<!--<![endif]-->
+```
+
+[View on GitHub](https://gist.github.com/4538958)
+
+The second one is tricky. There are some options to [run Blanket.js locally in browser](https://github.com/Migrii/blanket/blob/master/docs/special_features.md#local-uploader) but they are... not so seamless or just insecure (disabling CORS restrictions altogether). Again, the simplest solution is to disable code coverage in that situation. Blanket.js integrates with new versions of QUnit and adds _Enable coverage_ checkbox which is off by default. But I have to use an older version (v1.4.0 - forced by IE8 !#@!!) and then code coverage is always enabled. This little gist solves that problem:
+
+```diff
+Index: blanket.js
+===================================================================
+--- blanket.js	(wersja 21811)
++++ blanket.js	(wersja 21812)
+@@ -4442,7 +4442,10 @@
+                                 }).length === 1;
+                             });
+         }else{
+-            selectedScripts = toArray.call(document.querySelectorAll("script[data-cover]"));
++            // orientman: disable if run locally
++            if (window.location.protocol !== "file:") {
++                selectedScripts = toArray.call(document.querySelectorAll("script[data-cover]"));
++            }
+         }
+         scriptNames = selectedScripts.map(function(s){
+                                 return _blanket.utils.qualifyURL(
+```
+
+[View on GitHub](https://gist.github.com/4539327)
+
+Not related to Blanket.js but I encountered one more gotcha with IE: security zones. Build server refused to run my tests until I forced Local Intranet Zone by adding this line to beginning of each HTML files:
+
+```html
+<!-- saved from url=(0016)http://localhost -->
+```
+
+[View on GitHub](https://gist.github.com/4539471)
+
+This is an obscure IE feature called [Mark of the Web (MOTW)](http://msdn.microsoft.com/en-us/library/ms537628\(v=vs.85\).aspx "Mark of the Web (MOTW)"). To sum up: all of this workarounds are caused by IE8. **Internet Explorer, please die now!**
