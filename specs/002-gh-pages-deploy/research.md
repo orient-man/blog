@@ -78,7 +78,7 @@ deploy permissions in one job. Also loses the GitHub deployment environment UI.
 ```
 
 **Rationale**: The `static_site_generator: next` option auto-injects
-`basePath: '/orientman-blog'` into `next.config.mjs` based on the repository name.
+`basePath: '/blog'` into `next.config.mjs` based on the repository name.
 With a custom domain (`blog.orientman.com`), the site serves from root `/` — no
 `basePath` is needed or desired. Injecting `basePath` would break all routes and
 asset paths on the custom domain.
@@ -93,7 +93,7 @@ Pages API and extracts metadata (e.g., `base_url`) without modifying the config.
 
 **Alternatives considered**:
 - `static_site_generator: next` — **actively harmful** with a custom domain;
-  would inject `basePath: '/orientman-blog'` breaking all routes.
+  would inject `basePath: '/blog'` breaking all routes.
 - Skipping `configure-pages` entirely — possible, but loses the automatic Pages
   API enablement step and environment metadata.
 
@@ -203,7 +203,7 @@ one-time manual step outside the repository scope (documented in quickstart.md).
 **Decision**: Add the following badge to `README.md`:
 
 ```markdown
-![Deploy](https://github.com/orient-man/orientman-blog/actions/workflows/deploy.yml/badge.svg)
+![Deploy](https://github.com/orient-man/blog/actions/workflows/deploy.yml/badge.svg)
 ```
 
 **Rationale**: The standard GitHub Actions status badge format. It reflects the
@@ -213,7 +213,7 @@ etc.) needed — the GitHub-native badge is sufficient per FR-011.
 The badge links to the Actions run history for quick navigation:
 
 ```markdown
-[![Deploy](https://github.com/orient-man/orientman-blog/actions/workflows/deploy.yml/badge.svg)](https://github.com/orient-man/orientman-blog/actions/workflows/deploy.yml)
+[![Deploy](https://github.com/orient-man/blog/actions/workflows/deploy.yml/badge.svg)](https://github.com/orient-man/blog/actions/workflows/deploy.yml)
 ```
 
 ## 9. Node.js Version: 20

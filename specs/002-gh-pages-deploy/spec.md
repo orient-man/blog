@@ -40,7 +40,7 @@ A reader navigates to `blog.orientman.com` in their browser and sees the blog.
 The custom domain is configured so that GitHub Pages serves the site under this subdomain.
 
 **Why this priority**: The custom domain is the public-facing URL for the blog.
-Without it the site would only be accessible at `orient-man.github.io/orientman-blog` which is not user-friendly and would require `basePath` configuration.
+Without it the site would only be accessible at `orient-man.github.io/blog` which is not user-friendly and would require `basePath` configuration.
 
 **Independent Test**: Can be fully tested by resolving `blog.orientman.com` in DNS and loading the URL — the blog homepage MUST render.
 
@@ -89,7 +89,7 @@ This is the lowest priority because the site is either live or it is not, and th
 ### Edge Cases
 
 - What happens when the `CNAME` file is missing from the build output? The workflow MUST ensure the `CNAME` file is included in the deployed artifact (it lives in `public/` and Next.js copies `public/` contents to `out/`).
-- What happens when DNS is not yet configured? The site will be accessible at `orient-man.github.io/orientman-blog` (with broken asset paths) until DNS propagates. DNS configuration is a one-time manual step outside the repository scope.
+- What happens when DNS is not yet configured? The site will be accessible at `orient-man.github.io/blog` (with broken asset paths) until DNS propagates. DNS configuration is a one-time manual step outside the repository scope.
 - What happens when the repository is private? GitHub Pages for private repositories requires a GitHub Pro/Team/Enterprise plan. The repository SHOULD be public for free GitHub Pages hosting.
 - What happens when a concurrent push occurs during an active deployment? GitHub Actions handles this via concurrency groups — the in-progress deployment SHOULD be cancelled in favour of the newer one.
 - What happens when the GitHub Pages source is not configured? The repository Settings > Pages > Source MUST be set to "GitHub Actions" (not "Deploy from a branch") before the first deployment. Without this, the `actions/deploy-pages` step will fail with a permissions error. This is a one-time manual prerequisite performed once when the repository is first set up.

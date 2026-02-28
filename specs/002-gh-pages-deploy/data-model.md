@@ -116,7 +116,7 @@ blog.orientman.com
 #### Schema
 
 ```markdown
-# orientman-blog
+# blog
 
 [![Deploy](badge-url)](workflow-url)
 
@@ -127,15 +127,15 @@ Short description of the project.
 
 | Field | Value |
 |-------|-------|
-| Badge image URL | `https://github.com/orient-man/orientman-blog/actions/workflows/deploy.yml/badge.svg` |
-| Badge link URL | `https://github.com/orient-man/orientman-blog/actions/workflows/deploy.yml` |
+| Badge image URL | `https://github.com/orient-man/blog/actions/workflows/deploy.yml/badge.svg` |
+| Badge link URL | `https://github.com/orient-man/blog/actions/workflows/deploy.yml` |
 | Badge alt text | `Deploy` |
 
 #### Constraints
 
 - The badge MUST reference the workflow filename `deploy.yml` exactly.
 - The badge MUST reference the correct GitHub org/user (`orient-man`) and
-  repository name (`orientman-blog`).
+  repository name (`blog`).
 
 ## Entity Relationships
 

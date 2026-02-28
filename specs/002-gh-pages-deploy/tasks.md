@@ -83,8 +83,8 @@ shows the correct status (green after a successful run, red after a forced failu
 ### Implementation for User Story 4
 
 - [x] T006 [P] [US4] Create `README.md` at the repository root — project title
-  (`# orientman-blog`), deployment status badge
-  (`[![Deploy](https://github.com/orient-man/orientman-blog/actions/workflows/deploy.yml/badge.svg)](https://github.com/orient-man/orientman-blog/actions/workflows/deploy.yml)`),
+  (`# blog`), deployment status badge
+  (`[![Deploy](https://github.com/orient-man/blog/actions/workflows/deploy.yml/badge.svg)](https://github.com/orient-man/blog/actions/workflows/deploy.yml)`),
   and a brief description of the project per data-model.md § 3 and research.md § 8
 
 **Checkpoint**: After T006, the README badge is visible on the repository home page.
@@ -163,7 +163,7 @@ Then sequentially:
 1. Complete Phase 1: T001 — create directory
 2. Complete Phase 2: T002 → T003 → T004 — create full `deploy.yml`
 3. **STOP and VALIDATE**: Push to `main`; confirm build and deploy jobs succeed in Actions UI
-4. Site is live (at `orient-man.github.io/orientman-blog` until custom domain is configured)
+4. Site is live (at `orient-man.github.io/blog` until custom domain is configured)
 
 ### Full Delivery (All User Stories)
 
