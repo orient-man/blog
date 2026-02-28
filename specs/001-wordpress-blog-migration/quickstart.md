@@ -16,7 +16,7 @@
 ```bash
 # Clone and enter the repository
 git clone <repo-url>
-cd orientman-blog
+cd blog
 
 # Switch to the feature branch
 git checkout 001-wordpress-blog-migration
