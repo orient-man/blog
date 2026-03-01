@@ -1,4 +1,4 @@
-import { formatDate } from '@/lib/utils';
+import { formatDateTime } from '@/lib/utils';
 import type { Comment } from '@/lib/types';
 
 interface CommentProps {
@@ -38,7 +38,7 @@ export default function CommentComponent({ comment }: CommentProps) {
             dateTime={typeof comment.date === 'string' ? comment.date : String(comment.date)}
             className="text-xs text-gray-400 dark:text-gray-500"
           >
-            {formatDate(typeof comment.date === 'string' ? comment.date : String(comment.date))}
+            {formatDateTime(typeof comment.date === 'string' ? comment.date : String(comment.date))}
           </time>
         </div>
         <p className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">
