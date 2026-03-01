@@ -20,6 +20,34 @@ comments:
 
 Yesterday I returned from 1 week vacations and found everything broken. I love programming :). What I did:
 
-.paket\\paket.exe update
+```bash
+.paket\paket.exe update
+```
 
-Meanwhile, Microsoft [released](https://blogs.msdn.microsoft.com/dotnet/2017/08/14/announcing-net-core-2-0/) new ASP.NET Core and after packages update I got broken app with mixed 1.1/2.0 references. I tried to specify version number ("~> 1") in [paket.dependecies file](https://fsprojects.github.io/Paket/dependencies-file.html) but it didn't help much. Root references resolved at 1.1.2 (current newest 1.x version) but transient not. That's because Paket resolves them with _highest matching version_ [strategy](https://fsprojects.github.io/Paket/dependencies-file.html#Resolver-strategy-for-transitive-dependencies) and ASP.NET Core 1.x packages don't set upper limit (e.g. < 2) for their dependencies. "Highest matching strategy" is desired behavior most of the time but not in this situation. Luckily, it's configurable globally or per dependency: -nuget Microsoft.AspNetCore.Hosting -nuget Microsoft.AspNetCore.Owin -nuget Microsoft.AspNetCore.Server.IISIntegration -nuget Microsoft.AspNetCore.Server.Kestrel -nuget Microsoft.AspNetCore.StaticFiles -nuget Microsoft.Extensions.Configuration.AzureKeyVault -nuget Microsoft.Extensions.Configuration.EnvironmentVariables -nuget Microsoft.Extensions.Configuration.Json -nuget Microsoft.Extensions.Configuration.UserSecrets -nuget Microsoft.Extensions.FileProviders.Abstractions +nuget Microsoft.AspNetCore ~> 1 strategy: min +nuget Microsoft.AspNetCore.Hosting ~> 1 +nuget Microsoft.AspNetCore.Owin ~> 1 +nuget Microsoft.AspNetCore.Server.IISIntegration ~> 1 +nuget Microsoft.AspNetCore.Server.Kestrel ~> 1 +nuget Microsoft.AspNetCore.StaticFiles ~> 1 +nuget Microsoft.Extensions.Configuration.AzureKeyVault ~> 1 +nuget Microsoft.Extensions.Configuration.EnvironmentVariables ~> 1 +nuget Microsoft.Extensions.Configuration.Json ~> 1 +nuget Microsoft.Extensions.Configuration.UserSecrets ~> 1 +nuget Microsoft.Extensions.FileProviders.Abstractions ~> 1 I 'm going to stay with 1.x until dust settles ;)
+Meanwhile, Microsoft [released](https://blogs.msdn.microsoft.com/dotnet/2017/08/14/announcing-net-core-2-0/) new ASP.NET Core and after packages update I got broken app with mixed 1.1/2.0 references. I tried to specify version number ("~> 1") in [paket.dependecies file](https://fsprojects.github.io/Paket/dependencies-file.html) but it didn't help much. Root references resolved at 1.1.2 (current newest 1.x version) but transient not. That's because Paket resolves them with _highest matching version_ [strategy](https://fsprojects.github.io/Paket/dependencies-file.html#Resolver-strategy-for-transitive-dependencies) and ASP.NET Core 1.x packages don't set upper limit (e.g. < 2) for their dependencies. "Highest matching strategy" is desired behavior most of the time but not in this situation. Luckily, it's configurable globally or per dependency:
+
+```diff
+-nuget Microsoft.AspNetCore.Hosting
+-nuget Microsoft.AspNetCore.Owin
+-nuget Microsoft.AspNetCore.Server.IISIntegration
+-nuget Microsoft.AspNetCore.Server.Kestrel
+-nuget Microsoft.AspNetCore.StaticFiles
+-nuget Microsoft.Extensions.Configuration.AzureKeyVault
+-nuget Microsoft.Extensions.Configuration.EnvironmentVariables
+-nuget Microsoft.Extensions.Configuration.Json
+-nuget Microsoft.Extensions.Configuration.UserSecrets
+-nuget Microsoft.Extensions.FileProviders.Abstractions
++nuget Microsoft.AspNetCore ~> 1 strategy: min
++nuget Microsoft.AspNetCore.Hosting ~> 1
++nuget Microsoft.AspNetCore.Owin ~> 1
++nuget Microsoft.AspNetCore.Server.IISIntegration ~> 1
++nuget Microsoft.AspNetCore.Server.Kestrel ~> 1
++nuget Microsoft.AspNetCore.StaticFiles ~> 1
++nuget Microsoft.Extensions.Configuration.AzureKeyVault ~> 1
++nuget Microsoft.Extensions.Configuration.EnvironmentVariables ~> 1
++nuget Microsoft.Extensions.Configuration.Json ~> 1
++nuget Microsoft.Extensions.Configuration.UserSecrets ~> 1
++nuget Microsoft.Extensions.FileProviders.Abstractions ~> 1
+```
+
+I 'm going to stay with 1.x until dust settles ;)

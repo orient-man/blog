@@ -77,6 +77,66 @@ body {
   border-bottom: 1px solid var(--border);
 }
 
+/* Shiki dual-theme token colours */
+code[data-theme*=" "],
+code[data-theme*=" "] span {
+  color: var(--shiki-light);
+}
+
+.dark code[data-theme*=" "],
+.dark code[data-theme*=" "] span {
+  color: var(--shiki-dark);
+}
+
+/* Line numbers via CSS counters (counter-reset: line is already on code above) */
+[data-rehype-pretty-code-figure] [data-line]::before {
+  counter-increment: line;
+  content: counter(line);
+  display: inline-block;
+  width: 1rem;
+  margin-right: 1.5rem;
+  text-align: right;
+  color: hsl(0 0% 55%);
+  user-select: none;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Copy button */
+[data-rehype-pretty-code-figure] {
+  position: relative;
+}
+
+[data-copy-btn] {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.7rem;
+  line-height: 1;
+  border-radius: 0.25rem;
+  border: 1px solid hsl(0 0% 70%);
+  background: transparent;
+  color: hsl(0 0% 60%);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+[data-rehype-pretty-code-figure]:hover [data-copy-btn] {
+  opacity: 1;
+}
+
+[data-copy-btn][data-copied]::after {
+  content: 'Copied!';
+  position: absolute;
+  right: calc(100% + 0.4rem);
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  font-size: 0.7rem;
+  color: hsl(142 70% 45%);
+}
+
 /* ── Scrollbar ───────────────────────────────────────────────────── */
 ::-webkit-scrollbar {
   width: 6px;

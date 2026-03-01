@@ -24,16 +24,17 @@ Automate checking for outdated references! For a .NET developer dependency is r
 
 #### Details
 
-Output from the _paket outdated_ command looks like this:
+Output from the _paket outdated_ command looks like this:
 
+```text
 Paket version 5.0.0
 Resolving packages for group Main:
  - Castle.Core 4.1.0
  - Castle.Windsor 3.3.0
 Outdated packages found:
   Group: Main
-    \* Castle.Core 2.0.0 -> 4.1.0
-    \* Castle.Windsor 2.0.0 -> 3.3.0
+    * Castle.Core 2.0.0 -> 4.1.0
+    * Castle.Windsor 2.0.0 -> 3.3.0
 Performance:
  - Resolver: 3 seconds (1 runs)
     - Runtime: 199 milliseconds
@@ -43,16 +44,89 @@ Performance:
  - Average Request Time: 884 milliseconds
  - Number of Requests: 12
  - Runtime: 4 seconds
+```
 
-We need to parse it and extract list of outdated packages: let parseOutput (lines: string seq) = lines |> Seq.fold (fun state line -> match state, line.Trim() with | (false, list), "Outdated packages found:" -> true, list | (true, list), "Performance:" -> false, list | (true, list), line when line.StartsWith "\* " -> true, line :: list | state, \_ -> state) (false, \[\]) |> snd |> List.rev Yep, that's F# code! I use [FAKE](https://fake.build/) for my build scripts, so you should because it's great! FAKE gives me easy domain-specific language (DSL) for build tasks together with power of F#. Using FAKE's ProcessHelper I can run _paket outdated_ command and feed output into my function: let runPaket () = ProcessHelper.ExecProcessAndReturnMessages (fun psi -> psi.FileName <- ".paket/paket.exe" psi.Arguments <- "outdated") (TimeSpan.FromMinutes 5.) // timeout |> fun r -> r.Messages let outdated = runPaket () |> parseOutput Given list of outdated packages I want to decide which are important (i.e. break the build). For example, all packages with the name starting with "MyCompany." should pull the trigger: let filterByPrefix prefix (msg: string) = if msg.StartsWith("\* " + prefix) then true else FAKE.trace msg; false let breakIfAny = function | \[\] -> () // do nothing | any -> failwithf "Outdated packages found: %A" any // break the build outdated |> List.filter (filterByPrefix "MyCompany.") |> breakIfAny Now it's easy to create build step (called Target in FAKE DSL): Target "Outdated" <| fun \_ -> runPaket () |> parseOutput |> List.filter (filterByPrefix "MyCompany.") |> breakIfAny ... "Clean" =?> ("Outdated", hasBuildParam "FindOutdatedPackages") // optional step ==> "Restore" ==> "Build" ==> "Test" ==> "Publish" ==> "Package"
+We need to parse it and extract list of outdated packages:
+
+```fsharp
+let parseOutput (lines: string seq) =
+    lines
+    |> Seq.fold (fun state line ->
+        match state, line.Trim() with
+        | (false, list), "Outdated packages found:" -> true, list
+        | (true, list), "Performance:"              -> false, list
+        | (true, list), line when line.StartsWith "* " -> true, line :: list
+        | state, _ -> state) (false, [])
+    |> snd
+    |> List.rev
+```
+
+Yep, that's F# code! I use [FAKE](https://fake.build/) for my build scripts, so you should because it's great! FAKE gives me easy domain-specific language (DSL) for build tasks together with power of F#. Using FAKE's ProcessHelper I can run _paket outdated_ command and feed output into my function:
+
+```fsharp
+let runPaket () =
+    ProcessHelper.ExecProcessAndReturnMessages (fun psi ->
+        psi.FileName <- ".paket/paket.exe"
+        psi.Arguments <- "outdated") (TimeSpan.FromMinutes 5.) // timeout
+    |> fun r -> r.Messages
+
+let outdated = runPaket () |> parseOutput
+```
+
+Given list of outdated packages I want to decide which are important (i.e. break the build). For example, all packages with the name starting with "MyCompany." should pull the trigger:
+
+```fsharp
+let filterByPrefix prefix (msg: string) =
+    if msg.StartsWith("* " + prefix) then true
+    else FAKE.trace msg; false
+
+let breakIfAny = function
+    | [] -> () // do nothing
+    | any -> failwithf "Outdated packages found: %A" any // break the build
+
+outdated
+|> List.filter (filterByPrefix "MyCompany.")
+|> breakIfAny
+```
+
+Now it's easy to create build step (called Target in FAKE DSL):
+
+```fsharp
+Target "Outdated" <| fun _ ->
+    runPaket ()
+    |> parseOutput
+    |> List.filter (filterByPrefix "MyCompany.")
+    |> breakIfAny
+
+...
+
+"Clean"
+=?> ("Outdated", hasBuildParam "FindOutdatedPackages") // optional step
+==> "Restore"
+==> "Build"
+==> "Test"
+==> "Publish"
+==> "Package"
+```
 
 #### Postscriptum
 
 Do you remember that Paket manages [not only](https://fsprojects.github.io/Paket/github-dependencies.html) NuGet references? We can use it to share our target with other developers. Just save it as a [Gist](https://gist.github.com/orient-man/c29c299ed970fd097f80124ffde734ce). Now you can add it as a reference in _paket.depencencies_ file:
 
+```text
 ...
 gist orient-man/c29c299ed970fd097f80124ffde734ce FindOutdatedPackages.fsx
 nuget FAKE
 ...
+```
 
-And in your FAKE script: #load "paket-files/orient-man/c29c299ed970fd097f80124ffde734ce/FindOutdatedPackages.fsx" Target "Outdated" <| fun \_ -> OutdatedPackages.target "MyCompany." That's all folks.
+And in your FAKE script:
+
+```fsharp
+#load "paket-files/orient-man/c29c299ed970fd097f80124ffde734ce/FindOutdatedPackages.fsx"
+
+Target "Outdated" <| fun _ ->
+    OutdatedPackages.target "MyCompany."
+```
+
+That's all folks.

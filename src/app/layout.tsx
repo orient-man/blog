@@ -42,6 +42,12 @@ export default function RootLayout({
             __html: `(function(){try{var p=localStorage.getItem('theme');if(p==='dark'||(p==null&&window.matchMedia('(prefers-color-scheme:dark)').matches)){document.documentElement.classList.add('dark')}}catch(e){}})()`,
           }}
         />
+        {/* Copy-button clipboard handler — event delegation, no external deps */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `document.addEventListener('click',function(e){var btn=e.target.closest('[data-copy-btn]');if(!btn)return;var pre=btn.closest('[data-rehype-pretty-code-figure]').querySelector('pre');navigator.clipboard&&navigator.clipboard.writeText(pre.innerText).then(function(){btn.setAttribute('data-copied','');setTimeout(function(){btn.removeAttribute('data-copied');},2000);});});`,
+          }}
+        />
 
         <div className="min-h-screen flex flex-col">
           {/* ── Header ─────────────────────────────────────────────────── */}
