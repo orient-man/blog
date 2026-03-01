@@ -191,6 +191,8 @@ No remote is currently configured. No CI/CD pipeline exists.
 - TypeScript 5.x / Node.js 20 LTS (build runtime); Markdown (content) + Next.js 14 (`output: 'export'`), `@mdx-js/mdx`, `rehype-pretty-code` (Shiki) (003-fix-gist-embeds)
 - TypeScript 5.x / Node.js 20 LTS + Next.js 14.2.35 (`output: 'export'`), `@mdx-js/mdx` 3.x, `rehype-pretty-code` 0.14, `shiki` 1.29 (004-fix-gfm-strikethrough)
 - Filesystem -- MDX files in `content/posts/`, images in `public/images/` (004-fix-gfm-strikethrough)
+- TypeScript 5.x, Node.js 20 LTS, React 18 + Next.js 14.2.35 (`output: 'export'`), `@mdx-js/mdx` 3.x, (005-syntax-highlighting)
+- Filesystem — MDX files in `content/posts/`, static output in `out/` (005-syntax-highlighting)
 
 ## Recent Changes
 - 001-wordpress-blog-migration: Added TypeScript 5.x, Node.js 20 LTS + Next.js 14 (`output: 'export'`), `@next/mdx`, `gray-matter`, `rehype-pretty-code` (Shiki), Tailwind CSS, `@tailwindcss/typography`, Pagefind
