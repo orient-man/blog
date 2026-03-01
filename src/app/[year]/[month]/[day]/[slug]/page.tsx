@@ -4,6 +4,7 @@ import Link from 'next/link';
 import * as runtime from 'react/jsx-runtime';
 import { evaluate } from '@mdx-js/mdx';
 import rehypePrettyCode from 'rehype-pretty-code';
+import remarkGfm from 'remark-gfm';
 import { getAllPosts, getPostBySlug } from '@/lib/content';
 import { formatDate, postUrlPath, slugify } from '@/lib/utils';
 import { CATEGORIES } from '@/lib/types';
@@ -85,6 +86,7 @@ export default async function PostPage({
     const { default: Content } = await evaluate(post.content, {
       ...(runtime as any),
       format: 'md',
+      remarkPlugins: [remarkGfm],
       rehypePlugins: [[rehypePrettyCode as any, prettyCodeOptions]],
       development: false,
     });
