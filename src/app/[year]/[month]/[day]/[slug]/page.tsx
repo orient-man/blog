@@ -5,6 +5,7 @@ import * as runtime from 'react/jsx-runtime';
 import { evaluate } from '@mdx-js/mdx';
 import rehypePrettyCode from 'rehype-pretty-code';
 import remarkGfm from 'remark-gfm';
+import { rehypeCopyButton } from '@/lib/rehype-copy-button';
 import { getAllPosts, getPostBySlug } from '@/lib/content';
 import { formatDate, postUrlPath, slugify } from '@/lib/utils';
 import { CATEGORIES } from '@/lib/types';
@@ -87,7 +88,7 @@ export default async function PostPage({
       ...(runtime as any),
       format: 'md',
       remarkPlugins: [remarkGfm],
-      rehypePlugins: [[rehypePrettyCode as any, prettyCodeOptions]],
+      rehypePlugins: [[rehypePrettyCode as any, prettyCodeOptions], rehypeCopyButton],
       development: false,
     });
     PostContent = Content as React.ComponentType<{ components?: Record<string, React.ComponentType<any>> }>;

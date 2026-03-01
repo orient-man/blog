@@ -53,17 +53,39 @@ Acronis is able to shrink partition you want to restore to the size of SSD drive
 It is hidden partition located before your main partition (sized usually about 100MB). I choose to combine both Recovery and Windows partition into one on my SSD drive. Well, it was by accident because didn't know how to setup them separately. ;)
 
 1.  Assign letter for that partition with Windows Disk Management Tool (e.g. X:\\)
-2.  Assuming F:\\ is SSD partition run following commands: `> reg unload HKLM\BCD00000000 > robocopy X:\ F:\ bootmgr > robocopy X:\Boot F:\Boot /s`
+2.  Assuming F:\\ is SSD partition run following commands:
+
+```bat
+> reg unload HKLM\BCD00000000
+> robocopy X:\ F:\ bootmgr
+> robocopy X:\Boot F:\Boot /s
+```
 
 # STEP 4: Setup boot configuration
 
-Assuming F:\\ is SSD partition run commands: `> bcdedit /store f:\boot\bcd /set {current} device partition=F: > bcdedit /store f:\boot\bcd /set {current} osdevice partition=F: > bcdedit /store f:\boot\bcd /set {bootmgr} device partition=F: > bcdedit /store f:\boot\bcd /set {memdiag} device partition=F:`
+Assuming F:\\ is SSD partition run commands:
+
+```bat
+> bcdedit /store f:\boot\bcd /set {current} device partition=F:
+> bcdedit /store f:\boot\bcd /set {current} osdevice partition=F:
+> bcdedit /store f:\boot\bcd /set {bootmgr} device partition=F:
+> bcdedit /store f:\boot\bcd /set {memdiag} device partition=F:
+```
 
 # STEP 5: Fix MBR record
 
 You can use Windows 7 installation disk for that, but it's faster to use MBRFix tool from: [http://www.sysint.no/products/Download/tabid/536/language/en-US/Default.aspx](http://www.sysint.no/products/Download/tabid/536/language/en-US/Default.aspx "MBRFix")
 
-1.  Find your SSD drive number (starting from 0) e.g. check: `> MbrFix.exe /drive <num> listpartitions`
-2.  Assuming your SSD drive has number 1: `> MbrFix.exe /drive 1 fixmbr /win7`
+1.  Find your SSD drive number (starting from 0) e.g. check:
+
+```bat
+> MbrFix.exe /drive <num> listpartitions
+```
+
+2.  Assuming your SSD drive has number 1:
+
+```bat
+> MbrFix.exe /drive 1 fixmbr /win7
+```
 
 Done. Now you can restart your computer and set correct boot order in BIOS. Windows should start from the new SSD partition. Just to be 100% sure you can disconnect your old drive and check if system still boots properly.

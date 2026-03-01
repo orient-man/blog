@@ -32,11 +32,31 @@ The time has come to retire [NQUnit](https://github.com/robdmoore/NQUnit). NQUni
 
 # Examples
 
-1.  How to execute HTML wrapped QUnit tests: `> chutzpah.console.exe /testMode Html /file AwesomeWidgetTest.html`
-2.  How to run all tests in a folder: `> chutzpah.console.exe /testMode Html /path .\Facts\JS\`
+1.  How to execute HTML wrapped QUnit tests:
+
+    ```bash
+    > chutzpah.console.exe /testMode Html /file AwesomeWidgetTest.html
+    ```
+
+2.  How to run all tests in a folder:
+
+    ```bash
+    > chutzpah.console.exe /testMode Html /path .\Facts\JS\
+    ```
 
 Parameter _testMode_ is optional. Other values are: _All_ (default), _Html_, _AllExceptHTML_, _TypeScript_, _CoffeeScript_, _JavaScript_. For more info see [docs](https://chutzpah.codeplex.com/wikipage?title=Command%20Line%20Options&referringTitle=Documentation).
 
 # CI server support
 
-Chutzpah support [TeamCity](http://www.jetbrains.com/teamcity/) OOTB. For other servers there is _/junit_ switch that output results to JUnit-style XML file. I've used it for our [CruiseControl.NET](http://www.cruisecontrolnet.org/) server. My MSBuild target looks as follows: <Target Name="RunJavaScriptTests"> <CreateItem Include="\*\*\\QUnit\\\*Test.html;\*\*\\Jasmine\\\*Test.js"> <Output ItemName="JsTests" TaskParameter="Include" /> </CreateItem> <Exec Command="&quot;$(ChutzpahPath)&quot; /file &quot;%(JsTests.FullPath)&quot; /junit &quot;$(NUnitLogsDir)\\%(JsTests.FileName)-test-results.xml&quot;" /> </Target> PS Today's [Chutzpah 2.4](http://matthewmanela.com/blog/chutzpah-2-4-code-coverage-is-a-go/) release brings code coverage (via [BlanketJS](http://blanketjs.org/)) and contains my [tiny patch](https://chutzpah.codeplex.com/workitem/111) for unicode support :).
+Chutzpah support [TeamCity](http://www.jetbrains.com/teamcity/) OOTB. For other servers there is _/junit_ switch that output results to JUnit-style XML file. I've used it for our [CruiseControl.NET](http://www.cruisecontrolnet.org/) server. My MSBuild target looks as follows:
+
+```xml
+<Target Name="RunJavaScriptTests">
+  <CreateItem Include="**\QUnit\*Test.html;**\Jasmine\*Test.js">
+    <Output ItemName="JsTests" TaskParameter="Include" />
+  </CreateItem>
+  <Exec Command="&quot;$(ChutzpahPath)&quot; /file &quot;%(JsTests.FullPath)&quot; /junit &quot;$(NUnitLogsDir)\%(JsTests.FileName)-test-results.xml&quot;" />
+</Target>
+```
+
+PS Today's [Chutzpah 2.4](http://matthewmanela.com/blog/chutzpah-2-4-code-coverage-is-a-go/) release brings code coverage (via [BlanketJS](http://blanketjs.org/)) and contains my [tiny patch](https://chutzpah.codeplex.com/workitem/111) for unicode support :).
