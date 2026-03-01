@@ -54,7 +54,7 @@ let parseOutput (lines: string seq) =
     |> Seq.fold (fun state line ->
         match state, line.Trim() with
         | (false, list), "Outdated packages found:" -> true, list
-        | (true, list), "Performance:"              -> false, list
+        | (true, list), "Performance:" -> false, list
         | (true, list), line when line.StartsWith "* " -> true, line :: list
         | state, _ -> state) (false, [])
     |> snd
@@ -67,7 +67,8 @@ Yep, that's F# code! I use [FAKE](https://fake.build/) for my build scripts, so 
 let runPaket () =
     ProcessHelper.ExecProcessAndReturnMessages (fun psi ->
         psi.FileName <- ".paket/paket.exe"
-        psi.Arguments <- "outdated") (TimeSpan.FromMinutes 5.) // timeout
+        psi.Arguments <- "outdated")
+        (TimeSpan.FromMinutes 5.) // timeout
     |> fun r -> r.Messages
 
 let outdated = runPaket () |> parseOutput
@@ -125,8 +126,7 @@ And in your FAKE script:
 ```fsharp
 #load "paket-files/orient-man/c29c299ed970fd097f80124ffde734ce/FindOutdatedPackages.fsx"
 
-Target "Outdated" <| fun _ ->
-    OutdatedPackages.target "MyCompany."
+Target "Outdated" <| fun _ -> OutdatedPackages.target "MyCompany."
 ```
 
 That's all folks.
