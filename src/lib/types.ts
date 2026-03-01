@@ -45,7 +45,7 @@ export const TAG_SLUG_MAP: Record<string, string> = {
 
 export interface Comment {
   author: string;
-  date: string; // ISO 8601 date string
+  date: string; // ISO 8601 datetime string
   content: string; // Plain text or simple HTML
   avatarUrl?: string;
 }

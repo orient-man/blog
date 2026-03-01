@@ -286,7 +286,7 @@ for (const rawItem of items) {
       const comment = c as Record<string, unknown>;
       return {
         author: getText(comment['wp:comment_author']),
-        date: getText(comment['wp:comment_date']).slice(0, 10),
+        date: getText(comment['wp:comment_date']).replace(' ', 'T'),
         content: getText(comment['wp:comment_content']).trim(),
       };
     });

@@ -17,6 +17,22 @@ export function formatDate(isoDate: string): string {
 }
 
 /**
+ * Format an ISO 8601 datetime string to a human-readable form with time.
+ * e.g. "2013-09-25T12:27:01" → "September 25, 2013 at 12:27 PM"
+ * Falls back gracefully for date-only strings (shows midnight time).
+ */
+export function formatDateTime(isoDateTime: string): string {
+  const normalized = isoDateTime.includes('T') ? isoDateTime + 'Z' : isoDateTime + 'T00:00:00Z';
+  const d = new Date(normalized);
+  const hours = d.getUTCHours();
+  const minutes = d.getUTCMinutes();
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  const h = hours % 12 || 12;
+  const mm = String(minutes).padStart(2, '0');
+  return `${MONTH_NAMES[d.getUTCMonth()]} ${d.getUTCDate()}, ${d.getUTCFullYear()} at ${h}:${mm} ${ampm}`;
+}
+
+/**
  * Format an ISO 8601 date to "Month Year".
  * e.g. "2017-08" → "August 2017"
  */
