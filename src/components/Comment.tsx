@@ -6,6 +6,20 @@ interface CommentProps {
 }
 
 /**
+ * Safely format a comment date string for display.
+ * Returns "Unknown date" if the value is empty, undefined, or not a valid
+ * YYYY-MM-DD string — providing a graceful fallback (SC-002).
+ */
+function safeDateDisplay(date: string | undefined | null): string {
+  if (!date || typeof date !== 'string') return 'Unknown date';
+  // Must match YYYY-MM-DD
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return 'Unknown date';
+  const d = new Date(date + 'T00:00:00Z');
+  if (isNaN(d.getTime())) return 'Unknown date';
+  return formatDate(date);
+}
+
+/**
  * Renders a single historical WordPress comment.
  */
 export default function CommentComponent({ comment }: CommentProps) {
@@ -21,6 +35,12 @@ export default function CommentComponent({ comment }: CommentProps) {
     .replace(/<br\s*\/?>/gi, '\n')
     .replace(/<[^>]+>/g, '');
 
+  const displayDate = safeDateDisplay(comment.date);
+  // Only set dateTime attribute when the date is a valid ISO 8601 value
+  const dateTimeAttr = /^\d{4}-\d{2}-\d{2}$/.test(comment.date ?? '')
+    ? comment.date
+    : undefined;
+
   return (
     <div className="flex gap-3">
       {/* Avatar */}
@@ -35,10 +55,10 @@ export default function CommentComponent({ comment }: CommentProps) {
             {comment.author}
           </span>
           <time
-            dateTime={typeof comment.date === 'string' ? comment.date : String(comment.date)}
+            dateTime={dateTimeAttr}
             className="text-xs text-gray-400 dark:text-gray-500"
           >
-            {formatDate(typeof comment.date === 'string' ? comment.date : String(comment.date))}
+            {displayDate}
           </time>
         </div>
         <p className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">
