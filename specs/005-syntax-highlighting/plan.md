@@ -1,87 +1,59 @@
 # Implementation Plan: Syntax Highlighting for Code Blocks
 
-**Branch**: `005-syntax-highlighting` | **Date**: 2026-03-01 | **Spec**: [spec.md](./spec.md)
+**Branch**: `005-syntax-highlighting` | **Date**: 2026-03-01 | **Spec**: [spec.md](spec.md)
 **Input**: Feature specification from `/specs/005-syntax-highlighting/spec.md`
 
 ## Summary
 
-All fenced code blocks on the blog MUST render with build-time syntax highlighting
-(language-aware, dual light/dark theme), display line numbers, and include a
-copy-to-clipboard button.
-The existing `rehype-pretty-code` + Shiki pipeline is already installed and
-partially configured; this feature completes the CSS for line numbers, adds a minimal
-inline clipboard script, and audits/converts ~5-8 legacy posts whose code content is
-not yet wrapped in fenced code blocks.
+Activate and extend the existing `rehype-pretty-code` + Shiki syntax highlighting
+pipeline to deliver build-time highlighting for all fenced code blocks across 33
+blog posts.
+The feature adds three capabilities on top of the already-installed infrastructure:
+(1) dual-theme token CSS wiring so highlighted tokens switch colours with the
+light/dark toggle, (2) CSS-counter-based line numbers, and (3) a build-time
+copy-to-clipboard button with a minimal inline runtime script.
+A content audit script plus manual conversion of ~5-8 posts ensures every post
+with code content displays highlighted blocks.
+
+**Zero new npm dependencies.**
+All work builds on packages already in `package.json`
+(`rehype-pretty-code` ^0.14, `shiki` ^1.29, `remark-gfm` ^4.0).
 
 ## Technical Context
 
-**Language/Version**: TypeScript 5.x, Node.js 20 LTS, React 18  
-**Primary Dependencies**: Next.js 14.2.35 (`output: 'export'`), `@mdx-js/mdx` 3.x,
-`rehype-pretty-code` 0.14.x, `shiki` 1.29.x, `remark-gfm` 4.x,
-Tailwind CSS 3.4 + `@tailwindcss/typography`  
+**Language/Version**: TypeScript 5.x, Node.js 20 LTS  
+**Primary Dependencies**: Next.js 14.2.35 (`output: 'export'`), `@mdx-js/mdx` 3.x, `rehype-pretty-code` 0.14, `shiki` 1.29, `remark-gfm` 4.x  
 **Storage**: Filesystem — MDX files in `content/posts/`, static output in `out/`  
-**Testing**: No test framework installed (no jest/vitest/playwright); verification is
-manual browser spot-check + `next build` success  
-**Target Platform**: Static site, GitHub Pages (no server runtime)  
-**Project Type**: Static blog (Next.js App Router + MDX, `output: 'export'`)  
-**Performance Goals**: Zero client-side highlighting overhead — all tokenisation at
-build time; copy-to-clipboard is the only permitted runtime interaction  
-**Constraints**: No new npm dependencies; minimal inline JS only (SC-005); WCAG AA
-contrast (4.5:1) in both light and dark themes (SC-002)  
-**Scale/Scope**: 33 MDX posts; ~11 already have fenced code blocks; ~5-8 need
-manual conversion during content audit
+**Testing**: Manual build + browser verification (no test framework yet)  
+**Target Platform**: Static site (GitHub Pages)  
+**Project Type**: Static blog (Next.js static export)  
+**Performance Goals**: Zero client-side highlighting overhead (SC-005); build-time only  
+**Constraints**: No new npm dependencies; inline clipboard script must be <10 lines; WCAG AA contrast (4.5:1) for code tokens  
+**Scale/Scope**: 33 posts, ~11 with existing fenced blocks, ~5-8 needing manual conversion
 
 ## Constitution Check
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-### Pre-Phase-0 Check
+### Pre-Design Evaluation
 
-#### Principle I — Simplicity
+| Principle | Gate | Evaluation | Status |
+|-----------|------|-----------|--------|
+| I. Simplicity | Static site — no server-side runtime | All highlighting is build-time via `rehype-pretty-code`. Output is static HTML. | PASS |
+| I. Simplicity | No databases, no dynamic backends | Zero runtime state. Copy-to-clipboard is a minimal inline script. | PASS |
+| I. Simplicity | Dependencies kept to minimum | Zero new npm dependencies. All packages already installed. | PASS |
+| I. Simplicity | Prefer plain HTML/CSS over libraries | Line numbers: pure CSS counters. Copy button: build-time HTML + 6-line vanilla JS. | PASS |
+| II. Content-First | Markdown is canonical content format | Posts remain MDX/Markdown. Audit adds standard fenced code blocks. | PASS |
+| II. Content-First | Serve content readability | Syntax highlighting directly improves code readability. Dual-theme ensures contrast. | PASS |
 
-| Check | Result |
-|-------|--------|
-| Does this feature require a server-side runtime? | **PASS** — static build only |
-| Does this feature add new npm dependencies? | **PASS** — all required packages (`rehype-pretty-code`, `shiki`) are already installed |
-| Can highlighting be achieved without an additional library? | N/A — the library is already present; this feature only activates and configures it |
-| Does copy-to-clipboard require a new library? | **CONDITIONAL PASS** — `navigator.clipboard.writeText()` is a browser native API; no library needed. A minimal inline `<script>` tag (< 10 lines) is sufficient. This is the sole client-side addition permitted by SC-005. Tracked in Complexity Tracking below. |
+### Post-Design Re-Evaluation
 
-#### Principle II — Content-First
+All gates remain PASS after Phase 1 design.
+No new violations introduced.
+The custom rehype plugin (`rehypeCopyButton`) uses `unist-util-visit` which is
+already a transitive dependency — no new packages added to `package.json`.
 
-| Check | Result |
-|-------|--------|
-| Does this feature improve the reading experience? | **PASS** — syntax highlighting is the primary reading-experience improvement for code-heavy technical posts |
-| Does this affect Markdown as the canonical content format? | **PASS** — content remains in MDX/Markdown; only the rendering pipeline changes |
-| Does this add friction to authoring? | **PASS** — no authoring changes required for new posts; existing Markdown fenced-block syntax is unchanged |
-
-**Pre-Phase-0 Gate result: PASS**
-
----
-
-### Post-Phase-1 Re-check
-
-Design is now fully specified in `research.md`, `data-model.md`, `contracts/`, and `quickstart.md`.
-
-#### Principle I — Simplicity (post-design)
-
-| Check | Result |
-|-------|--------|
-| New npm packages introduced by design? | **PASS** — zero. `unist-util-visit` and `hast` types are already transitive dependencies of `rehype-pretty-code`. |
-| New files introduced? | `src/lib/rehype-copy-button.ts` (new build plugin, ~20 lines) and `scripts/audit-code-blocks.ts` (one-off script). Both are minimal. |
-| Is the inline `<script>` truly minimal? | **PASS** — 7 lines, event delegation, no globals, no framework code. |
-| Does the design require any new infrastructure (CI, server, DB)? | **PASS** — no. |
-| Does the copy button need a React component? | **PASS** — rejected in favour of CSS + inline script per research.md Section 4.1. |
-
-#### Principle II — Content-First (post-design)
-
-| Check | Result |
-|-------|--------|
-| Content remains in Markdown? | **PASS** — MDX source files unchanged in format; only rendering pipeline extended. |
-| Does the design affect authoring workflow? | **PASS** — authors continue writing standard fenced code blocks. No new syntax or tooling required. |
-| Does the line-number CSS affect readability negatively? | **PASS** — `user-select: none` keeps line numbers out of copy; gutter colour is neutral. |
-| Does the copy button affect reading experience? | **PASS** — opacity 0 by default, visible only on hover; non-intrusive. |
-
-**Post-Phase-1 Gate result: PASS** — proceed to `/speckit.tasks`.
+**Gate verdict**: PASS — no violations, no complexity justification needed.
 
 ## Project Structure
 
@@ -89,46 +61,50 @@ Design is now fully specified in `research.md`, `data-model.md`, `contracts/`, a
 
 ```text
 specs/005-syntax-highlighting/
-├── plan.md              # This file (/speckit.plan command output)
-├── research.md          # Phase 0 output (/speckit.plan command)
-├── data-model.md        # Phase 1 output (/speckit.plan command)
-├── quickstart.md        # Phase 1 output (/speckit.plan command)
-├── contracts/           # Phase 1 output (/speckit.plan command)
-│   └── audit-script-output.md
-└── tasks.md             # Phase 2 output (/speckit.tasks command - NOT created by /speckit.plan)
+├── plan.md              # This file
+├── research.md          # Phase 0 output — infrastructure, themes, line numbers, copy, audit, languages, risks
+├── data-model.md        # Phase 1 output — entities, pipeline diagram, runtime model
+├── quickstart.md        # Phase 1 output — 9-step implementation guide
+├── contracts/
+│   └── audit-script-output.md   # Audit script CLI interface and JSON schema
+├── checklists/
+│   └── requirements.md          # Specification quality checklist (all items pass)
+└── tasks.md             # Phase 2 output (/speckit.tasks command — NOT created by /speckit.plan)
 ```
 
-### Source Code (repository root)
+### Source Code (files changed by this feature)
 
 ```text
 src/
 ├── styles/
-│   └── globals.css          # Add line-number CSS counters; copy-button styles
-├── app/
-│   ├── layout.tsx            # Add inline clipboard script (dangerouslySetInnerHTML)
-│   └── [year]/[month]/[day]/[slug]/
-│       └── page.tsx          # MDX evaluate() — rehype-pretty-code options already here
-├── components/
-│   └── (no new components — copy button added via CSS + inline script, not React)
-└── lib/
-    └── content.ts            # Read-only during this feature
+│   └── globals.css              # Modified: dual-theme token CSS, line number CSS, copy button styles
+├── lib/
+│   └── rehype-copy-button.ts    # New: custom rehype plugin (build-time button injection)
+└── app/
+    ├── layout.tsx               # Modified: inline clipboard <script> added
+    ├── [year]/[month]/[day]/[slug]/
+    │   └── page.tsx             # Modified: rehypeCopyButton added to rehypePlugins
+    └── page/[slug]/
+        └── page.tsx             # Modified: rehypeCopyButton added to rehypePlugins
 
-content/
-└── posts/
-    └── *.mdx                 # ~5-8 posts to be manually edited (fenced code block audit)
+next.config.mjs                  # Modified: rehypeCopyButton added to withMDX rehypePlugins
 
 scripts/
-└── audit-code-blocks.ts      # New: identifies posts with likely un-fenced code
+└── audit-code-blocks.ts         # New: content audit script (read-only diagnostic)
 
-next.config.mjs               # rehype-pretty-code options (already configured; verify only)
+content/posts/
+└── *.mdx                        # Modified: ~5-8 posts get fenced code blocks added manually
 ```
 
-**Structure Decision**: Single Next.js project (no backend/frontend split). All
-changes are either CSS, a minimal inline script in the root layout, a one-off audit
-script, and manual MDX edits. No new components or services required.
+**Structure Decision**: No new directories created.
+One new file in `src/lib/` (rehype plugin), one new file in `scripts/` (audit tool).
+All other changes are modifications to existing files.
+This follows the existing project layout exactly.
 
 ## Complexity Tracking
 
+No violations — table intentionally left empty.
+
 | Violation | Why Needed | Simpler Alternative Rejected Because |
 |-----------|------------|-------------------------------------|
-| Inline `<script>` for clipboard | FR-013 requires copy-to-clipboard; SC-005 allows minimal JS for this interaction only | A CSS-only clipboard solution does not exist; `rehype-pretty-copy` is experimental and would still emit a script; a React client component adds a full component boundary for a 5-line behaviour |
+| *(none)* | | |
