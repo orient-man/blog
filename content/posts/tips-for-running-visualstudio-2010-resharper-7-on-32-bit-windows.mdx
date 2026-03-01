@@ -18,7 +18,9 @@ On 32-bit operating systems Visual Studio can easily run out of memory (especial
 
 ## Why oh why?
 
-All desktop versions of Windows suffer from 3 GB barrier (see more [here](http://en.wikipedia.org/wiki/3_GB_barrier "3 GB barrier")). It prevents the operating systems from using more than about 3 GB of RAM. But 3 GB is a lot and should be enough for VS et consortes, right? It appears not. I have decent machine with SSD, but running VS+R# with non trivial solutions \_is\_ constant pain. VS crashes throwing OutOfMemory exceptions or just stops responding for a few seconds (very annoying) all the time.  If - for whatever reason - you cannot upgrade to 64-bit Windows try following tips:
+All desktop versions of Windows suffer from 3 GB barrier (see more [here](http://en.wikipedia.org/wiki/3_GB_barrier "3 GB barrier")). It prevents the operating systems from using more than about 3 GB of RAM. But 3 GB is a lot and should be enough for VS et consortes, right? It appears not. I have decent machine with SSD, but running VS+R# with non trivial solutions \_is\_ constant pain. VS crashes throwing OutOfMemory exceptions or just stops responding for a few seconds (very annoying) all the time. 
+
+If - for whatever reason - you cannot upgrade to 64-bit Windows try following tips:
 
 ## Make Visual Studio large address aware
 
@@ -30,7 +32,9 @@ editbin /LARGEADDRESSAWARE devenv.exe
 
 ## Use JetBrains patch for Visual Studio to lessen address space fragmentation
 
-Another problem is address space fragmentation. Default Visual Studio memory allocation is very... generous. But you can override its behavior with this patch: [http://confluence.jetbrains.com/display/ReSharper/OutOfMemoryException+Fix](http://confluence.jetbrains.com/display/ReSharper/OutOfMemoryException+Fix)
+Another problem is address space fragmentation. Default Visual Studio memory allocation is very... generous. But you can override its behavior with this patch:
+
+[http://confluence.jetbrains.com/display/ReSharper/OutOfMemoryException+Fix](http://confluence.jetbrains.com/display/ReSharper/OutOfMemoryException+Fix)
 
 ## Results after 1 month
 

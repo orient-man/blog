@@ -9,14 +9,16 @@ tags:
 - ssl-certs
 format: standard
 comments:
-- 
-    author: orientman
-    date: "2013-11-09T11:27:35"
-    content: "Nope. I haven't tried"
-- 
+-
     author: Bernhard Schenkenfelder
     date: "2013-11-09T08:31:57"
     content: "I'm using a StartSSL certificate on Mac Mail - it works seamlessly. Do you know if there is a way to install the same certificate on an Android phone? Does it work with  the Gmail app?"
+-
+    author: orientman
+    date: "2013-11-09T11:27:35"
+    content: "Nope. I haven't tried"
 ---
 
-Recently, I got hit by change in Google policy regarding self-signed certificates (see their [FAQ](http://support.google.com/mail/bin/answer.py?hl=en&answer=21291&ctx=gmail&authuser=1#strictSSL "FAQ")). For many years I've used self-signed SSL certificates for my company's server (f\*\*k giving money to the CA mafia ;)). As some of us prefer to use Gmail over crappy desktop clients, they used Gmail [Mail Fetcher](http://support.google.com/mail/bin/answer.py?hl=en&answer=21289 "Mail Fetcher") feature... until it stopped working. But there is a great site [https://www.startssl.com/](https://www.startssl.com/) with free Class 1 SSL certificates (see [comparison](https://www.startssl.com/?app=40)). It's dead easy to create one. They even check your configuration automatically afterwards. Not being an expert I screwed it up a little and got an email with warning: "It seems, that the installation of your server certificate is not complete! You should add the intermediate CA certificate to your installation". They pointed me to their FAQ where I've found instructions [how to configure Apache server](http://www.startssl.com/?app=21). Then it was easy to do the same for mail server.
+Recently, I got hit by change in Google policy regarding self-signed certificates (see their [FAQ](http://support.google.com/mail/bin/answer.py?hl=en&answer=21291&ctx=gmail&authuser=1#strictSSL "FAQ")). For many years I've used self-signed SSL certificates for my company's server (f\*\*k giving money to the CA mafia ;)). As some of us prefer to use Gmail over crappy desktop clients, they used Gmail [Mail Fetcher](http://support.google.com/mail/bin/answer.py?hl=en&answer=21289 "Mail Fetcher") feature... until it stopped working.
+
+But there is a great site [https://www.startssl.com/](https://www.startssl.com/) with free Class 1 SSL certificates (see [comparison](https://www.startssl.com/?app=40)). It's dead easy to create one. They even check your configuration automatically afterwards. Not being an expert I screwed it up a little and got an email with warning: "It seems, that the installation of your server certificate is not complete! You should add the intermediate CA certificate to your installation". They pointed me to their FAQ where I've found instructions [how to configure Apache server](http://www.startssl.com/?app=21). Then it was easy to do the same for mail server.
