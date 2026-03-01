@@ -189,6 +189,8 @@ No remote is currently configured. No CI/CD pipeline exists.
 - YAML (GitHub Actions workflow); TypeScript 5.x / Node.js 20 LTS (build runtime) + `actions/checkout@v4`, `actions/setup-node@v4`, `actions/configure-pages@v5`, `actions/upload-pages-artifact@v4`, `actions/deploy-pages@v4`, `actions/cache@v4` (002-gh-pages-deploy)
 - N/A — no new data storage; workflow builds `out/` directory and uploads as GitHub Pages artifac (002-gh-pages-deploy)
 - TypeScript 5.x / Node.js 20 LTS (build runtime); Markdown (content) + Next.js 14 (`output: 'export'`), `@mdx-js/mdx`, `rehype-pretty-code` (Shiki) (003-fix-gist-embeds)
+- TypeScript 5.x / Node.js 20 LTS + Next.js 14.2.35 (`output: 'export'`), `@mdx-js/mdx` 3.x, `rehype-pretty-code` 0.14, `shiki` 1.29 (004-fix-gfm-strikethrough)
+- Filesystem -- MDX files in `content/posts/`, images in `public/images/` (004-fix-gfm-strikethrough)
 
 ## Recent Changes
 - 001-wordpress-blog-migration: Added TypeScript 5.x, Node.js 20 LTS + Next.js 14 (`output: 'export'`), `@next/mdx`, `gray-matter`, `rehype-pretty-code` (Shiki), Tailwind CSS, `@tailwindcss/typography`, Pagefind

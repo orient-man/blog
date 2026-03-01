@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import * as runtime from 'react/jsx-runtime';
 import { evaluate } from '@mdx-js/mdx';
 import rehypePrettyCode from 'rehype-pretty-code';
+import remarkGfm from 'remark-gfm';
 import { getAllPages, getPageBySlug } from '@/lib/content';
 
 // ── Shared rehype-pretty-code options ─────────────────────────────────────────
@@ -50,6 +51,7 @@ export default async function StaticPage({
     const { default: Content } = await evaluate(page.content, {
       ...(runtime as any),
       format: 'md',
+      remarkPlugins: [remarkGfm],
       rehypePlugins: [[rehypePrettyCode as any, prettyCodeOptions]],
       development: false,
     });
