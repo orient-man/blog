@@ -1,4 +1,4 @@
-import { formatDate } from '@/lib/utils';
+import { formatDateTime } from '@/lib/utils';
 import type { Comment } from '@/lib/types';
 
 interface CommentProps {
@@ -6,17 +6,18 @@ interface CommentProps {
 }
 
 /**
- * Safely format a comment date string for display.
+ * Safely format a comment datetime string for display.
  * Returns "Unknown date" if the value is empty, undefined, or not a valid
- * YYYY-MM-DD string — providing a graceful fallback (SC-002).
+ * ISO 8601 date or datetime string — providing a graceful fallback (SC-002).
  */
 function safeDateDisplay(date: string | undefined | null): string {
   if (!date || typeof date !== 'string') return 'Unknown date';
-  // Must match YYYY-MM-DD
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return 'Unknown date';
-  const d = new Date(date + 'T00:00:00Z');
+  // Must match YYYY-MM-DD or YYYY-MM-DDTHH:MM:SS
+  if (!/^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2})?$/.test(date)) return 'Unknown date';
+  const normalized = date.includes('T') ? date + 'Z' : date + 'T00:00:00Z';
+  const d = new Date(normalized);
   if (isNaN(d.getTime())) return 'Unknown date';
-  return formatDate(date);
+  return formatDateTime(date);
 }
 
 /**
@@ -37,7 +38,7 @@ export default function CommentComponent({ comment }: CommentProps) {
 
   const displayDate = safeDateDisplay(comment.date);
   // Only set dateTime attribute when the date is a valid ISO 8601 value
-  const dateTimeAttr = /^\d{4}-\d{2}-\d{2}$/.test(comment.date ?? '')
+  const dateTimeAttr = /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2})?$/.test(comment.date ?? '')
     ? comment.date
     : undefined;
 
