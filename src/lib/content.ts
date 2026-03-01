@@ -9,6 +9,7 @@ import type {
   BlogrollEntry,
   ArchiveMonth,
   CategorySlug,
+  Comment,
 } from './types';
 import { CATEGORIES, TAG_SLUG_MAP } from './types';
 import { slugify, estimateReadingTime, generateExcerpt } from './utils';
@@ -63,7 +64,14 @@ function loadPosts(): Post[] {
       slug: data.slug ?? path.basename(filePath, path.extname(filePath)),
       excerpt: data.excerpt ?? generateExcerpt(content),
       wordpressUrl: data.wordpressUrl ?? '',
-      comments: data.comments ?? undefined,
+      comments: Array.isArray(data.comments)
+        ? data.comments.map((c: Record<string, unknown>) => ({
+            ...(c as unknown as Comment),
+            date: c.date instanceof Date
+              ? c.date.toISOString().slice(0, 10)
+              : String(c.date ?? ''),
+          }))
+        : undefined,
       content,
       readingTime: estimateReadingTime(content),
     };
