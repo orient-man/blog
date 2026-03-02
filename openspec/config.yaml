@@ -1,20 +1,32 @@
 schema: spec-driven
 
-# Project context (optional)
-# This is shown to AI when creating artifacts.
-# Add your tech stack, conventions, style guides, domain knowledge, etc.
-# Example:
-#   context: |
-#     Tech stack: TypeScript, React, Node.js
-#     We use conventional commits
-#     Domain: e-commerce platform
+context: |
+  Blog migration project: WordPress to static site.
+  Tech stack: TypeScript 5.x, Node.js 20 LTS, Next.js 14 (output: 'export'),
+  @mdx-js/mdx, gray-matter, rehype-pretty-code (Shiki), Tailwind CSS,
+  @tailwindcss/typography, Pagefind.
 
-# Per-artifact rules (optional)
-# Add custom rules for specific artifacts.
-# Example:
-#   rules:
-#     proposal:
-#       - Keep proposals under 500 words
-#       - Always include a "Non-goals" section
-#     tasks:
-#       - Break tasks into chunks of max 2 hours
+  Core Principles (constitution v1.0.1, ratified 2026-02-26):
+  I. Simplicity — The blog MUST remain a static site. No server-side runtime,
+     no databases, no dynamic backends. Dependencies minimized. Plain HTML/CSS/
+     Markdown preferred over libraries.
+  II. Content-First — Markdown is the canonical content format. All posts in
+      Markdown. Design decisions prioritize reading experience over visual
+      complexity.
+
+  Conventions: Conventional Commits, kebab-case file names,
+  one sentence per line in Markdown.
+
+rules:
+  proposal:
+    - Reference constitution principles when justifying the change
+    - Keep proposals concise and actionable
+  specs:
+    - Use FR-NNN for functional requirement IDs
+    - Use SC-NNN for success criteria IDs
+    - Write acceptance criteria in Given/When/Then format
+    - Use RFC 2119 keywords (MUST, SHOULD, MAY)
+  tasks:
+    - Use TNNN for task IDs
+    - Use P1-P6 priority levels
+    - Group tasks by user story

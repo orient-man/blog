@@ -4,131 +4,79 @@ Instructions for AI coding agents operating in this repository.
 
 ## Project Overview
 
-WordPress-to-static-site blog migration project, currently in the
-**specification/planning phase**. No application source code exists yet —
-the static site generator has not been chosen. The repository contains only
-the Spec-Driven Development framework, opencode agent commands, feature
-specifications, and supporting shell scripts.
+WordPress-to-static-site blog migration project using Next.js 14 with
+static export. The repository contains application source code, the
+OpenSpec development workflow, historical feature specifications, and
+OpenSpec change management.
 
 ## Repository Layout
 
 ```
-.opencode/command/       9 slash-command definitions (speckit.*)
-.specify/
-  memory/                constitution.md — project constitution
-  scripts/bash/          5 Bash scripts (common.sh, check-prerequisites.sh, …)
-  templates/             6 Markdown templates (spec, plan, tasks, checklist, …)
-specs/
-  001-wordpress-blog-migration/
-    spec.md              feature specification
-    checklists/          requirements checklist
+.opencode/
+  command/
+    opsx-propose.md      propose a new change (all artifacts in one step)
+    opsx-explore.md      explore ideas / investigate problems
+    opsx-apply.md        implement tasks from a change
+    opsx-archive.md      archive a completed change
+  skills/
+    openspec-propose/    skill: propose a new change
+    openspec-apply-change/   skill: implement tasks
+    openspec-archive-change/ skill: archive a change
+    openspec-explore/    skill: explore mode
+openspec/
+  config.yaml            schema + project context + artifact rules
+  constitution.md        project constitution (core principles)
+  changes/               active change proposals
+    archive/             archived (completed) changes
+  specs/                 main specifications
+specs/                   historical specs (001-006, read-only archive)
 AGENTS.md                this file
 ```
 
 ## Workflow
 
-The project follows a linear Spec-Driven Development pipeline. Each stage
-is triggered by an opencode slash command and must complete before the next:
+The project uses **OpenSpec** for spec-driven development. The workflow
+is fluid, not strictly linear. Four actions operate on changes:
 
 ```
-constitution -> specify -> clarify -> plan -> tasks -> analyze -> implement
+explore  -->  propose  -->  apply  -->  archive
+   ^             |            |
+   +-------------+------------+   (can interleave freely)
 ```
 
-Commands live in `.opencode/command/speckit.*.md`. Each file has YAML
-frontmatter (`description:`, `handoffs:`) and uses `$ARGUMENTS` as
-placeholder. Follow numbered execution steps exactly as written.
+| Action | Command | Skill | Purpose |
+|--------|---------|-------|---------|
+| Explore | `/opsx-explore` | `openspec-explore` | Think through ideas, investigate problems, clarify requirements. Read-only — no implementation. |
+| Propose | `/opsx-propose` | `openspec-propose` | Create a change with all artifacts (proposal, specs, design, tasks) in one step. |
+| Apply | `/opsx-apply` | `openspec-apply-change` | Implement tasks from a change, marking them complete as you go. |
+| Archive | `/opsx-archive` | `openspec-archive-change` | Archive a completed change, optionally syncing delta specs. |
 
-Before starting work, run `check-prerequisites.sh` to validate the feature
-directory and required files exist:
+### OpenSpec CLI
+
+The `openspec` CLI manages changes and artifacts:
 
 ```bash
-.specify/scripts/bash/check-prerequisites.sh --json
+openspec list --json              # list active changes
+openspec status --change "<name>" --json   # artifact completion status
+openspec new change "<name>"      # scaffold a new change
+openspec instructions <artifact> --change "<name>" --json  # get artifact instructions
+openspec instructions apply --change "<name>" --json       # get apply instructions
 ```
 
-## Shell Scripts
+### Schema
 
-All scripts are in `.specify/scripts/bash/`. To run any script:
+The project uses the `spec-driven` schema, which produces these artifacts
+per change: `proposal` -> `specs` -> `design` -> `tasks`.
 
-```bash
-bash .specify/scripts/bash/<script-name>.sh [OPTIONS]
-```
-
-| Script                    | Purpose                                     |
-|---------------------------|---------------------------------------------|
-| `common.sh`              | Shared functions — sourced by all others     |
-| `check-prerequisites.sh` | Validate feature dir, branch, required files |
-| `create-new-feature.sh`  | Create feature branch + spec scaffold        |
-| `setup-plan.sh`          | Initialize plan.md from template             |
-| `update-agent-context.sh`| Auto-generate agent context files            |
+Project context and per-artifact rules are configured in
+`openspec/config.yaml`. The project constitution lives at
+`openspec/constitution.md`.
 
 ## Build / Lint / Test
 
-No build system, linter, or test framework exists yet. The only executable
-artifacts are the 5 Bash scripts above.
-
-**Validate scripts parse correctly:**
-
-```bash
-bash -n .specify/scripts/bash/common.sh
-```
-
-**Run prerequisite check (quick smoke test):**
-
-```bash
-bash .specify/scripts/bash/check-prerequisites.sh --paths-only
-```
-
-**Run a single script with debug output:**
-
-```bash
-bash -x .specify/scripts/bash/<script-name>.sh [OPTIONS]
-```
-
-When application code is added later, update this section with the actual
-build, lint, and test commands.
-
-## Code Style: Shell Scripts
-
-**Shebang and safety flags:**
-
-```bash
-#!/usr/bin/env bash
-set -e                  # always required
-set -u                  # required for complex scripts
-set -o pipefail         # required for complex scripts
-```
-
-**Sourcing shared code** — every script must source `common.sh`:
-
-```bash
-SCRIPT_DIR="$(CDPATH="" cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/common.sh"
-```
-
-**Naming:**
-
-- Functions: `snake_case` (e.g., `get_repo_root`, `check_feature_branch`)
-- Local variables: `snake_case`, declared with `local`
-- Constants / env vars: `UPPER_SNAKE_CASE`
-- Script filenames: `kebab-case.sh`
-
-**Logging** — use helpers from `common.sh`, never raw `echo` for user messages:
-
-- `log_info`, `log_success`, `log_error`, `log_warning`
-- Errors go to stderr: `echo "ERROR: ..." >&2`
-
-**Cleanup** — register traps for temp files:
-
-```bash
-trap cleanup EXIT INT TERM
-```
-
-**CLI conventions:**
-
-- Support `--json` flag for machine-readable JSON output
-- Support `--help` / `-h` with a heredoc usage block
-- Parse options with a `for arg in "$@"` / `case` loop
-- Use `exit 1` on validation failure after printing an actionable message
+No build system, linter, or test framework exists yet. When application
+code is added, update this section with the actual build, lint, and test
+commands.
 
 ## Code Style: Markdown / Specs
 
@@ -153,9 +101,6 @@ trap cleanup EXIT INT TERM
 - Use fenced code blocks with language tags
 - Tables for structured data (requirements, tasks, comparisons)
 
-**Templates** live in `.specify/templates/`. Always start new documents
-from the matching template rather than writing from scratch.
-
 ## Git Conventions
 
 **Commit messages** follow Conventional Commits:
@@ -169,18 +114,15 @@ Common types: `feat`, `fix`, `docs`, `chore`, `refactor`, `test`
 **Branch naming:** `NNN-kebab-case` where NNN is a zero-padded 3-digit
 feature number matching the spec directory (e.g., `001-wordpress-blog-migration`).
 
-**Branch validation** is enforced by `check_feature_branch()` in `common.sh` —
-branches must match the pattern `^[0-9]{3}-`.
-
 No remote is currently configured. No CI/CD pipeline exists.
 
 ## Important Constraints
 
-- Do not create application source code until the workflow reaches the
-  `implement` phase.
-- The `update-agent-context.sh` script is designed to regenerate this file
-  automatically once the project reaches the planning phase. Manual edits
-  may be overwritten.
+- The project constitution (`openspec/constitution.md`) is the authoritative
+  reference for project decisions. All changes MUST comply with its
+  Simplicity and Content-First principles.
+- Historical specs in `specs/` (001 through 006) are a read-only archive
+  from the previous spec-kit workflow. New features use `openspec/changes/`.
 - There is no `.gitignore`, `.editorconfig`, or CI configuration yet.
 
 ## Active Technologies
