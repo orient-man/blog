@@ -24,6 +24,13 @@ export default function Sidebar({
         <h2 className="font-semibold text-gray-900 dark:text-gray-100 mb-3 uppercase tracking-wide text-xs">
           About
         </h2>
+        <img
+          src="https://gravatar.com/avatar/78d50dc34ae3edcfa5449ff9ad47f0a2?s=128&d=mp"
+          alt="Marcin Malinowski"
+          width={128}
+          height={128}
+          className="rounded-full w-32 h-32 mx-auto mb-4 ring-2 ring-gray-200 dark:ring-gray-700"
+        />
         <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
           Tata², mąż humanistki, mól książkowy, programista, konferencjoholik.{' '}
           Don Kichot walczący z entropią. Kocha sprzeczności i humor.
