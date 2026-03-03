@@ -111,8 +111,8 @@ type(scope): description
 
 Common types: `feat`, `fix`, `docs`, `chore`, `refactor`, `test`
 
-**Branch naming:** `NNN-kebab-case` where NNN is a zero-padded 3-digit
-feature number matching the spec directory (e.g., `001-wordpress-blog-migration`).
+**Branch naming:** `feature/kebab-case` (e.g., `feature/add-gravatar-avatar`).
+Historical branches used `NNN-kebab-case` (001 through 006) but new work uses the `feature/` prefix.
 
 No remote is currently configured. No CI/CD pipeline exists.
 
