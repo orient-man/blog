@@ -42,17 +42,23 @@ This prevents a single high-count tag from compressing all other tags to minimum
 
 Tags whose slug contains hyphens SHALL display with hyphens preserved in their display name.
 The display name for a tag like `dependency-injection` SHALL be `dependency-injection`, not `dependencyinjection` or `dependency injection`.
-Tags with explicit entries in `TAG_SLUG_MAP` SHALL continue to use their mapped display name (e.g., slug `fsharp` displays as `F#`).
+All tags SHALL use their slug as the display name.
+No special-case display-name mapping SHALL exist.
 
 #### Scenario: Hyphenated slug displays with hyphen
 
 - **WHEN** a tag has the slug `dependency-injection`
 - **THEN** its display name is `dependency-injection` across all rendering surfaces (tag cloud, tags index, post cards, post headers)
 
-#### Scenario: TAG_SLUG_MAP entries are unaffected
+#### Scenario: Former special-case tags use slug as display name
 
-- **WHEN** a tag has the slug `fsharp` with a `TAG_SLUG_MAP` entry mapping to display name `F#`
-- **THEN** the display name remains `F#`
+- **WHEN** a tag has the slug `fsharp`
+- **THEN** its display name is `fsharp` (not `F#`)
+
+#### Scenario: Former special-case tag dotnet uses slug
+
+- **WHEN** a tag has the slug `dotnet`
+- **THEN** its display name is `dotnet` (not `.NET`)
 
 #### Scenario: Simple single-word slugs are unaffected
 
