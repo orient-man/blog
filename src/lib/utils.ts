@@ -101,6 +101,31 @@ export function generateExcerpt(content: string, maxLength = 160): string {
   return stripped.slice(0, cut > 0 ? cut : maxLength) + '…';
 }
 
+// ── Tag font sizing ───────────────────────────────────────────────────────
+
+/**
+ * Compute a proportional font size for a tag based on its post count.
+ * Uses a logarithmic scale (matching WordPress wp_tag_cloud behavior)
+ * to spread mid-range tags visually while compressing the high end.
+ *
+ * When all tags have the same count, returns the midpoint size.
+ *
+ * @returns Font size in rem units.
+ */
+export function tagFontSize(
+  count: number,
+  minCount: number,
+  maxCount: number,
+  minSize = 0.75,
+  maxSize = 1.5,
+): number {
+  if (minCount === maxCount) return (minSize + maxSize) / 2;
+  const ratio =
+    (Math.log(count) - Math.log(minCount)) /
+    (Math.log(maxCount) - Math.log(minCount));
+  return minSize + ratio * (maxSize - minSize);
+}
+
 // ── URL helpers ───────────────────────────────────────────────────────────────
 
 /**
