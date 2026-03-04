@@ -70,17 +70,7 @@ td.addRule('wp-caption', {
 
 // ── Tag slug helpers ──────────────────────────────────────────────────────────
 
-const TAG_SLUG_MAP: Record<string, string> = {
-  'F#': 'fsharp',
-  'C#': 'csharp',
-  'C++': 'cpp',
-  '.NET': 'dotnet',
-  'ASP.NET MVC': 'aspnet-mvc',
-  'ASP.NET': 'aspnet',
-};
-
 function toTagSlug(name: string): string {
-  if (TAG_SLUG_MAP[name]) return TAG_SLUG_MAP[name];
   return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 }
 

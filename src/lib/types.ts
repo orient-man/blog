@@ -27,20 +27,6 @@ export interface Tag {
   count: number;
 }
 
-/**
- * Explicit slug overrides for tags whose display names contain characters that
- * cannot be used as URL segments.  Tags not listed here are auto-slugified by
- * the `slugify()` utility (lower-cased, spaces → hyphens).
- */
-export const TAG_SLUG_MAP: Record<string, string> = {
-  'F#': 'fsharp',
-  'C#': 'csharp',
-  'C++': 'cpp',
-  '.NET': 'dotnet',
-  'ASP.NET MVC': 'aspnet-mvc',
-  'ASP.NET': 'aspnet',
-};
-
 // ── Comment ───────────────────────────────────────────────────────────────────
 
 export interface Comment {
