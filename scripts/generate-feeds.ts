@@ -13,7 +13,7 @@ import matter from 'gray-matter';
 
 // ── Config ────────────────────────────────────────────────────────────────────
 
-const SITE_URL = 'https://orientman.wordpress.com'; // update when custom domain is set
+const SITE_URL = 'https://blog.orientman.com';
 const POSTS_DIR = path.join(process.cwd(), 'content', 'posts');
 const PAGES_DIR = path.join(process.cwd(), 'content', 'pages');
 const PUBLIC_DIR = path.join(process.cwd(), 'public');

@@ -14,13 +14,13 @@ tags:
 format: standard
 ---
 
-The time has come to retire [NQUnit](https://github.com/robdmoore/NQUnit). NQUnit runs [QUnit](http://qunitjs.com/) tests inside .NET by using [WatiN](http://watin.org/). That means it can be used with any test runner supporting [NUnit](http://www.nunit.org/) (e.g. [TestDriven.NET](http://testdriven.net/) or - since VS2012 - built-in + [adapter](http://nunit.org/index.php?p=vsTestAdapter&r=2.6.2)). If you use CI server to run NUnit you got JavaScript tests nicely integrated for free ([well, almost](http://orientman.wordpress.com/2013/01/15/blanket-js-qunit-and-ie8-please-die-now/)).
+The time has come to retire [NQUnit](https://github.com/robdmoore/NQUnit). NQUnit runs [QUnit](http://qunitjs.com/) tests inside .NET by using [WatiN](http://watin.org/). That means it can be used with any test runner supporting [NUnit](http://www.nunit.org/) (e.g. [TestDriven.NET](http://testdriven.net/) or - since VS2012 - built-in + [adapter](http://nunit.org/index.php?p=vsTestAdapter&r=2.6.2)). If you use CI server to run NUnit you got JavaScript tests nicely integrated for free ([well, almost](/2013/01/15/blanket-js-qunit-and-ie8-please-die-now/)).
 
 Unfortunately, there are some flaws:
 
 -   tests are run in the full browser - which is slow
 -   the only available browser option is Internet Explorer (on our CI server it can't be upgraded beyond v8)
--   the are some privileges problems described in one of my [previous posts](http://orientman.wordpress.com/2013/01/15/blanket-js-qunit-and-ie8-please-die-now/)
+-   the are some privileges problems described in one of my [previous posts](/2013/01/15/blanket-js-qunit-and-ie8-please-die-now/)
 -   it requires some boilerplate C# code, which - of course - need to be compiled
 -   tests can't be run selectively
 -   doesn't play nice with continuous testing tools like [NCrunch](http://www.ncrunch.net/)
