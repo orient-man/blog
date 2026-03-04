@@ -45,7 +45,12 @@ export default function TagCloud({ tags, maxTags = 20 }: TagCloudProps) {
       </div>
       {hasMore && (
         <p className="mt-2 text-xs text-gray-400 dark:text-gray-500">
-          Showing top {maxTags} of {tags.length} tags
+          <Link
+            href="/tags/"
+            className="hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+          >
+            Showing top {maxTags} of {tags.length} tags
+          </Link>
         </p>
       )}
     </div>
