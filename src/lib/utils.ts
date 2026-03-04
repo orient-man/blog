@@ -1,5 +1,3 @@
-import { TAG_SLUG_MAP } from './types';
-
 // ── Date formatting ───────────────────────────────────────────────────────────
 
 const MONTH_NAMES = [
@@ -44,10 +42,10 @@ export function formatMonthYear(year: number, month: number): string {
 
 /**
  * Convert a display name to a URL-safe slug.
- * Consults TAG_SLUG_MAP first; falls back to lower-case + hyphenation.
+ * Lower-cases the input, replaces non-alphanumeric runs with hyphens,
+ * and trims leading/trailing hyphens.
  */
 export function slugify(name: string): string {
-  if (TAG_SLUG_MAP[name]) return TAG_SLUG_MAP[name];
   return name
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')

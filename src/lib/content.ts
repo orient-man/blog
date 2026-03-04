@@ -11,7 +11,7 @@ import type {
   CategorySlug,
   Comment,
 } from './types';
-import { CATEGORIES, TAG_SLUG_MAP } from './types';
+import { CATEGORIES } from './types';
 import { slugify, estimateReadingTime, generateExcerpt } from './utils';
 
 // ── Paths ─────────────────────────────────────────────────────────────────────
@@ -42,13 +42,10 @@ function loadPosts(): Post[] {
     const raw = fs.readFileSync(filePath, 'utf8');
     const { data, content } = matter(raw);
 
-    // Resolve tag slugs to display names: frontmatter stores slugs like "fsharp"
-    // or original names like "F#" — normalise to slug form for URLs.
+    // Normalise frontmatter tags to slug form.
     // Coerce to string first: YAML may parse numeric-looking tags (e.g. "2013") as numbers.
     const tagSlugs: string[] = (data.tags ?? []).map((t: unknown) => {
-      const s = String(t);
-      if (TAG_SLUG_MAP[s]) return TAG_SLUG_MAP[s];
-      return slugify(s);
+      return slugify(String(t));
     });
 
     const post: Post = {
@@ -112,13 +109,6 @@ let _tagsCache: Tag[] | null = null;
 export function getAllTags(): Tag[] {
   if (_tagsCache) return _tagsCache;
 
-  // Reverse map: slug → display name
-  const slugToName: Record<string, string> = {};
-  // Build reverse from TAG_SLUG_MAP
-  for (const [name, slug] of Object.entries(TAG_SLUG_MAP)) {
-    slugToName[slug] = name;
-  }
-
   const counts: Record<string, number> = {};
   for (const post of loadPosts()) {
     for (const slug of post.tags) {
@@ -128,7 +118,7 @@ export function getAllTags(): Tag[] {
 
   _tagsCache = Object.entries(counts).map(([slug, count]) => ({
     slug,
-    name: slugToName[slug] ?? slug, // Fall back to slug if no display name
+    name: slug,
     count,
   }));
 
