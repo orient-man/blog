@@ -102,6 +102,40 @@ export function getPostsByMonth(year: number, month: number): Post[] {
   return loadPosts().filter((p) => p.date.startsWith(prefix));
 }
 
+// ── Related posts ─────────────────────────────────────────────────────────────
+
+export function getRelatedPosts(slug: string, count: number = 3): Post[] {
+  const allPosts = loadPosts();
+  const current = allPosts.find((p) => p.slug === slug);
+  if (!current || current.tags.length === 0) return [];
+
+  const currentTagSet = new Set(current.tags);
+
+  const scored = allPosts
+    .filter((p) => p.slug !== slug)
+    .map((candidate) => {
+      // Score = number of shared tags
+      let score = candidate.tags.filter((t) => currentTagSet.has(t)).length;
+      if (score === 0) return null;
+
+      // +0.5 bonus for same category
+      if (candidate.category === current.category) {
+        score += 0.5;
+      }
+
+      return { post: candidate, score };
+    })
+    .filter((entry): entry is { post: Post; score: number } => entry !== null);
+
+  // Sort by score descending, then by date descending (recency tiebreak)
+  scored.sort((a, b) => {
+    if (b.score !== a.score) return b.score - a.score;
+    return b.post.date.localeCompare(a.post.date);
+  });
+
+  return scored.slice(0, count).map((entry) => entry.post);
+}
+
 // ── Tags ──────────────────────────────────────────────────────────────────────
 
 let _tagsCache: Tag[] | null = null;
