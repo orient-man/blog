@@ -41,5 +41,5 @@
 ## 7. Verification (P3)
 
 - [x] 7.1 T023 Run `npm run build` and verify zero errors
-- [ ] 7.2 T024 Visually verify light mode: green accents, top border, serif headings, date blocks, extended excerpts
-- [ ] 7.3 T025 Visually verify dark mode: green accent adaptation, contrast readability
+- [x] 7.2 T024 Visually verify light mode: green accents, top border, serif headings, date blocks, extended excerpts
+- [x] 7.3 T025 Visually verify dark mode: green accent adaptation, contrast readability
