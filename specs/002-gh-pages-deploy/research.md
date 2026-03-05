@@ -13,17 +13,18 @@ no NEEDS CLARIFICATION items remain.
 
 **Decision**: Use the following official GitHub Pages action versions:
 
-| Action | Version | Purpose |
-|--------|---------|---------|
-| `actions/checkout` | `v4` | Checkout repository source |
-| `actions/setup-node` | `v4` | Install Node.js 20 LTS with npm cache |
-| `actions/configure-pages` | `v5` | Enable Pages and extract metadata |
-| `actions/cache` | `v4` | Cache `.next/cache` for incremental builds |
-| `actions/upload-pages-artifact` | `v4` | Package `out/` as a deployable artifact |
-| `actions/deploy-pages` | `v4` | Deploy artifact to GitHub Pages |
+| Action                          | Version | Purpose                                    |
+| ------------------------------- | ------- | ------------------------------------------ |
+| `actions/checkout`              | `v4`    | Checkout repository source                 |
+| `actions/setup-node`            | `v4`    | Install Node.js 20 LTS with npm cache      |
+| `actions/configure-pages`       | `v5`    | Enable Pages and extract metadata          |
+| `actions/cache`                 | `v4`    | Cache `.next/cache` for incremental builds |
+| `actions/upload-pages-artifact` | `v4`    | Package `out/` as a deployable artifact    |
+| `actions/deploy-pages`          | `v4`    | Deploy artifact to GitHub Pages            |
 
 **Rationale**: These are the current latest stable major versions of all official
 GitHub Pages actions. Verified against:
+
 - `actions/deploy-pages` README (latest release: v4.0.5)
 - `actions/upload-pages-artifact` README (latest release: v4.0.0, August 2025)
 - `actions/configure-pages` README (latest release: v5.0.0)
@@ -42,7 +43,16 @@ provide the `github-pages` environment URL in the Actions UI.
 jobs:
   build:
     runs-on: ubuntu-latest
-    steps: [checkout, setup-node, configure-pages, cache, install, build, upload-artifact]
+    steps:
+      [
+        checkout,
+        setup-node,
+        configure-pages,
+        cache,
+        install,
+        build,
+        upload-artifact,
+      ]
 
   deploy:
     needs: build
@@ -57,6 +67,7 @@ jobs:
 ```
 
 **Rationale**:
+
 - `deploy` only runs after `build` succeeds (`needs: build`), satisfying FR-010.
 - Sensitive permissions (`pages: write`, `id-token: write`) are scoped to the
   `deploy` job only — the `build` job needs only `contents: read`.
@@ -84,6 +95,7 @@ With a custom domain (`blog.orientman.com`), the site serves from root `/` — n
 asset paths on the custom domain.
 
 The existing `next.config.mjs` already has:
+
 - `output: 'export'` — static export enabled
 - `images: { unoptimized: true }` — required for static export (no image optimisation server)
 - `trailingSlash: true` — clean URLs
@@ -92,6 +104,7 @@ The existing `next.config.mjs` already has:
 Pages API and extracts metadata (e.g., `base_url`) without modifying the config.
 
 **Alternatives considered**:
+
 - `static_site_generator: next` — **actively harmful** with a custom domain;
   would inject `basePath: '/blog'` breaking all routes.
 - Skipping `configure-pages` entirely — possible, but loses the automatic Pages
@@ -111,6 +124,7 @@ Pages API and extracts metadata (e.g., `base_url`) without modifying the config.
 
 npm automatically runs `prebuild` before `build` and `postbuild` after `build`.
 A single `npm run build` executes the full pipeline:
+
 1. `tsx scripts/generate-feeds.ts` — generates RSS feed and sitemap into `public/`
 2. `next build` — static export to `out/` (includes `public/` contents)
 3. `npx pagefind --site out` — builds search index into `out/`
@@ -118,6 +132,7 @@ A single `npm run build` executes the full pipeline:
 This satisfies FR-004 without any changes to `package.json` or additional workflow steps.
 
 **Alternatives considered**:
+
 - `npx next build` — would skip `prebuild` and `postbuild` hooks, missing feed
   generation and Pagefind indexing.
 - Calling each script separately in the workflow — redundant, error-prone,
@@ -193,6 +208,7 @@ The DNS CNAME record (`blog.orientman.com` → `orient-man.github.io`) is a
 one-time manual step outside the repository scope (documented in quickstart.md).
 
 **Alternatives considered**:
+
 - Adding a postbuild step to copy the CNAME — unnecessary; `public/` is the
   correct mechanism.
 - Storing CNAME in the repo root and copying via workflow — more complex,

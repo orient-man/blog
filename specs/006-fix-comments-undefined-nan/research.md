@@ -63,13 +63,13 @@ Root cause confirmed by Node.js REPL verification:
 
 ```javascript
 // gray-matter converts bare YAML dates to Date objects
-const d = new Date('2013-09-25')  // → Wed Sep 25 2013 02:00:00 GMT+0200
+const d = new Date("2013-09-25"); // → Wed Sep 25 2013 02:00:00 GMT+0200
 
 // String() on a Date object produces a locale string, NOT ISO 8601
-String(d)  // → "Wed Sep 25 2013 02:00:00 GMT+0200 (Central European Summer Time)"
+String(d); // → "Wed Sep 25 2013 02:00:00 GMT+0200 (Central European Summer Time)"
 
 // formatDate appends T00:00:00Z to this garbage
-new Date(String(d) + 'T00:00:00Z')  // → Invalid Date
+new Date(String(d) + "T00:00:00Z"); // → Invalid Date
 
 // MONTH_NAMES[NaN] === undefined
 // Invalid Date getters return NaN
@@ -87,12 +87,12 @@ All 16 are affected by this bug.
 
 ### 2.2 Files Involved
 
-| File | Role | Action Required |
-|------|------|----------------|
-| `src/lib/content.ts` | Data loading — converts frontmatter to typed `Post` objects | Normalize comment dates at line 66 |
-| `src/components/Comment.tsx` | Rendering — displays a single comment | Remove redundant `typeof` guards; add Invalid Date fallback |
-| `src/lib/utils.ts` | `formatDate()` utility | No change needed — works correctly when given a valid ISO string |
-| `src/lib/types.ts` | `Comment` interface | No change needed — `date: string` is already correct |
+| File                         | Role                                                        | Action Required                                                  |
+| ---------------------------- | ----------------------------------------------------------- | ---------------------------------------------------------------- |
+| `src/lib/content.ts`         | Data loading — converts frontmatter to typed `Post` objects | Normalize comment dates at line 66                               |
+| `src/components/Comment.tsx` | Rendering — displays a single comment                       | Remove redundant `typeof` guards; add Invalid Date fallback      |
+| `src/lib/utils.ts`           | `formatDate()` utility                                      | No change needed — works correctly when given a valid ISO string |
+| `src/lib/types.ts`           | `Comment` interface                                         | No change needed — `date: string` is already correct             |
 
 ## 3. Fix Strategy
 
@@ -166,28 +166,28 @@ const { dateTime, label } = safeDateDisplay(comment.date);
 
 ## 4. Alternatives Considered
 
-| Approach | Verdict | Reason |
-|----------|---------|--------|
-| Fix only in `Comment.tsx` (parse the Date object at render time) | Rejected | Violates the type contract; `comment.date` type is `string`; upstream fix is cleaner |
-| Fix only in `content.ts` | Acceptable minimum | Satisfies FR-001 to FR-003, FR-005 to FR-007; does not satisfy FR-004 (fallback) |
-| Fix in `formatDate()` (detect `Date` objects) | Rejected | `formatDate` takes a `string` parameter; changing its signature widens scope unnecessarily |
-| Add a new utility function | Rejected | Overkill; the fix is small enough to inline in the two affected files |
+| Approach                                                         | Verdict            | Reason                                                                                     |
+| ---------------------------------------------------------------- | ------------------ | ------------------------------------------------------------------------------------------ |
+| Fix only in `Comment.tsx` (parse the Date object at render time) | Rejected           | Violates the type contract; `comment.date` type is `string`; upstream fix is cleaner       |
+| Fix only in `content.ts`                                         | Acceptable minimum | Satisfies FR-001 to FR-003, FR-005 to FR-007; does not satisfy FR-004 (fallback)           |
+| Fix in `formatDate()` (detect `Date` objects)                    | Rejected           | `formatDate` takes a `string` parameter; changing its signature widens scope unnecessarily |
+| Add a new utility function                                       | Rejected           | Overkill; the fix is small enough to inline in the two affected files                      |
 
 ## 5. Risk Register
 
-| Risk | Likelihood | Impact | Mitigation |
-|------|-----------|--------|------------|
-| Spread operator drops unknown comment fields | Low | Low | Explicit `...c` preserves all fields; only `date` is overwritten |
-| `toISOString().slice(0, 10)` changes timezone for edge-case dates | Very Low | Low | All existing comment dates are mid-year (no DST boundary issues); UTC-normalized |
-| Post-level date normalization accidentally touched | None | High | Primary fix is scoped to `data.comments` mapping only; post date lines are unchanged |
-| `Invalid Date` from future malformed frontmatter causes build error | Resolved | High | Graceful fallback in Comment.tsx returns "Unknown date" rather than crashing |
+| Risk                                                                | Likelihood | Impact | Mitigation                                                                           |
+| ------------------------------------------------------------------- | ---------- | ------ | ------------------------------------------------------------------------------------ |
+| Spread operator drops unknown comment fields                        | Low        | Low    | Explicit `...c` preserves all fields; only `date` is overwritten                     |
+| `toISOString().slice(0, 10)` changes timezone for edge-case dates   | Very Low   | Low    | All existing comment dates are mid-year (no DST boundary issues); UTC-normalized     |
+| Post-level date normalization accidentally touched                  | None       | High   | Primary fix is scoped to `data.comments` mapping only; post date lines are unchanged |
+| `Invalid Date` from future malformed frontmatter causes build error | Resolved   | High   | Graceful fallback in Comment.tsx returns "Unknown date" rather than crashing         |
 
 ## 6. Decisions
 
-| Decision | Choice | Rationale |
-|----------|--------|-----------|
-| Where to apply primary fix | `content.ts` (load time) | Consistent with existing post-level normalization; single source of truth |
-| Where to add fallback | `Comment.tsx` (render time) | Defensive; covers edge cases not possible to produce from current data |
-| New dependencies | None | Reuses existing `instanceof Date` → `toISOString()` pattern already in codebase |
-| Modify MDX source files | No | FR-007 explicitly prohibits this |
-| Modify `formatDate()` | No | Its interface is correct; callers must pass valid ISO strings |
+| Decision                   | Choice                      | Rationale                                                                       |
+| -------------------------- | --------------------------- | ------------------------------------------------------------------------------- |
+| Where to apply primary fix | `content.ts` (load time)    | Consistent with existing post-level normalization; single source of truth       |
+| Where to add fallback      | `Comment.tsx` (render time) | Defensive; covers edge cases not possible to produce from current data          |
+| New dependencies           | None                        | Reuses existing `instanceof Date` → `toISOString()` pattern already in codebase |
+| Modify MDX source files    | No                          | FR-007 explicitly prohibits this                                                |
+| Modify `formatDate()`      | No                          | Its interface is correct; callers must pass valid ISO strings                   |

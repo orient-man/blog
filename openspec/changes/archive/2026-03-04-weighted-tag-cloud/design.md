@@ -10,6 +10,7 @@ Tag display names fall back to the raw slug when no `TAG_SLUG_MAP` entry exists.
 This is correct for single-word slugs (`refactoring`) but tags with intentional hyphens (`dependency-injection`) should preserve them in the display name.
 
 Current files involved:
+
 - `src/components/TagCloud.tsx` — sidebar tag cloud with 4-tier sizing
 - `src/app/tags/page.tsx` — tags index with uniform sizing
 - `src/lib/content.ts` — `getAllTags()` builds `Tag[]` with display names
@@ -44,6 +45,7 @@ Logarithmic scaling compresses the high end and spreads out the low end, making 
 This matches WordPress's `wp_tag_cloud` implementation.
 
 **Algorithm**:
+
 ```typescript
 function tagFontSize(
   count: number,
@@ -53,16 +55,18 @@ function tagFontSize(
   maxSize = 1.5,
 ): number {
   if (minCount === maxCount) return (minSize + maxSize) / 2;
-  const ratio = (Math.log(count) - Math.log(minCount))
-              / (Math.log(maxCount) - Math.log(minCount));
+  const ratio =
+    (Math.log(count) - Math.log(minCount)) /
+    (Math.log(maxCount) - Math.log(minCount));
   return minSize + ratio * (maxSize - minSize);
 }
 ```
 
 **Alternatives considered**:
-- *Linear scale*: Simpler but poor visual distribution. Rejected.
-- *Square root scale*: Less spread than log. WordPress uses log. Rejected.
-- *Bucket-based* (current approach): Loses the continuous feel. This is what we're replacing.
+
+- _Linear scale_: Simpler but poor visual distribution. Rejected.
+- _Square root scale_: Less spread than log. WordPress uses log. Rejected.
+- _Bucket-based_ (current approach): Loses the continuous feel. This is what we're replacing.
 
 ### Decision 2: Inline `style={{ fontSize }}` for continuous sizing
 
@@ -73,9 +77,10 @@ Arbitrary value classes like `text-[0.87rem]` would work but generate unique cla
 Inline styles for `fontSize` alone keep the CSS clean while Tailwind handles all other styling.
 
 **Alternatives considered**:
-- *Tailwind arbitrary values* (`text-[Xrem]`): Works but generates many unique classes. Rejected for stylesheet bloat.
-- *CSS custom properties + calc()*: Over-engineered for this use case. Rejected.
-- *Pure inline styles for everything*: Loses Tailwind's hover/dark mode support. Rejected.
+
+- _Tailwind arbitrary values_ (`text-[Xrem]`): Works but generates many unique classes. Rejected for stylesheet bloat.
+- _CSS custom properties + calc()_: Over-engineered for this use case. Rejected.
+- _Pure inline styles for everything_: Loses Tailwind's hover/dark mode support. Rejected.
 
 ### Decision 3: Shared utility function in `utils.ts`
 

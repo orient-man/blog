@@ -5,7 +5,7 @@
 **Status**: Draft
 **Input**: User description: "bug - comments shows undefined NaN"
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - Comment Dates Display Correctly (Priority: P1)
 
@@ -51,7 +51,7 @@ Rather than crashing or showing "undefined NaN", the system gracefully handles t
 - What happens when a comment has no date field at all?
 - What happens when a comment author field is empty? (Currently handled — shows "?" as avatar initials.)
 
-## Requirements *(mandatory)*
+## Requirements _(mandatory)_
 
 ### Functional Requirements
 
@@ -68,7 +68,7 @@ Rather than crashing or showing "undefined NaN", the system gracefully handles t
 - **Comment**: A historical WordPress comment with attributes: author (string), date (string in "YYYY-MM-DD" format after normalization), content (string, may contain HTML). Associated with a Post via frontmatter metadata.
 - **Post**: A blog post that MAY contain zero or more Comments. Post-level dates are already normalized correctly and are unaffected by this fix.
 
-## Success Criteria *(mandatory)*
+## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 
@@ -88,11 +88,13 @@ Rather than crashing or showing "undefined NaN", the system gracefully handles t
 ## Scope Boundaries
 
 **In scope**:
+
 - Fixing the "undefined NaN" display in comment dates
 - Normalizing comment date values during data loading
 - Adding defensive handling for missing or malformed comment dates
 
 **Out of scope**:
+
 - HTML entity decoding in comment content
 - Adding new commenting functionality
 - Changing the comment data storage format in MDX files

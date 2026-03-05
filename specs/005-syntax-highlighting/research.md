@@ -8,13 +8,13 @@
 
 ### 1.1 Packages Already Installed
 
-| Package | Version | Role |
-|---------|---------|------|
-| `rehype-pretty-code` | ^0.14.0 | Build-time syntax highlighting via Shiki |
-| `shiki` | ^1.29.2 | Tokeniser; ships VS Code TextMate grammars for 200+ languages |
-| `@mdx-js/mdx` | ^3.1.0 | MDX compilation with `evaluate()` |
-| `@next/mdx` | ^14.2.35 | Next.js MDX integration (secondary path) |
-| `remark-gfm` | ^4.0.1 | GitHub Flavored Markdown (tables, strikethrough, etc.) |
+| Package              | Version  | Role                                                          |
+| -------------------- | -------- | ------------------------------------------------------------- |
+| `rehype-pretty-code` | ^0.14.0  | Build-time syntax highlighting via Shiki                      |
+| `shiki`              | ^1.29.2  | Tokeniser; ships VS Code TextMate grammars for 200+ languages |
+| `@mdx-js/mdx`        | ^3.1.0   | MDX compilation with `evaluate()`                             |
+| `@next/mdx`          | ^14.2.35 | Next.js MDX integration (secondary path)                      |
+| `remark-gfm`         | ^4.0.1   | GitHub Flavored Markdown (tables, strikethrough, etc.)        |
 
 **Key finding**: All highlighting infrastructure is already present.
 This feature activates and extends the existing pipeline — no new npm dependencies needed.
@@ -27,11 +27,11 @@ Posts are rendered via `@mdx-js/mdx`'s `evaluate()` in
 ```typescript
 // Primary rendering path (app router dynamic route)
 const { default: Content } = await evaluate(source, {
-  format: 'md',
+  format: "md",
   remarkPlugins: [remarkGfm],
   rehypePlugins: [[rehypePrettyCode, prettyCodeOptions]],
   ...runtime,
-})
+});
 ```
 
 The same options are duplicated in `next.config.mjs` for `@next/mdx` page routes
@@ -41,9 +41,9 @@ The same options are duplicated in `next.config.mjs` for `@next/mdx` page routes
 
 ```typescript
 const prettyCodeOptions = {
-  theme: { dark: 'github-dark', light: 'github-light' },
+  theme: { dark: "github-dark", light: "github-light" },
   keepBackground: false,
-}
+};
 ```
 
 ### 1.3 Generated HTML Structure
@@ -52,7 +52,11 @@ const prettyCodeOptions = {
 
 ```html
 <figure data-rehype-pretty-code-figure="">
-  <pre tabindex="0" data-language="csharp" data-theme="github-dark github-light">
+  <pre
+    tabindex="0"
+    data-language="csharp"
+    data-theme="github-dark github-light"
+  >
     <code data-language="csharp" data-theme="github-dark github-light" style="display:grid">
       <span data-line="">
         <span style="--shiki-dark:#79C0FF;--shiki-light:#0550AE">using</span>
@@ -138,8 +142,8 @@ The recommended approach is pure CSS counters:
   width: 1rem;
   margin-right: 1.5rem;
   text-align: right;
-  color: hsl(0 0% 60%);          /* neutral gutter colour */
-  user-select: none;              /* exclude from text selection / copy */
+  color: hsl(0 0% 60%); /* neutral gutter colour */
+  user-select: none; /* exclude from text selection / copy */
   font-variant-numeric: tabular-nums;
 }
 ```
@@ -151,11 +155,11 @@ The recommended approach is pure CSS counters:
 
 ### 4.1 Options Evaluated
 
-| Option | Pros | Cons | Decision |
-|--------|------|------|----------|
-| `rehype-pretty-copy` (experimental plugin) | Zero runtime JS; button HTML injected at build time | Experimental status; still needs client JS to wire up `navigator.clipboard`; adds a dependency | **Rejected** |
-| React client component (`'use client'`) | Clean React pattern | Adds component hydration boundary; more complex than needed | **Rejected** |
-| Minimal inline `<script>` in layout | 5–8 lines; no dependencies; works on all static pages; idiomatic for progressive enhancement | `dangerouslySetInnerHTML` needed in layout component | **Selected** |
+| Option                                     | Pros                                                                                         | Cons                                                                                           | Decision     |
+| ------------------------------------------ | -------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ------------ |
+| `rehype-pretty-copy` (experimental plugin) | Zero runtime JS; button HTML injected at build time                                          | Experimental status; still needs client JS to wire up `navigator.clipboard`; adds a dependency | **Rejected** |
+| React client component (`'use client'`)    | Clean React pattern                                                                          | Adds component hydration boundary; more complex than needed                                    | **Rejected** |
+| Minimal inline `<script>` in layout        | 5–8 lines; no dependencies; works on all static pages; idiomatic for progressive enhancement | `dangerouslySetInnerHTML` needed in layout component                                           | **Selected** |
 
 ### 4.2 Selected Approach — Inline Script in Layout
 
@@ -164,13 +168,17 @@ handles all copy buttons across every page with a single event delegation patter
 
 ```javascript
 // Event delegation — one listener for all copy buttons on the page
-document.addEventListener('click', function(e) {
-  var btn = e.target.closest('[data-copy-btn]');
+document.addEventListener("click", function (e) {
+  var btn = e.target.closest("[data-copy-btn]");
   if (!btn) return;
-  var pre = btn.closest('[data-rehype-pretty-code-figure]').querySelector('pre');
-  navigator.clipboard.writeText(pre.innerText).then(function() {
-    btn.setAttribute('data-copied', '');
-    setTimeout(function() { btn.removeAttribute('data-copied'); }, 2000);
+  var pre = btn
+    .closest("[data-rehype-pretty-code-figure]")
+    .querySelector("pre");
+  navigator.clipboard.writeText(pre.innerText).then(function () {
+    btn.setAttribute("data-copied", "");
+    setTimeout(function () {
+      btn.removeAttribute("data-copied");
+    }, 2000);
   });
 });
 ```
@@ -190,25 +198,28 @@ The correct approach is to add a small custom rehype plugin that runs AFTER
 
 ```typescript
 // scripts/rehype-copy-button.ts (or inline in next.config.mjs / page.tsx)
-import { visit } from 'unist-util-visit'
-import type { Root, Element } from 'hast'
+import { visit } from "unist-util-visit";
+import type { Root, Element } from "hast";
 
 export function rehypeCopyButton() {
   return (tree: Root) => {
-    visit(tree, 'element', (node: Element) => {
+    visit(tree, "element", (node: Element) => {
       if (
-        node.tagName === 'figure' &&
-        Object.prototype.hasOwnProperty.call(node.properties, 'dataRehypePrettyCodeFigure')
+        node.tagName === "figure" &&
+        Object.prototype.hasOwnProperty.call(
+          node.properties,
+          "dataRehypePrettyCodeFigure",
+        )
       ) {
         node.children.push({
-          type: 'element',
-          tagName: 'button',
-          properties: { 'data-copy-btn': '' },
-          children: [{ type: 'text', value: 'Copy' }],
-        })
+          type: "element",
+          tagName: "button",
+          properties: { "data-copy-btn": "" },
+          children: [{ type: "text", value: "Copy" }],
+        });
       }
-    })
-  }
+    });
+  };
 }
 ```
 
@@ -219,25 +230,25 @@ The inline script in layout handles the runtime click → clipboard flow.
 
 ### 5.1 Summary
 
-| Category | Count |
-|----------|-------|
-| Total MDX posts | 33 |
-| Already have fenced code blocks | 11 |
-| No fenced blocks, prose-only | ~14 |
-| No fenced blocks, likely contain code | ~8 |
+| Category                              | Count |
+| ------------------------------------- | ----- |
+| Total MDX posts                       | 33    |
+| Already have fenced code blocks       | 11    |
+| No fenced blocks, prose-only          | ~14   |
+| No fenced blocks, likely contain code | ~8    |
 
 ### 5.2 Posts Confirmed to Need Conversion
 
 The following posts were identified during exploration as containing code content
 not wrapped in fenced code blocks:
 
-| Post (slug) | Code Content | Likely Language |
-|-------------|-------------|-----------------|
-| `checking-for-outdated-package-references-during-build-with-fake-paket` | Paket/MSBuild scripts, command output | `bash`, `xml` |
-| `how--not--to-upgrade-to-asp-net-core-2-0-just-yet-with-paket` | Paket dependency files, commands | `bash`, `text` |
-| `chutzpah-to-run-javascript-tests` | Config JSON, command output | `json`, `bash` |
-| `tips-for-running-visualstudio-2010-resharper-7-on-32-bit-windows` | Registry keys, config snippets | `text`, `xml` |
-| `for-the-record-how-to-run-nuget-exe-on-os-x-mountain-lion` | Shell commands, mono invocation | `bash` |
+| Post (slug)                                                             | Code Content                          | Likely Language |
+| ----------------------------------------------------------------------- | ------------------------------------- | --------------- |
+| `checking-for-outdated-package-references-during-build-with-fake-paket` | Paket/MSBuild scripts, command output | `bash`, `xml`   |
+| `how--not--to-upgrade-to-asp-net-core-2-0-just-yet-with-paket`          | Paket dependency files, commands      | `bash`, `text`  |
+| `chutzpah-to-run-javascript-tests`                                      | Config JSON, command output           | `json`, `bash`  |
+| `tips-for-running-visualstudio-2010-resharper-7-on-32-bit-windows`      | Registry keys, config snippets        | `text`, `xml`   |
+| `for-the-record-how-to-run-nuget-exe-on-os-x-mountain-lion`             | Shell commands, mono invocation       | `bash`          |
 
 ### 5.3 Languages in Existing Fenced Blocks
 
@@ -263,36 +274,36 @@ A TypeScript script (`scripts/audit-code-blocks.ts`) will:
 
 Shiki 1.29 ships grammars for all required languages from FR-001:
 
-| Language | Shiki ID | Notes |
-|----------|----------|-------|
-| C# | `csharp` or `cs` | ✅ Built-in |
-| F# | `fsharp` or `fs` | ✅ Built-in |
-| C++ | `cpp` | ✅ Built-in |
-| JavaScript | `javascript` or `js` | ✅ Built-in |
-| TypeScript | `typescript` or `ts` | ✅ Built-in |
-| HTML | `html` | ✅ Built-in |
-| CSS | `css` | ✅ Built-in |
-| XML | `xml` | ✅ Built-in |
-| Bash | `bash` or `sh` | ✅ Built-in |
-| Diff | `diff` | ✅ Built-in |
-| JSON | `json` | ✅ Built-in (useful for audit findings) |
+| Language   | Shiki ID             | Notes                                   |
+| ---------- | -------------------- | --------------------------------------- |
+| C#         | `csharp` or `cs`     | ✅ Built-in                             |
+| F#         | `fsharp` or `fs`     | ✅ Built-in                             |
+| C++        | `cpp`                | ✅ Built-in                             |
+| JavaScript | `javascript` or `js` | ✅ Built-in                             |
+| TypeScript | `typescript` or `ts` | ✅ Built-in                             |
+| HTML       | `html`               | ✅ Built-in                             |
+| CSS        | `css`                | ✅ Built-in                             |
+| XML        | `xml`                | ✅ Built-in                             |
+| Bash       | `bash` or `sh`       | ✅ Built-in                             |
+| Diff       | `diff`               | ✅ Built-in                             |
+| JSON       | `json`               | ✅ Built-in (useful for audit findings) |
 
 ## 7. Risk Register
 
-| Risk | Likelihood | Impact | Mitigation |
-|------|-----------|--------|------------|
-| Inline script conflicts with Next.js hydration | Low | Medium | Use `defer` attribute; event delegation fires after DOM ready |
-| `counter-reset` already present causes double-counting | Low | Low | Inspect generated CSS; `counter-reset` on `code` + `counter-increment` on `[data-line]::before` is the correct pairing |
-| Un-fenced code in posts not caught by audit script | Medium | Low | Script is a hint tool only; author does final manual review (FR-014) |
-| `rehype-copy-button` plugin incompatible with `@next/mdx` path | Low | Low | Plugin must be added to both `next.config.mjs` and `page.tsx` evaluate() options |
-| Dark/light Shiki token CSS conflicts with existing prose styles | Low | Medium | Test both themes in browser after CSS change; existing `--code-bg` rules are scoped to `[data-rehype-pretty-code-figure]` |
+| Risk                                                            | Likelihood | Impact | Mitigation                                                                                                                |
+| --------------------------------------------------------------- | ---------- | ------ | ------------------------------------------------------------------------------------------------------------------------- |
+| Inline script conflicts with Next.js hydration                  | Low        | Medium | Use `defer` attribute; event delegation fires after DOM ready                                                             |
+| `counter-reset` already present causes double-counting          | Low        | Low    | Inspect generated CSS; `counter-reset` on `code` + `counter-increment` on `[data-line]::before` is the correct pairing    |
+| Un-fenced code in posts not caught by audit script              | Medium     | Low    | Script is a hint tool only; author does final manual review (FR-014)                                                      |
+| `rehype-copy-button` plugin incompatible with `@next/mdx` path  | Low        | Low    | Plugin must be added to both `next.config.mjs` and `page.tsx` evaluate() options                                          |
+| Dark/light Shiki token CSS conflicts with existing prose styles | Low        | Medium | Test both themes in browser after CSS change; existing `--code-bg` rules are scoped to `[data-rehype-pretty-code-figure]` |
 
 ## 8. Decisions
 
-| Decision | Choice | Rationale |
-|----------|--------|-----------|
-| Line number implementation | CSS counters | Already 50% done (`counter-reset` present); zero JS; no config |
-| Copy button injection | Custom rehype plugin at build time | Button HTML is static; only click handler needs runtime |
-| Copy button runtime | Inline `<script>` with event delegation | Minimal; no dependencies; SC-005 compliant |
-| Content audit | Script + manual review | FR-014 explicitly requires hybrid approach |
-| New npm dependencies | None | All required packages already installed |
+| Decision                   | Choice                                  | Rationale                                                      |
+| -------------------------- | --------------------------------------- | -------------------------------------------------------------- |
+| Line number implementation | CSS counters                            | Already 50% done (`counter-reset` present); zero JS; no config |
+| Copy button injection      | Custom rehype plugin at build time      | Button HTML is static; only click handler needs runtime        |
+| Copy button runtime        | Inline `<script>` with event delegation | Minimal; no dependencies; SC-005 compliant                     |
+| Content audit              | Script + manual review                  | FR-014 explicitly requires hybrid approach                     |
+| New npm dependencies       | None                                    | All required packages already installed                        |

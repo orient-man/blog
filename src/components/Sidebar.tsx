@@ -1,8 +1,10 @@
-import Link from 'next/link';
-import type { Tag, ArchiveMonth, BlogrollEntry, Post } from '@/lib/types';
-import { CATEGORIES } from '@/lib/types';
-import { formatMonthYear, postUrlPath, pad2 } from '@/lib/utils';
-import TagCloud from './TagCloud';
+import Link from "next/link";
+
+import type { Tag, ArchiveMonth, BlogrollEntry, Post } from "@/lib/types";
+import { CATEGORIES } from "@/lib/types";
+import { formatMonthYear, postUrlPath, pad2 } from "@/lib/utils";
+
+import TagCloud from "./TagCloud";
 
 interface SidebarProps {
   allTags: Tag[];
@@ -32,11 +34,11 @@ export default function Sidebar({
           className="rounded-full w-32 h-32 mx-auto mb-4 ring-2 ring-gray-200 dark:ring-gray-700"
         />
         <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-          Tata², mąż humanistki, mól książkowy, programista, konferencjoholik.{' '}
+          Tata², mąż humanistki, mól książkowy, programista, konferencjoholik.{" "}
           Don Kichot walczący z entropią. Kocha sprzeczności i humor.
         </p>
         <p className="mt-2 text-gray-600 dark:text-gray-400 leading-relaxed">
-          Don Quixote fighting entropy — a programming blog by{' '}
+          Don Quixote fighting entropy — a programming blog by{" "}
           <Link
             href="/page/curriculum-vitae-pl/"
             className="text-blue-600 dark:text-blue-400 hover:underline"
@@ -110,8 +112,10 @@ export default function Sidebar({
                   href={`/archive/${year}/${pad2(month)}/`}
                   className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                 >
-                  {formatMonthYear(year, month)}{' '}
-                  <span className="text-gray-400 dark:text-gray-500">({count})</span>
+                  {formatMonthYear(year, month)}{" "}
+                  <span className="text-gray-400 dark:text-gray-500">
+                    ({count})
+                  </span>
                 </Link>
               </li>
             ))}

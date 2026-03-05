@@ -30,7 +30,9 @@
 body {
   background-color: var(--bg);
   color: var(--fg);
-  font-feature-settings: 'liga' 1, 'kern' 1;
+  font-feature-settings:
+    "liga" 1,
+    "kern" 1;
 }
 
 /* ── Prose overrides (Tailwind Typography) ───────────────────────── */
@@ -62,7 +64,7 @@ body {
 }
 
 [data-rehype-pretty-code-figure] code {
-  font-family: 'JetBrains Mono', Menlo, monospace;
+  font-family: "JetBrains Mono", Menlo, monospace;
   counter-reset: line;
 }
 
@@ -127,7 +129,7 @@ code[data-theme*=" "] span {
 }
 
 [data-copy-btn][data-copied]::after {
-  content: 'Copied!';
+  content: "Copied!";
   position: absolute;
   right: calc(100% + 0.4rem);
   top: 50%;

@@ -1,23 +1,30 @@
-import type { Metadata } from 'next';
-import Link from 'next/link';
-import '@/styles/globals.css';
-import { getAllTags, getArchiveMonths, getBlogroll, getAllPosts } from '@/lib/content';
-import Sidebar from '@/components/Sidebar';
-import DarkModeToggle from '@/components/DarkModeToggle';
+import type { Metadata } from "next";
+import Link from "next/link";
+
+import "@/styles/globals.css";
+import DarkModeToggle from "@/components/DarkModeToggle";
+import Sidebar from "@/components/Sidebar";
+import {
+  getAllTags,
+  getArchiveMonths,
+  getBlogroll,
+  getAllPosts,
+} from "@/lib/content";
 
 export const metadata: Metadata = {
   title: {
-    default: 'Just A Programmer',
-    template: '%s | Just A Programmer',
+    default: "Just A Programmer",
+    template: "%s | Just A Programmer",
   },
-  description: 'Don Quixote fighting entropy — a programming blog by Marcin Malinowski',
+  description:
+    "Don Quixote fighting entropy — a programming blog by Marcin Malinowski",
   openGraph: {
-    siteName: 'Just A Programmer',
-    type: 'website',
+    siteName: "Just A Programmer",
+    type: "website",
   },
   alternates: {
     types: {
-      'application/rss+xml': '/feed.xml',
+      "application/rss+xml": "/feed.xml",
     },
   },
 };
@@ -69,9 +76,7 @@ export default function RootLayout({
           <div className="flex-1 max-w-5xl mx-auto w-full px-4 py-8">
             <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
               {/* Main content */}
-              <main className="flex-1 min-w-0">
-                {children}
-              </main>
+              <main className="flex-1 min-w-0">{children}</main>
 
               {/* Sidebar — hidden on mobile, shown on lg+ */}
               <div className="lg:w-64 xl:w-72 shrink-0">
@@ -89,16 +94,26 @@ export default function RootLayout({
           <footer className="border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950">
             <div className="max-w-5xl mx-auto px-4 py-6 text-sm text-gray-500 dark:text-gray-400 flex flex-col sm:flex-row justify-between gap-2">
               <span>
-                &copy; {new Date().getFullYear()} Marcin Malinowski. Migrated from WordPress.
+                &copy; {new Date().getFullYear()} Marcin Malinowski. Migrated
+                from WordPress.
               </span>
               <nav className="flex gap-4">
-                <Link href="/" className="hover:text-gray-900 dark:hover:text-gray-100 transition-colors">
+                <Link
+                  href="/"
+                  className="hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+                >
                   Home
                 </Link>
-                <Link href="/search/" className="hover:text-gray-900 dark:hover:text-gray-100 transition-colors">
+                <Link
+                  href="/search/"
+                  className="hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+                >
                   Search
                 </Link>
-                <Link href="/page/curriculum-vitae-pl/" className="hover:text-gray-900 dark:hover:text-gray-100 transition-colors">
+                <Link
+                  href="/page/curriculum-vitae-pl/"
+                  className="hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+                >
                   CV
                 </Link>
               </nav>

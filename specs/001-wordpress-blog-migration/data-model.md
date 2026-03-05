@@ -22,19 +22,19 @@ A blog entry. The primary content unit.
 
 ```yaml
 ---
-title: "Post Title"                          # string, REQUIRED
-date: "2017-08-15"                           # ISO 8601 date, REQUIRED
-author: "Marcin Malinowski"                  # string, REQUIRED
-category: "posts-in-english"                 # slug string, REQUIRED (exactly one)
-tags:                                        # string[], REQUIRED (0 or more)
+title: "Post Title" # string, REQUIRED
+date: "2017-08-15" # ISO 8601 date, REQUIRED
+author: "Marcin Malinowski" # string, REQUIRED
+category: "posts-in-english" # slug string, REQUIRED (exactly one)
+tags: # string[], REQUIRED (0 or more)
   - "fsharp"
   - "functional-programming"
   - "dotnet"
-format: "standard"                           # "standard" | "quote", REQUIRED
-slug: "my-post-slug"                         # string, REQUIRED (URL-safe)
-excerpt: "Brief summary of the post..."      # string, OPTIONAL (auto-generated if missing)
-wordpressUrl: "/2017/08/15/my-post-slug/"    # string, REQUIRED (original WP path for URL preservation)
-comments:                                    # Comment[], OPTIONAL
+format: "standard" # "standard" | "quote", REQUIRED
+slug: "my-post-slug" # string, REQUIRED (URL-safe)
+excerpt: "Brief summary of the post..." # string, OPTIONAL (auto-generated if missing)
+wordpressUrl: "/2017/08/15/my-post-slug/" # string, REQUIRED (original WP path for URL preservation)
+comments: # Comment[], OPTIONAL
   - author: "Reader Name"
     date: "2017-08-16"
     content: "Great post!"
@@ -42,7 +42,6 @@ comments:                                    # Comment[], OPTIONAL
     date: "2017-08-17"
     content: "Thanks for sharing."
 ---
-
 MDX content body here...
 ```
 
@@ -52,9 +51,9 @@ MDX content body here...
 interface Post {
   // Frontmatter fields
   title: string;
-  date: string;               // ISO 8601 date string
+  date: string; // ISO 8601 date string
   author: string;
-  category: CategorySlug;     // "posts-in-english" | "wpisy-po-polsku"
+  category: CategorySlug; // "posts-in-english" | "wpisy-po-polsku"
   tags: string[];
   format: "standard" | "quote";
   slug: string;
@@ -63,8 +62,8 @@ interface Post {
   comments?: Comment[];
 
   // Computed fields (from content loading)
-  content: string;            // Raw MDX string (for rendering)
-  readingTime?: number;       // Estimated minutes
+  content: string; // Raw MDX string (for rendering)
+  readingTime?: number; // Estimated minutes
 }
 ```
 
@@ -89,7 +88,7 @@ type CategorySlug = "posts-in-english" | "wpisy-po-polsku";
 
 interface Category {
   slug: CategorySlug;
-  name: string;              // Display name
+  name: string; // Display name
   description?: string;
 }
 
@@ -121,9 +120,9 @@ A descriptive label for cross-cutting topics.
 
 ```typescript
 interface Tag {
-  slug: string;              // URL-safe: "fsharp", "dotnet", "tdd"
-  name: string;              // Display name: "F#", ".NET", "TDD"
-  count: number;             // Number of posts with this tag
+  slug: string; // URL-safe: "fsharp", "dotnet", "tdd"
+  name: string; // Display name: "F#", ".NET", "TDD"
+  count: number; // Number of posts with this tag
 }
 ```
 
@@ -157,10 +156,10 @@ A reader comment on a post. Historical only — no new comments.
 
 ```typescript
 interface Comment {
-  author: string;            // Commenter's display name
-  date: string;              // ISO 8601 date string
-  content: string;           // Plain text or simple HTML
-  avatarUrl?: string;        // Gravatar or WordPress avatar URL (optional)
+  author: string; // Commenter's display name
+  date: string; // ISO 8601 date string
+  content: string; // Plain text or simple HTML
+  avatarUrl?: string; // Gravatar or WordPress avatar URL (optional)
 }
 ```
 
@@ -184,7 +183,6 @@ A standalone page not in the chronological post stream.
 title: "Curriculum Vitae"
 slug: "curriculum-vitae"
 ---
-
 Page content here...
 ```
 
@@ -194,7 +192,7 @@ Page content here...
 interface StaticPage {
   title: string;
   slug: string;
-  content: string;           // Raw MDX string
+  content: string; // Raw MDX string
 }
 ```
 
@@ -253,15 +251,15 @@ All content is loaded at build time via functions in `src/lib/content.ts`:
 
 ```typescript
 // Core loading functions
-function getAllPosts(): Post[];                          // All posts, sorted newest-first
+function getAllPosts(): Post[]; // All posts, sorted newest-first
 function getPostBySlug(slug: string): Post | undefined; // Single post by slug
-function getPostsByCategory(cat: CategorySlug): Post[];  // Filter by category
-function getPostsByTag(tagSlug: string): Post[];          // Filter by tag
+function getPostsByCategory(cat: CategorySlug): Post[]; // Filter by category
+function getPostsByTag(tagSlug: string): Post[]; // Filter by tag
 function getPostsByMonth(year: number, month: number): Post[]; // Filter by month
 
 // Metadata aggregation
-function getAllTags(): Tag[];                             // All unique tags with counts
-function getAllCategories(): Category[];                  // Fixed category list
+function getAllTags(): Tag[]; // All unique tags with counts
+function getAllCategories(): Category[]; // Fixed category list
 function getArchiveMonths(): { year: number; month: number; count: number }[];
 
 // Static pages
@@ -269,7 +267,7 @@ function getAllPages(): StaticPage[];
 function getPageBySlug(slug: string): StaticPage | undefined;
 
 // Blogroll
-function getBlogroll(): BlogrollEntry[];                 // Parse blogroll.json
+function getBlogroll(): BlogrollEntry[]; // Parse blogroll.json
 ```
 
 These functions read from the filesystem using `fs.readFileSync` + `gray-matter`
@@ -279,18 +277,18 @@ at build time. They are called in `generateStaticParams()` and page components.
 
 WordPress WXR field → MDX frontmatter field:
 
-| WXR XML Element | MDX Frontmatter | Transform |
-|-----------------|----------------|-----------|
-| `<title>` | `title` | Direct copy |
-| `<wp:post_date>` | `date` | Parse to ISO 8601 |
-| `<dc:creator>` | `author` | Direct copy |
-| `<category domain="category">` | `category` | Slugify |
-| `<category domain="post_tag">` | `tags[]` | Slugify each |
-| `<wp:post_name>` | `slug` | Direct copy (already URL-safe) |
-| `<content:encoded>` | MDX body | HTML → Markdown via Turndown |
-| `<excerpt:encoded>` | `excerpt` | HTML → plain text |
-| `<wp:post_type>` = "post" | — | Emit to `content/posts/` |
-| `<wp:post_type>` = "page" | — | Emit to `content/pages/` |
-| `<wp:comment>` children | `comments[]` | Extract author, date, content |
-| `<link>` path | `wordpressUrl` | Extract path portion |
-| Post format (from terms) | `format` | Map to "standard" or "quote" |
+| WXR XML Element                | MDX Frontmatter | Transform                      |
+| ------------------------------ | --------------- | ------------------------------ |
+| `<title>`                      | `title`         | Direct copy                    |
+| `<wp:post_date>`               | `date`          | Parse to ISO 8601              |
+| `<dc:creator>`                 | `author`        | Direct copy                    |
+| `<category domain="category">` | `category`      | Slugify                        |
+| `<category domain="post_tag">` | `tags[]`        | Slugify each                   |
+| `<wp:post_name>`               | `slug`          | Direct copy (already URL-safe) |
+| `<content:encoded>`            | MDX body        | HTML → Markdown via Turndown   |
+| `<excerpt:encoded>`            | `excerpt`       | HTML → plain text              |
+| `<wp:post_type>` = "post"      | —               | Emit to `content/posts/`       |
+| `<wp:post_type>` = "page"      | —               | Emit to `content/pages/`       |
+| `<wp:comment>` children        | `comments[]`    | Extract author, date, content  |
+| `<link>` path                  | `wordpressUrl`  | Extract path portion           |
+| Post format (from terms)       | `format`        | Map to "standard" or "quote"   |

@@ -26,24 +26,24 @@ Zero changes are made to existing source, content, or configuration files.
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+_GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
 ### Pre-Research Gate (PASSED)
 
-| Principle | Status | Evidence |
-|-----------|--------|----------|
-| **I. Simplicity** | PASS | Single YAML workflow file and one plain-text CNAME file. Zero new npm packages. All actions are official GitHub first-party. No database, no server runtime, no dynamic backends added. |
-| **II. Content-First** | PASS | The deployment pipeline is purely infrastructure — it builds existing MDX content and publishes it. No changes to content format, authoring workflow, or reading experience. |
+| Principle             | Status | Evidence                                                                                                                                                                                |
+| --------------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **I. Simplicity**     | PASS   | Single YAML workflow file and one plain-text CNAME file. Zero new npm packages. All actions are official GitHub first-party. No database, no server runtime, no dynamic backends added. |
+| **II. Content-First** | PASS   | The deployment pipeline is purely infrastructure — it builds existing MDX content and publishes it. No changes to content format, authoring workflow, or reading experience.            |
 
 No dependency justification table required — GitHub Actions are CI/CD infrastructure,
 not application dependencies, and introduce no runtime complexity.
 
 ### Post-Design Re-Check (PASSED)
 
-| Principle | Status | Notes |
-|-----------|--------|-------|
-| **I. Simplicity** | PASS | Three new files total (deploy.yml, CNAME, README.md). No new npm dependencies. No changes to existing build config. Infrastructure is 100% declarative YAML. |
-| **II. Content-First** | PASS | Deployment is transparent to content authors: write MDX, push to `main`, site updates automatically. The custom domain improves the reading experience with a clean URL. |
+| Principle             | Status | Notes                                                                                                                                                                    |
+| --------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **I. Simplicity**     | PASS   | Three new files total (deploy.yml, CNAME, README.md). No new npm dependencies. No changes to existing build config. Infrastructure is 100% declarative YAML.             |
+| **II. Content-First** | PASS   | Deployment is transparent to content authors: write MDX, push to `main`, site updates automatically. The custom domain improves the reading experience with a clean URL. |
 
 ## Project Structure
 

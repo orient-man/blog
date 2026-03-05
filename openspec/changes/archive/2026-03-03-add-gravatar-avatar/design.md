@@ -26,6 +26,7 @@ The `next.config.mjs` uses `images: { unoptimized: true }`, so standard `<img>` 
 **Decision**: Hardcode the pre-computed MD5 hash of `orientman@gmail.com` as a string constant.
 
 **Alternatives considered**:
+
 - Add an `md5` npm package — rejected because it adds a dependency for a single static value.
 - Compute at build time via a script — rejected as unnecessary complexity for one value.
 
@@ -37,6 +38,7 @@ Computing the MD5 hash once offline and embedding the result is the simplest app
 **Decision**: Use a plain `<img>` tag.
 
 **Alternatives considered**:
+
 - `next/image` — rejected because `images.unoptimized: true` is already set in config, making `next/image` add complexity without benefit for an external URL.
 
 **Rationale**: The Gravatar URL is an external resource. A plain `<img>` is simpler and sufficient.

@@ -24,35 +24,35 @@ with YAML frontmatter in the repository. No databases, no server-side runtime.
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+_GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
 ### Pre-Research Gate (PASSED)
 
-| Principle | Status | Evidence |
-|-----------|--------|----------|
-| **I. Simplicity** | PASS | Static export (`output: 'export'`), no database, no server runtime, no dynamic backends. Content lives in git as MDX files. |
-| **II. Content-First** | PASS | MDX/Markdown is the canonical format. All posts authored in Markdown with YAML frontmatter. Tooling (rehype, remark) serves content readability. |
+| Principle             | Status | Evidence                                                                                                                                         |
+| --------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **I. Simplicity**     | PASS   | Static export (`output: 'export'`), no database, no server runtime, no dynamic backends. Content lives in git as MDX files.                      |
+| **II. Content-First** | PASS   | MDX/Markdown is the canonical format. All posts authored in Markdown with YAML frontmatter. Tooling (rehype, remark) serves content readability. |
 
 ### Dependency Justification
 
 Each dependency is justified against the Simplicity principle ("if a feature can be achieved with plain HTML, CSS, or Markdown, that approach MUST be preferred"):
 
-| Dependency | Why Plain HTML/CSS/MD Is Insufficient | Minimality |
-|------------|---------------------------------------|------------|
-| Next.js | Provides static site generation with React component model for MDX; manages routing, image optimization at build time, code splitting. Plain HTML would require manual templating for ~30 posts and all listing pages. | Single framework replaces multiple build tools |
-| `@next/mdx` | Enables MDX → React component pipeline at build time. Plain Markdown cannot embed interactive components (gist viewer, tweet embed). | Official Next.js plugin, minimal config |
-| `gray-matter` | Parses YAML frontmatter from MDX files. No built-in Node.js YAML parser for this format. | 0 dependencies, 3kB |
-| `rehype-pretty-code` + Shiki | Build-time syntax highlighting producing static HTML. Plain `<pre>` blocks have no highlighting. Runtime alternatives (Prism.js) add JS payload. | Zero runtime JS — all highlighting baked into HTML at build |
-| Tailwind CSS + `@tailwindcss/typography` | Utility CSS with `prose` classes for Markdown content. Hand-written CSS for responsive design + typography would be larger and harder to maintain. | Purged at build time; only used classes ship |
-| Pagefind | Post-build search indexer. Client-side search with <300kB index. Alternative (Lunr/Fuse) requires loading all content into JS bundle. Plain HTML has no search. | Runs post-build, minimal runtime footprint |
-| `fast-xml-parser` + `turndown` | One-time migration script only. Parses WordPress WXR export XML and converts HTML to Markdown. Not shipped to production. | Dev dependency only, not in production bundle |
+| Dependency                               | Why Plain HTML/CSS/MD Is Insufficient                                                                                                                                                                                  | Minimality                                                  |
+| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| Next.js                                  | Provides static site generation with React component model for MDX; manages routing, image optimization at build time, code splitting. Plain HTML would require manual templating for ~30 posts and all listing pages. | Single framework replaces multiple build tools              |
+| `@next/mdx`                              | Enables MDX → React component pipeline at build time. Plain Markdown cannot embed interactive components (gist viewer, tweet embed).                                                                                   | Official Next.js plugin, minimal config                     |
+| `gray-matter`                            | Parses YAML frontmatter from MDX files. No built-in Node.js YAML parser for this format.                                                                                                                               | 0 dependencies, 3kB                                         |
+| `rehype-pretty-code` + Shiki             | Build-time syntax highlighting producing static HTML. Plain `<pre>` blocks have no highlighting. Runtime alternatives (Prism.js) add JS payload.                                                                       | Zero runtime JS — all highlighting baked into HTML at build |
+| Tailwind CSS + `@tailwindcss/typography` | Utility CSS with `prose` classes for Markdown content. Hand-written CSS for responsive design + typography would be larger and harder to maintain.                                                                     | Purged at build time; only used classes ship                |
+| Pagefind                                 | Post-build search indexer. Client-side search with <300kB index. Alternative (Lunr/Fuse) requires loading all content into JS bundle. Plain HTML has no search.                                                        | Runs post-build, minimal runtime footprint                  |
+| `fast-xml-parser` + `turndown`           | One-time migration script only. Parses WordPress WXR export XML and converts HTML to Markdown. Not shipped to production.                                                                                              | Dev dependency only, not in production bundle               |
 
 ### Post-Design Re-Check
 
-| Principle | Status | Notes |
-|-----------|--------|-------|
-| **I. Simplicity** | PASS | Single Next.js project. No monorepo. No backend. 7 production dependencies, all build-time focused. Migration tools are dev-only. |
-| **II. Content-First** | PASS | MDX files are the single source of truth. Adding a new post = adding an MDX file. No database migrations, no CMS. |
+| Principle             | Status | Notes                                                                                                                             |
+| --------------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------- |
+| **I. Simplicity**     | PASS   | Single Next.js project. No monorepo. No backend. 7 production dependencies, all build-time focused. Migration tools are dev-only. |
+| **II. Content-First** | PASS   | MDX files are the single source of truth. Adding a new post = adding an MDX file. No database migrations, no CMS.                 |
 
 ## Project Structure
 

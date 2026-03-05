@@ -1,6 +1,7 @@
 ## Context
 
 The blog currently has tag infrastructure in place:
+
 - Tags stored as YAML arrays in post frontmatter, normalized to slugs at load time.
 - `getAllTags()` returns all tags sorted by count descending with display names resolved.
 - Individual tag pages at `/tag/:slug/` show posts for a single tag.
@@ -12,11 +13,13 @@ The sidebar truncates to 20 and shows "Showing top N of M tags" but that text is
 ## Goals / Non-Goals
 
 **Goals:**
+
 - Provide a `/tags/` page displaying every tag alphabetically with post counts.
 - Link each tag to its existing `/tag/:slug/` page.
 - Make the sidebar "Showing top N of M tags" text link to the new page.
 
 **Non-Goals:**
+
 - Tag grouping or filtering (alphabetical letter sections, search within tags).
 - Tag management or editing.
 - Changes to the tag data model or frontmatter format.

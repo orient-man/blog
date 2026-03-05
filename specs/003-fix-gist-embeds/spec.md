@@ -12,7 +12,7 @@
 - Q: Embed strategy — build-time auto-embed, manual inline, or client-side iframe? → A: Manual inline — fetch each gist once and paste as fenced code blocks directly in the post files.
 - Q: Should embedded code blocks include attribution to the original gist? → A: Yes — include a `[View on GitHub](url)` link below each code block.
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - Reader Sees Gist Code Inline (Priority: P1)
 
@@ -89,7 +89,7 @@ still renders as a clickable text link, not a code block.
 - What happens when a gist contains multiple files?
   All files MUST be pasted as separate fenced code blocks, each labeled with the filename.
 
-## Requirements *(mandatory)*
+## Requirements _(mandatory)_
 
 ### Functional Requirements
 
@@ -113,7 +113,7 @@ still renders as a clickable text link, not a code block.
 - **Gist Content**: The source code file(s) contained within a GitHub Gist, including
   filename and language metadata used to determine the fenced code block language tag.
 
-## Success Criteria *(mandatory)*
+## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 

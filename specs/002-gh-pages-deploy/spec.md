@@ -12,7 +12,7 @@
 - Q: How is the author notified of build failures? → A: Default GitHub email notifications only (zero config). No additional notification infrastructure (Slack, webhooks) is needed.
 - Q: Should the GitHub Pages "Source" prerequisite (Settings > Pages > Source = "GitHub Actions") be documented? → A: Yes, add as a documented prerequisite in the spec.
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - Automated Deployment on Push (Priority: P1)
 
@@ -95,7 +95,7 @@ This is the lowest priority because the site is either live or it is not, and th
 - What happens when the GitHub Pages source is not configured? The repository Settings > Pages > Source MUST be set to "GitHub Actions" (not "Deploy from a branch") before the first deployment. Without this, the `actions/deploy-pages` step will fail with a permissions error. This is a one-time manual prerequisite performed once when the repository is first set up.
 - How does the author learn about build failures? GitHub's built-in email notifications (enabled by default for the repository owner) notify the author when a workflow run fails. No additional notification services (Slack, webhooks) are required.
 
-## Requirements *(mandatory)*
+## Requirements _(mandatory)_
 
 ### Functional Requirements
 
@@ -119,7 +119,7 @@ This is the lowest priority because the site is either live or it is not, and th
 - **CNAME File**: A plain text file containing the custom domain. Located at `public/CNAME`, copied to `out/CNAME` during build.
 - **Pages Artifact**: The `out/` directory contents uploaded as a deployable artifact by `actions/upload-pages-artifact`.
 
-## Success Criteria *(mandatory)*
+## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 

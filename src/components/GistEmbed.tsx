@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 
 interface GistEmbedProps {
   /** GitHub Gist ID (e.g., "abc123def456") */
@@ -22,14 +22,15 @@ export default function GistEmbed({ id, file }: GistEmbedProps) {
     ? `https://gist.github.com/${id}.js?file=${encodeURIComponent(file)}`
     : `https://gist.github.com/${id}.js`;
 
-  const gistLink = `https://gist.github.com/${id}${file ? `#file-${file.replace(/\./g, '-').toLowerCase()}` : ''}`;
+  const gistLink = `https://gist.github.com/${id}${file ? `#file-${file.replace(/\./g, "-").toLowerCase()}` : ""}`;
 
   useEffect(() => {
     const iframe = iframeRef.current;
     if (!iframe) return;
 
     // Build a minimal HTML document that loads the Gist script and auto-resizes
-    const html = `<!DOCTYPE html>
+    const html =
+      `<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
@@ -37,7 +38,8 @@ export default function GistEmbed({ id, file }: GistEmbedProps) {
 <style>body{margin:0;padding:0;}.gist{margin:0!important;}</style>
 </head>
 <body>
-<script src="${gistUrl}" onerror="parent.postMessage('gist-error','*')"></sc` + `ript>
+<script src="${gistUrl}" onerror="parent.postMessage('gist-error','*')"></sc` +
+      `ript>
 <script>
 window.addEventListener('load',function(){
   var h=document.body.scrollHeight;
@@ -49,16 +51,19 @@ window.addEventListener('load',function(){
     iframe.srcdoc = html;
 
     const handleMessage = (e: MessageEvent) => {
-      if (e.data === 'gist-error') {
+      if (e.data === "gist-error") {
         setFailed(true);
-      } else if (e.data?.type === 'gist-resize' && typeof e.data.height === 'number') {
+      } else if (
+        e.data?.type === "gist-resize" &&
+        typeof e.data.height === "number"
+      ) {
         iframe.style.height = `${e.data.height + 20}px`;
         setLoaded(true);
       }
     };
 
-    window.addEventListener('message', handleMessage);
-    return () => window.removeEventListener('message', handleMessage);
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
   }, [gistUrl]);
 
   if (failed) {
@@ -86,8 +91,8 @@ window.addEventListener('load',function(){
         title={`GitHub Gist ${id}`}
         className="w-full border-0 rounded overflow-hidden"
         style={{
-          display: loaded ? 'block' : 'none',
-          minHeight: '60px',
+          display: loaded ? "block" : "none",
+          minHeight: "60px",
         }}
         sandbox="allow-scripts allow-same-origin"
       />

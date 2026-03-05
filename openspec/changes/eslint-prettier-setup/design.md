@@ -5,6 +5,7 @@ There are no ESLint configs, Prettier configs, ignore files, or related npm scri
 The CI workflow (`.github/workflows/deploy.yml`) only runs `npm run build` with no quality gates.
 
 The project uses:
+
 - TypeScript 5.x with `strict: true`
 - Next.js 14 App Router with static export
 - Tailwind CSS for styling
@@ -34,6 +35,7 @@ The project uses:
 **Choice**: ESLint v9 with flat config in `.mjs` format.
 
 **Alternatives considered**:
+
 - Legacy `.eslintrc.json` — still works but deprecated in ESLint v9, will be removed in v10.
 - `eslint.config.ts` — requires extra tooling (`jiti`), not yet stable.
 
@@ -45,6 +47,7 @@ Using `.mjs` matches the project's `next.config.mjs` convention and avoids modul
 **Choice**: `typescript-eslint` recommended preset without type-checking rules.
 
 **Alternatives considered**:
+
 - `strict` preset — catches more issues but is opinionated and produces more noise.
 - `strict-type-checked` — requires `parserOptions.project`, adds ~2-3x lint time.
 
@@ -56,6 +59,7 @@ Type-aware rules can be added later if the codebase grows.
 **Choice**: Use the official `eslint-config-next` package which bundles React, React Hooks, and JSX a11y plugins.
 
 **Alternatives considered**:
+
 - Manual plugin composition — more control but more maintenance and risk of misconfiguration.
 
 **Rationale**: `eslint-config-next` is maintained by Vercel, covers Next.js-specific patterns, and is the standard choice.
@@ -65,6 +69,7 @@ Type-aware rules can be added later if the codebase grows.
 **Choice**: Use `eslint-config-prettier` as the last config layer to disable conflicting ESLint style rules.
 
 **Alternatives considered**:
+
 - `eslint-plugin-prettier` (runs Prettier as an ESLint rule) — produces noisy output, slower, discouraged by Prettier team.
 
 **Rationale**: The config-only approach is simpler and the recommended integration pattern.
@@ -74,6 +79,7 @@ Type-aware rules can be added later if the codebase grows.
 **Choice**: Use `eslint-plugin-import` with `eslint-import-resolver-typescript` for sorted import groups.
 
 **Alternatives considered**:
+
 - `eslint-plugin-simple-import-sort` — simpler but less configurable group ordering.
 - No import sorting — leaves imports inconsistent across files.
 
@@ -84,6 +90,7 @@ Type-aware rules can be added later if the codebase grows.
 **Choice**: `.prettierrc.json` with minimal overrides from Prettier defaults.
 
 **Alternatives considered**:
+
 - `.prettierrc.mjs` — allows comments but JSON is simpler for a small config.
 - Config in `package.json` — mixes concerns.
 
@@ -95,6 +102,7 @@ Defer to Prettier defaults where possible (printWidth: 80, semi: true, singleQuo
 **Choice**: Add `npm run lint` as a step before `npm run build` in the existing `deploy.yml` workflow.
 
 **Alternatives considered**:
+
 - Separate lint workflow — more isolation but adds another workflow file.
 - `format:check` in CI too — adds value but lint is the higher priority gate.
 

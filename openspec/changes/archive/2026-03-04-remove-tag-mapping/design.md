@@ -5,6 +5,7 @@ It was created during the WordPress migration (`scripts/migrate.ts`) to handle t
 
 The migration script already converted all frontmatter tags to slug form.
 At runtime, the map is used in three places:
+
 1. `slugify()` in `src/lib/utils.ts` — checks the map before falling back to generic slugification (dead path since tags are already slugs).
 2. `loadPosts()` in `src/lib/content.ts` — checks the map when normalizing frontmatter tags (dead path since tags are already slugs).
 3. `getAllTags()` in `src/lib/content.ts` — builds a reverse map to recover display names for the six special tags.
@@ -15,11 +16,13 @@ The cost is a hardcoded constant that must be maintained in sync between two fil
 ## Goals / Non-Goals
 
 **Goals:**
+
 - Remove the `TAG_SLUG_MAP` constant and all code paths that reference it.
 - Simplify `slugify()`, `loadPosts()`, and `getAllTags()` by removing dead map-lookup branches.
 - Clean up the standalone copy in `scripts/migrate.ts`.
 
 **Non-Goals:**
+
 - Changing any tag slugs or URL routes — all `/tag/{slug}/` paths remain identical.
 - Introducing a new display-name system (e.g., frontmatter metadata, tag registry files).
 - Modifying post frontmatter content.

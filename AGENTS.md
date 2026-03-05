@@ -44,12 +44,12 @@ explore  -->  propose  -->  apply  -->  archive
    +-------------+------------+   (can interleave freely)
 ```
 
-| Action | Command | Skill | Purpose |
-|--------|---------|-------|---------|
-| Explore | `/opsx-explore` | `openspec-explore` | Think through ideas, investigate problems, clarify requirements. Read-only — no implementation. |
-| Propose | `/opsx-propose` | `openspec-propose` | Create a change with all artifacts (proposal, specs, design, tasks) in one step. |
-| Apply | `/opsx-apply` | `openspec-apply-change` | Implement tasks from a change, marking them complete as you go. |
-| Archive | `/opsx-archive` | `openspec-archive-change` | Archive a completed change, optionally syncing delta specs. |
+| Action  | Command         | Skill                     | Purpose                                                                                         |
+| ------- | --------------- | ------------------------- | ----------------------------------------------------------------------------------------------- |
+| Explore | `/opsx-explore` | `openspec-explore`        | Think through ideas, investigate problems, clarify requirements. Read-only — no implementation. |
+| Propose | `/opsx-propose` | `openspec-propose`        | Create a change with all artifacts (proposal, specs, design, tasks) in one step.                |
+| Apply   | `/opsx-apply`   | `openspec-apply-change`   | Implement tasks from a change, marking them complete as you go.                                 |
+| Archive | `/opsx-archive` | `openspec-archive-change` | Archive a completed change, optionally syncing delta specs.                                     |
 
 ### OpenSpec CLI
 
@@ -126,6 +126,7 @@ No remote is currently configured. No CI/CD pipeline exists.
 - There is no `.gitignore`, `.editorconfig`, or CI configuration yet.
 
 ## Active Technologies
+
 - TypeScript 5.x, Node.js 20 LTS + Next.js 14 (`output: 'export'`), `@next/mdx`, `gray-matter`, `rehype-pretty-code` (Shiki), Tailwind CSS, `@tailwindcss/typography`, Pagefind (001-wordpress-blog-migration)
 - Filesystem only — MDX files in `content/posts/`, images in `public/images/` (001-wordpress-blog-migration)
 - YAML (GitHub Actions workflow); TypeScript 5.x / Node.js 20 LTS (build runtime) + `actions/checkout@v4`, `actions/setup-node@v4`, `actions/configure-pages@v5`, `actions/upload-pages-artifact@v4`, `actions/deploy-pages@v4`, `actions/cache@v4` (002-gh-pages-deploy)
@@ -139,4 +140,5 @@ No remote is currently configured. No CI/CD pipeline exists.
 - TypeScript 5.x, Node.js 20 LTS + Next.js 14.2.35 (`output: 'export'`), `@mdx-js/mdx` 3.x, `gray-matter` 4.x (006-fix-comments-undefined-nan)
 
 ## Recent Changes
+
 - 001-wordpress-blog-migration: Added TypeScript 5.x, Node.js 20 LTS + Next.js 14 (`output: 'export'`), `@next/mdx`, `gray-matter`, `rehype-pretty-code` (Shiki), Tailwind CSS, `@tailwindcss/typography`, Pagefind

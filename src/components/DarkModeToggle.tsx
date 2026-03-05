@@ -1,38 +1,44 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
-type Theme = 'light' | 'dark';
+type Theme = "light" | "dark";
 
 export default function DarkModeToggle() {
-  const [theme, setTheme] = useState<Theme>('light');
+  const [theme, setTheme] = useState<Theme>("light");
 
-  // Sync state with document on mount
+  // Sync state with document on mount — reading localStorage is an external
+  // system sync, so setState here is intentional.
   useEffect(() => {
-    const stored = localStorage.getItem('theme') as Theme | null;
-    if (stored === 'dark' || stored === 'light') {
+    const stored = localStorage.getItem("theme") as Theme | null;
+    if (stored === "dark" || stored === "light") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- initialisation from external storage
       setTheme(stored);
     } else {
       setTheme(
-        window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light",
       );
     }
   }, []);
 
   function toggle() {
-    const next: Theme = theme === 'dark' ? 'light' : 'dark';
+    const next: Theme = theme === "dark" ? "light" : "dark";
     setTheme(next);
-    localStorage.setItem('theme', next);
-    document.documentElement.classList.toggle('dark', next === 'dark');
+    localStorage.setItem("theme", next);
+    document.documentElement.classList.toggle("dark", next === "dark");
   }
 
   return (
     <button
       onClick={toggle}
-      aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+      aria-label={
+        theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
+      }
       className="p-1.5 rounded-md text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
     >
-      {theme === 'dark' ? (
+      {theme === "dark" ? (
         // Sun icon
         <svg
           xmlns="http://www.w3.org/2000/svg"

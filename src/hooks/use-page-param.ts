@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from "react";
 
 /**
  * Reads the 1-based `?page=N` URL search parameter and returns a 0-based
@@ -21,7 +21,7 @@ export function usePageParam(
   // --- T1.2  Read ?page=N on mount -------------------------------------------
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const raw = params.get('page');
+    const raw = params.get("page");
 
     if (raw === null) return; // no param → stay on page 0
 
@@ -30,12 +30,14 @@ export function usePageParam(
     // --- T1.3  Clamp invalid values ------------------------------------------
     if (Number.isNaN(parsed) || !Number.isFinite(parsed) || parsed < 1) {
       // non-numeric, zero, negative → first page
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- initialisation from URL params
       setPageInternal(0);
       return;
     }
 
     // Convert 1-based URL value to 0-based internal, clamped to valid range
     const clamped = Math.min(Math.round(parsed) - 1, totalPages - 1);
+
     setPageInternal(Math.max(0, clamped));
   }, [totalPages]);
 
@@ -50,13 +52,13 @@ export function usePageParam(
 
       if (clamped === 0) {
         // Page 1 → remove param for clean URL
-        url.searchParams.delete('page');
+        url.searchParams.delete("page");
       } else {
         // 0-based → 1-based for URL
-        url.searchParams.set('page', String(clamped + 1));
+        url.searchParams.set("page", String(clamped + 1));
       }
 
-      window.history.replaceState(null, '', url.toString());
+      window.history.replaceState(null, "", url.toString());
     },
     [totalPages],
   );

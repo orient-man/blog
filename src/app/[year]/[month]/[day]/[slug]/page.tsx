@@ -1,26 +1,27 @@
-import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import Link from 'next/link';
-import * as runtime from 'react/jsx-runtime';
-import { evaluate } from '@mdx-js/mdx';
-import rehypePrettyCode from 'rehype-pretty-code';
-import remarkGfm from 'remark-gfm';
-import { rehypeCopyButton } from '@/lib/rehype-copy-button';
-import { getAllPosts, getPostBySlug, getRelatedPosts } from '@/lib/content';
-import { formatDate, postUrlPath, slugify } from '@/lib/utils';
-import { CATEGORIES } from '@/lib/types';
-import QuotePost from '@/components/QuotePost';
-import GistEmbed from '@/components/GistEmbed';
-import TweetEmbed from '@/components/TweetEmbed';
-import CommentList from '@/components/CommentList';
-import { RelatedPosts } from '@/components/RelatedPosts';
+import { evaluate } from "@mdx-js/mdx";
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import * as runtime from "react/jsx-runtime";
+import rehypePrettyCode from "rehype-pretty-code";
+import remarkGfm from "remark-gfm";
+
+import CommentList from "@/components/CommentList";
+import GistEmbed from "@/components/GistEmbed";
+import QuotePost from "@/components/QuotePost";
+import { RelatedPosts } from "@/components/RelatedPosts";
+import TweetEmbed from "@/components/TweetEmbed";
+import { getAllPosts, getPostBySlug, getRelatedPosts } from "@/lib/content";
+import { rehypeCopyButton } from "@/lib/rehype-copy-button";
+import { CATEGORIES } from "@/lib/types";
+import { formatDate, postUrlPath } from "@/lib/utils";
 
 // ── Shared rehype-pretty-code options ─────────────────────────────────────────
 
 const prettyCodeOptions = {
   theme: {
-    dark: 'github-dark',
-    light: 'github-light',
+    dark: "github-dark",
+    light: "github-light",
   },
   keepBackground: false,
 };
@@ -30,11 +31,11 @@ const prettyCodeOptions = {
 export function generateStaticParams() {
   const posts = getAllPosts();
   return posts.map((post) => {
-    const d = new Date(post.date + 'T00:00:00Z');
+    const d = new Date(post.date + "T00:00:00Z");
     return {
       year: String(d.getUTCFullYear()),
-      month: String(d.getUTCMonth() + 1).padStart(2, '0'),
-      day: String(d.getUTCDate()).padStart(2, '0'),
+      month: String(d.getUTCMonth() + 1).padStart(2, "0"),
+      day: String(d.getUTCDate()).padStart(2, "0"),
       slug: post.slug,
     };
   });
@@ -55,7 +56,7 @@ export async function generateMetadata({
     openGraph: {
       title: post.title,
       description: post.excerpt,
-      type: 'article',
+      type: "article",
       publishedTime: post.date,
       authors: [post.author],
     },
@@ -83,16 +84,27 @@ export default async function PostPage({
   // Use format:'md' (plain Markdown) so that arbitrary HTML/XML in migrated
   // WordPress posts is never parsed as JSX components. No posts currently use
   // <GistEmbed> or <TweetEmbed> in their content, so MDX JSX is not needed.
-  let PostContent: React.ComponentType<{ components?: Record<string, React.ComponentType<any>> }> | null = null;
+  let PostContent: React.ComponentType<{
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    components?: Record<string, React.ComponentType<any>>;
+  }> | null = null;
   try {
     const { default: Content } = await evaluate(post.content, {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ...(runtime as any),
-      format: 'md',
+      format: "md",
       remarkPlugins: [remarkGfm],
-      rehypePlugins: [[rehypePrettyCode as any, prettyCodeOptions], rehypeCopyButton],
+      rehypePlugins: [
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        [rehypePrettyCode as any, prettyCodeOptions],
+        rehypeCopyButton,
+      ],
       development: false,
     });
-    PostContent = Content as React.ComponentType<{ components?: Record<string, React.ComponentType<any>> }>;
+    PostContent = Content as React.ComponentType<{
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      components?: Record<string, React.ComponentType<any>>;
+    }>;
   } catch (err) {
     console.error(`Failed to compile MDX for post "${post.slug}":`, err);
     PostContent = null;
@@ -105,10 +117,7 @@ export default async function PostPage({
   };
 
   return (
-    <article
-      className="max-w-prose mx-auto"
-      data-pagefind-body
-    >
+    <article className="max-w-prose mx-auto" data-pagefind-body>
       {/* ── Post header ──────────────────────────────────────────────────── */}
       <header className="mb-8">
         <h1 className="text-3xl font-bold leading-tight mb-3">{post.title}</h1>
@@ -153,18 +162,26 @@ export default async function PostPage({
 
       {/* ── Post content ─────────────────────────────────────────────────── */}
       <div className="prose prose-gray dark:prose-invert max-w-none">
-        {post.format === 'quote' ? (
+        {post.format === "quote" ? (
           <QuotePost>
             {PostContent ? (
-              <PostContent components={mdxComponents as any} />
+              <PostContent
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                components={mdxComponents as any}
+              />
             ) : (
               <p className="whitespace-pre-wrap">{post.content}</p>
             )}
           </QuotePost>
         ) : PostContent ? (
-          <PostContent components={mdxComponents as any} />
+          <PostContent
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            components={mdxComponents as any}
+          />
         ) : (
-          <p className="whitespace-pre-wrap text-sm text-gray-500">{post.content}</p>
+          <p className="whitespace-pre-wrap text-sm text-gray-500">
+            {post.content}
+          </p>
         )}
       </div>
 
@@ -181,7 +198,9 @@ export default async function PostPage({
         <div className="flex-1 text-left">
           {olderPost && (
             <>
-              <span className="block text-gray-400 dark:text-gray-500 mb-1">&larr; Older</span>
+              <span className="block text-gray-400 dark:text-gray-500 mb-1">
+                &larr; Older
+              </span>
               <Link
                 href={postUrlPath(olderPost.date, olderPost.slug)}
                 className="font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
@@ -194,7 +213,9 @@ export default async function PostPage({
         <div className="flex-1 text-right">
           {newerPost && (
             <>
-              <span className="block text-gray-400 dark:text-gray-500 mb-1">Newer &rarr;</span>
+              <span className="block text-gray-400 dark:text-gray-500 mb-1">
+                Newer &rarr;
+              </span>
               <Link
                 href={postUrlPath(newerPost.date, newerPost.slug)}
                 className="font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors"

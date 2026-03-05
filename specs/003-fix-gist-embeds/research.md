@@ -27,7 +27,9 @@ Language tags for fenced code blocks are derived from the `language` field retur
 - **Status**: Retrieved ✅
 
 ```html
-<!--[if gt IE 8]><!-->\n    <script type="text/javascript" src="blanket.js"></script>\n<!--<![endif]-->
+<!--[if gt IE 8]><!-->\n
+<script type="text/javascript" src="blanket.js"></script>
+\n<!--<![endif]-->
 ```
 
 ### Gist 2 — `4539327`
@@ -104,7 +106,7 @@ Language tags for fenced code blocks are derived from the `language` field retur
 - **Mapping used**:
 
   | API `language` | Fence tag |
-  |----------------|-----------|
+  | -------------- | --------- |
   | `HTML`         | `html`    |
   | `Diff`         | `diff`    |
   | `C#`           | `csharp`  |

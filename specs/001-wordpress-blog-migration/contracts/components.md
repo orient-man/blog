@@ -25,6 +25,7 @@ interface RootLayoutProps {
 ```
 
 **Responsibilities**:
+
 - HTML `<head>` with metadata, Open Graph tags, favicon
 - Site header: title "Just A Programmer", subtitle "Don Quixote fighting entropy"
 - `<Sidebar>` on desktop; collapsible on mobile
@@ -48,6 +49,7 @@ interface SidebarProps {
 ```
 
 **Sections** (in order):
+
 1. **About** — Author bio: "Father of 2, husband, bookworm, stubborn, programmer, conference addict..."
 2. **Categories** — Links to `/category/posts-in-english/` and `/category/wpisy-po-polsku/`
 3. **Tag Cloud** — `<TagCloud>` component
@@ -65,11 +67,22 @@ interface SidebarProps {
 
 ```typescript
 interface PostCardProps {
-  post: Pick<Post, 'title' | 'date' | 'slug' | 'excerpt' | 'category' | 'tags' | 'format' | 'wordpressUrl'>;
+  post: Pick<
+    Post,
+    | "title"
+    | "date"
+    | "slug"
+    | "excerpt"
+    | "category"
+    | "tags"
+    | "format"
+    | "wordpressUrl"
+  >;
 }
 ```
 
 **Renders**:
+
 - Post title (linked to post URL)
 - Publication date (formatted: "August 15, 2017")
 - Excerpt (first 160 chars of content if no explicit excerpt)
@@ -86,12 +99,13 @@ interface PostCardProps {
 ```typescript
 interface PostListProps {
   posts: Post[];
-  pageSize?: number;         // Default: 10
-  title?: string;            // Optional heading ("Posts tagged F#", "Archive: August 2017")
+  pageSize?: number; // Default: 10
+  title?: string; // Optional heading ("Posts tagged F#", "Archive: August 2017")
 }
 ```
 
 **Renders**:
+
 - Optional title/heading
 - List of `<PostCard>` components
 - Client-side pagination: "Newer" / "Older" buttons
@@ -108,11 +122,12 @@ separate static pages for each page number (simpler per Constitution Principle I
 
 ```typescript
 interface QuotePostProps {
-  children: React.ReactNode;  // The quote content (MDX body)
+  children: React.ReactNode; // The quote content (MDX body)
 }
 ```
 
 **Renders**:
+
 - Large blockquote styling
 - Decorative quotation marks
 - Distinct background/border from standard posts
@@ -128,17 +143,19 @@ interface QuotePostProps {
 
 ```typescript
 interface GistEmbedProps {
-  id: string;                 // GitHub Gist ID (e.g., "abc123def456")
-  file?: string;              // Optional specific file within the gist
+  id: string; // GitHub Gist ID (e.g., "abc123def456")
+  file?: string; // Optional specific file within the gist
 }
 ```
 
 **Renders**:
+
 - Iframe or `<script>` embed loading the GitHub Gist
 - Fallback: if gist fails to load, display a link to `https://gist.github.com/{id}`
 - Loading skeleton while gist loads
 
 **MDX Usage**:
+
 ```mdx
 <GistEmbed id="abc123def456" />
 ```
@@ -153,13 +170,14 @@ interface GistEmbedProps {
 
 ```typescript
 interface TweetEmbedProps {
-  url: string;                // Full tweet URL
-  content?: string;           // Static tweet text (for snapshot approach)
-  author?: string;            // Tweet author
+  url: string; // Full tweet URL
+  content?: string; // Static tweet text (for snapshot approach)
+  author?: string; // Tweet author
 }
 ```
 
 **Renders**:
+
 - Static blockquote with tweet content + link to original
 - No external Twitter/X API dependency (Constitution Principle I: Simplicity)
 
@@ -174,11 +192,12 @@ with a link to the original URL. No oEmbed, no external JS.
 
 ```typescript
 interface CommentProps {
-  comment: Comment;           // { author, date, content, avatarUrl? }
+  comment: Comment; // { author, date, content, avatarUrl? }
 }
 ```
 
 **Renders**:
+
 - Comment author name
 - Comment date (formatted)
 - Comment content (plain text or sanitized HTML)
@@ -197,6 +216,7 @@ interface CommentListProps {
 ```
 
 **Renders**:
+
 - "Comments (N)" heading
 - List of `<Comment>` components
 - Note: "Comments are from the original WordPress blog. New comments are not supported."
@@ -211,11 +231,12 @@ interface CommentListProps {
 
 ```typescript
 interface TagCloudProps {
-  tags: Tag[];                // All tags with counts
+  tags: Tag[]; // All tags with counts
 }
 ```
 
 **Renders**:
+
 - Tags as clickable pills/badges, linked to `/tag/{slug}/`
 - Size/weight varies by post count (more posts = larger text or bolder)
 - Maximum ~20 tags shown, with "View all tags" link if more exist
@@ -228,20 +249,22 @@ interface TagCloudProps {
 
 ```typescript
 interface SearchInputProps {
-  placeholder?: string;       // Default: "Search posts..."
+  placeholder?: string; // Default: "Search posts..."
 }
 ```
 
 **Renders**:
+
 - Search input field
 - Mounts Pagefind UI on client-side hydration
 - Displays results inline or navigates to `/search/` page
 
 **Integration**:
+
 ```typescript
 // Dynamically import Pagefind to avoid SSR issues
 useEffect(() => {
-  import('/pagefind/pagefind-ui.js').then((module) => {
+  import("/pagefind/pagefind-ui.js").then((module) => {
     new module.PagefindUI({ element: containerRef.current });
   });
 }, []);
@@ -258,6 +281,7 @@ useEffect(() => {
 ```
 
 **Behavior**:
+
 - On mount: check `localStorage` for preference, fall back to `prefers-color-scheme`
 - On click: toggle `dark` class on `<html>`, persist to `localStorage`
 - Renders: sun/moon icon button
@@ -267,9 +291,9 @@ useEffect(() => {
 **File**: `mdx-components.tsx` (project root, required by `@next/mdx`)
 
 ```typescript
-import type { MDXComponents } from 'mdx/types';
-import { GistEmbed } from '@/components/GistEmbed';
-import { TweetEmbed } from '@/components/TweetEmbed';
+import type { MDXComponents } from "mdx/types";
+import { GistEmbed } from "@/components/GistEmbed";
+import { TweetEmbed } from "@/components/TweetEmbed";
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
@@ -288,19 +312,19 @@ without explicit imports.
 
 ## Client vs Server Component Summary
 
-| Component | Type | Reason |
-|-----------|------|--------|
-| RootLayout | Server | Static shell, no interactivity |
-| Sidebar | Server | Static content |
-| PostCard | Server | Static rendering |
-| PostList | **Client** | Pagination state |
-| QuotePost | Server | Static styling wrapper |
-| GistEmbed | **Client** | Loads external JS |
-| TweetEmbed | Server | Static blockquote |
-| Comment | Server | Static rendering |
-| CommentList | Server | Static rendering |
-| TagCloud | Server | Static rendering |
-| SearchInput | **Client** | Pagefind UI requires browser |
+| Component      | Type       | Reason                          |
+| -------------- | ---------- | ------------------------------- |
+| RootLayout     | Server     | Static shell, no interactivity  |
+| Sidebar        | Server     | Static content                  |
+| PostCard       | Server     | Static rendering                |
+| PostList       | **Client** | Pagination state                |
+| QuotePost      | Server     | Static styling wrapper          |
+| GistEmbed      | **Client** | Loads external JS               |
+| TweetEmbed     | Server     | Static blockquote               |
+| Comment        | Server     | Static rendering                |
+| CommentList    | Server     | Static rendering                |
+| TagCloud       | Server     | Static rendering                |
+| SearchInput    | **Client** | Pagefind UI requires browser    |
 | DarkModeToggle | **Client** | localStorage + DOM manipulation |
 
 **Client component count**: 4 out of 12 — minimized per Constitution Principle I.

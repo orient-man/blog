@@ -1,6 +1,7 @@
-import Link from 'next/link';
-import type { Post } from '@/lib/types';
-import { formatDate, postUrlPath, slugify } from '@/lib/utils';
+import Link from "next/link";
+
+import type { Post } from "@/lib/types";
+import { formatDate, postUrlPath, slugify } from "@/lib/utils";
 
 interface RelatedPostsProps {
   posts: Post[];

@@ -20,13 +20,13 @@ build-time transformations involved.
 
 Represents a single blog post file on disk.
 
-| Field | Type | Source | Notes |
-|-------|------|--------|-------|
-| `filePath` | `string` | Filesystem | Absolute path to `.mdx` file under `content/posts/` |
-| `slug` | `string` | Derived from filename | Used in URL routing (`[year]/[month]/[day]/[slug]`) |
-| `frontmatter` | `Record<string, unknown>` | YAML front matter (via `gray-matter`) | Contains `title`, `date`, `tags`, etc. |
-| `body` | `string` | File content after front matter | Raw Markdown/MDX source |
-| `codeBlocks` | `CodeBlock[]` | Derived (audit script) | Zero or more fenced code blocks found in `body` |
+| Field         | Type                      | Source                                | Notes                                               |
+| ------------- | ------------------------- | ------------------------------------- | --------------------------------------------------- |
+| `filePath`    | `string`                  | Filesystem                            | Absolute path to `.mdx` file under `content/posts/` |
+| `slug`        | `string`                  | Derived from filename                 | Used in URL routing (`[year]/[month]/[day]/[slug]`) |
+| `frontmatter` | `Record<string, unknown>` | YAML front matter (via `gray-matter`) | Contains `title`, `date`, `tags`, etc.              |
+| `body`        | `string`                  | File content after front matter       | Raw Markdown/MDX source                             |
+| `codeBlocks`  | `CodeBlock[]`             | Derived (audit script)                | Zero or more fenced code blocks found in `body`     |
 
 ---
 
@@ -34,15 +34,16 @@ Represents a single blog post file on disk.
 
 Represents a single fenced code block within a post body.
 
-| Field | Type | Notes |
-|-------|------|-------|
-| `language` | `string \| null` | Language identifier from the opening fence (e.g., `csharp`, `bash`). `null` when no tag is present. |
-| `rawContent` | `string` | Literal text between the opening and closing fences, before any highlighting |
-| `lineCount` | `number` | Number of lines in `rawContent` |
-| `hasCopyButton` | `boolean` | Always `true` post-implementation (injected at build time by `rehypeCopyButton`) |
-| `hasLineNumbers` | `boolean` | Always `true` post-implementation (CSS counters, no per-block config) |
+| Field            | Type             | Notes                                                                                               |
+| ---------------- | ---------------- | --------------------------------------------------------------------------------------------------- |
+| `language`       | `string \| null` | Language identifier from the opening fence (e.g., `csharp`, `bash`). `null` when no tag is present. |
+| `rawContent`     | `string`         | Literal text between the opening and closing fences, before any highlighting                        |
+| `lineCount`      | `number`         | Number of lines in `rawContent`                                                                     |
+| `hasCopyButton`  | `boolean`        | Always `true` post-implementation (injected at build time by `rehypeCopyButton`)                    |
+| `hasLineNumbers` | `boolean`        | Always `true` post-implementation (CSS counters, no per-block config)                               |
 
 **Invariants**:
+
 - `language` MUST be a valid Shiki language ID, an alias thereof, or `null`
 - If `language` is unrecognised by Shiki, output falls back to plain monospaced text (FR-006)
 - `rawContent` is never HTML-escaped at this layer; escaping occurs inside the rehype pipeline
@@ -54,14 +55,14 @@ Represents a single fenced code block within a post body.
 The build-time output produced by `rehype-pretty-code` for a single `CodeBlock`.
 This is the HTML structure written into the static `out/` directory.
 
-| Field | HTML attribute / element | Notes |
-|-------|--------------------------|-------|
-| `figure` | `<figure data-rehype-pretty-code-figure="">` | Wrapper element |
-| `pre` | `<pre data-language="{lang}" data-theme="github-dark github-light" tabindex="0">` | Scrollable container |
-| `code` | `<code data-language="{lang}" data-theme="github-dark github-light" style="display:grid">` | Token grid |
-| `lines` | `<span data-line="">…</span>` (one per line) | CSS counter increments on these |
-| `tokens` | `<span style="--shiki-dark:…;--shiki-light:…">…</span>` | Per-token colour via CSS custom props |
-| `copyButton` | `<button data-copy-btn="">Copy</button>` | Appended to `figure` by `rehypeCopyButton`; styled and activated by inline script |
+| Field        | HTML attribute / element                                                                   | Notes                                                                             |
+| ------------ | ------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |
+| `figure`     | `<figure data-rehype-pretty-code-figure="">`                                               | Wrapper element                                                                   |
+| `pre`        | `<pre data-language="{lang}" data-theme="github-dark github-light" tabindex="0">`          | Scrollable container                                                              |
+| `code`       | `<code data-language="{lang}" data-theme="github-dark github-light" style="display:grid">` | Token grid                                                                        |
+| `lines`      | `<span data-line="">…</span>` (one per line)                                               | CSS counter increments on these                                                   |
+| `tokens`     | `<span style="--shiki-dark:…;--shiki-light:…">…</span>`                                    | Per-token colour via CSS custom props                                             |
+| `copyButton` | `<button data-copy-btn="">Copy</button>`                                                   | Appended to `figure` by `rehypeCopyButton`; styled and activated by inline script |
 
 **CSS custom property resolution**:
 
@@ -76,11 +77,11 @@ Dark theme:   color: var(--shiki-dark)     (.dark class on <html>)
 
 The dual-theme configuration passed to `rehype-pretty-code`.
 
-| Field | Value | Notes |
-|-------|-------|-------|
-| `theme.dark` | `'github-dark'` | Shiki built-in theme |
-| `theme.light` | `'github-light'` | Shiki built-in theme |
-| `keepBackground` | `false` | Prevents Shiki from emitting `--shiki-dark-bg` / `--shiki-light-bg`; background is controlled by `--code-bg` CSS variable instead |
+| Field            | Value            | Notes                                                                                                                             |
+| ---------------- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `theme.dark`     | `'github-dark'`  | Shiki built-in theme                                                                                                              |
+| `theme.light`    | `'github-light'` | Shiki built-in theme                                                                                                              |
+| `keepBackground` | `false`          | Prevents Shiki from emitting `--shiki-dark-bg` / `--shiki-light-bg`; background is controlled by `--code-bg` CSS variable instead |
 
 ---
 
@@ -89,21 +90,21 @@ The dual-theme configuration passed to `rehype-pretty-code`.
 The output produced by `scripts/audit-code-blocks.ts` for a single post.
 Used to guide the manual content-conversion phase.
 
-| Field | Type | Notes |
-|-------|------|-------|
-| `filePath` | `string` | Path to the MDX file |
-| `slug` | `string` | Post slug |
-| `flagged` | `boolean` | `true` if any heuristic fired |
-| `heuristics` | `AuditHeuristic[]` | Which patterns were detected and where |
-| `existingFencedBlocks` | `number` | Count of already-fenced blocks (for context) |
+| Field                  | Type               | Notes                                        |
+| ---------------------- | ------------------ | -------------------------------------------- |
+| `filePath`             | `string`           | Path to the MDX file                         |
+| `slug`                 | `string`           | Post slug                                    |
+| `flagged`              | `boolean`          | `true` if any heuristic fired                |
+| `heuristics`           | `AuditHeuristic[]` | Which patterns were detected and where       |
+| `existingFencedBlocks` | `number`           | Count of already-fenced blocks (for context) |
 
 #### `AuditHeuristic`
 
-| Field | Type | Notes |
-|-------|------|-------|
-| `type` | `'shell-command' \| 'indented-block' \| 'long-inline-code' \| 'raw-xml-html'` | Which rule triggered |
-| `lineNumber` | `number` | 1-based line in the MDX file |
-| `excerpt` | `string` | Short excerpt of the flagged content (max 80 chars) |
+| Field        | Type                                                                          | Notes                                               |
+| ------------ | ----------------------------------------------------------------------------- | --------------------------------------------------- |
+| `type`       | `'shell-command' \| 'indented-block' \| 'long-inline-code' \| 'raw-xml-html'` | Which rule triggered                                |
+| `lineNumber` | `number`                                                                      | 1-based line in the MDX file                        |
+| `excerpt`    | `string`                                                                      | Short excerpt of the flagged content (max 80 chars) |
 
 ---
 
@@ -157,6 +158,7 @@ No state is stored. No server round-trip. No dependencies.
 ```
 
 Line numbers are excluded from clipboard copy because:
+
 - The `::before` pseudo-element is not part of `innerText`
 - `user-select: none` prevents manual text selection from including them
 

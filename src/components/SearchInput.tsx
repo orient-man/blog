@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
 /**
  * Mounts the Pagefind UI into the DOM via a dynamic script load.
@@ -17,16 +17,18 @@ export default function SearchInput() {
     initialised.current = true;
 
     // Load Pagefind CSS
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = '/pagefind/pagefind-ui.css';
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = "/pagefind/pagefind-ui.css";
     document.head.appendChild(link);
 
     // Load Pagefind UI JS then initialise
-    const script = document.createElement('script');
-    script.src = '/pagefind/pagefind-ui.js';
+    const script = document.createElement("script");
+    script.src = "/pagefind/pagefind-ui.js";
     script.onload = () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Pagefind UI is loaded dynamically, no types available
       if (containerRef.current && (window as any).PagefindUI) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         new (window as any).PagefindUI({
           element: containerRef.current,
           showImages: false,
@@ -38,7 +40,5 @@ export default function SearchInput() {
     document.head.appendChild(script);
   }, []);
 
-  return (
-    <div ref={containerRef} />
-  );
+  return <div ref={containerRef} />;
 }

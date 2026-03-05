@@ -1,18 +1,19 @@
-import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import * as runtime from 'react/jsx-runtime';
-import { evaluate } from '@mdx-js/mdx';
-import rehypePrettyCode from 'rehype-pretty-code';
-import remarkGfm from 'remark-gfm';
-import { rehypeCopyButton } from '@/lib/rehype-copy-button';
-import { getAllPages, getPageBySlug } from '@/lib/content';
+import { evaluate } from "@mdx-js/mdx";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import * as runtime from "react/jsx-runtime";
+import rehypePrettyCode from "rehype-pretty-code";
+import remarkGfm from "remark-gfm";
+
+import { getAllPages, getPageBySlug } from "@/lib/content";
+import { rehypeCopyButton } from "@/lib/rehype-copy-button";
 
 // ── Shared rehype-pretty-code options ─────────────────────────────────────────
 
 const prettyCodeOptions = {
   theme: {
-    dark: 'github-dark',
-    light: 'github-light',
+    dark: "github-dark",
+    light: "github-light",
   },
   keepBackground: false,
 };
@@ -50,10 +51,15 @@ export default async function StaticPage({
   let PageContent: React.ComponentType | null = null;
   try {
     const { default: Content } = await evaluate(page.content, {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ...(runtime as any),
-      format: 'md',
+      format: "md",
       remarkPlugins: [remarkGfm],
-      rehypePlugins: [[rehypePrettyCode as any, prettyCodeOptions], rehypeCopyButton],
+      rehypePlugins: [
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        [rehypePrettyCode as any, prettyCodeOptions],
+        rehypeCopyButton,
+      ],
       development: false,
     });
     PageContent = Content as React.ComponentType;
@@ -72,7 +78,9 @@ export default async function StaticPage({
         {PageContent ? (
           <PageContent />
         ) : (
-          <p className="whitespace-pre-wrap text-sm text-gray-500">{page.content}</p>
+          <p className="whitespace-pre-wrap text-sm text-gray-500">
+            {page.content}
+          </p>
         )}
       </div>
     </article>

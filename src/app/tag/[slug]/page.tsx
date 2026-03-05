@@ -1,6 +1,7 @@
-import { notFound } from 'next/navigation';
-import { getPostsByTag, getAllTags } from '@/lib/content';
-import { PostList } from '@/components/PostList';
+import { notFound } from "next/navigation";
+
+import { PostList } from "@/components/PostList";
+import { getPostsByTag, getAllTags } from "@/lib/content";
 
 interface Props {
   params: { slug: string };
@@ -25,10 +26,5 @@ export default function TagPage({ params }: Props) {
 
   const posts = getPostsByTag(params.slug);
 
-  return (
-    <PostList
-      posts={posts}
-      title={`Posts tagged "${tag.name}"`}
-    />
-  );
+  return <PostList posts={posts} title={`Posts tagged "${tag.name}"`} />;
 }

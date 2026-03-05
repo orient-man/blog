@@ -75,10 +75,14 @@ is untouched.
 
 ```tsx
 <time
-  dateTime={typeof comment.date === 'string' ? comment.date : String(comment.date)}
+  dateTime={
+    typeof comment.date === "string" ? comment.date : String(comment.date)
+  }
   className="text-xs text-gray-400 dark:text-gray-500"
 >
-  {formatDate(typeof comment.date === 'string' ? comment.date : String(comment.date))}
+  {formatDate(
+    typeof comment.date === "string" ? comment.date : String(comment.date),
+  )}
 </time>
 ```
 
@@ -87,9 +91,9 @@ is untouched.
 ```tsx
 // Add near the top of the component function, before the return statement:
 function safeDateDisplay(dateStr: string): { dateTime: string; label: string } {
-  if (!dateStr) return { dateTime: '', label: 'Unknown date' };
-  const d = new Date(dateStr + 'T00:00:00Z');
-  if (isNaN(d.getTime())) return { dateTime: dateStr, label: 'Unknown date' };
+  if (!dateStr) return { dateTime: "", label: "Unknown date" };
+  const d = new Date(dateStr + "T00:00:00Z");
+  if (isNaN(d.getTime())) return { dateTime: dateStr, label: "Unknown date" };
   return { dateTime: dateStr, label: formatDate(dateStr) };
 }
 
@@ -98,10 +102,7 @@ const { dateTime, label } = safeDateDisplay(comment.date);
 
 ```tsx
 // Replace the <time> element:
-<time
-  dateTime={dateTime}
-  className="text-xs text-gray-400 dark:text-gray-500"
->
+<time dateTime={dateTime} className="text-xs text-gray-400 dark:text-gray-500">
   {label}
 </time>
 ```
@@ -146,10 +147,10 @@ npx serve out
 
 ## Implementation Summary
 
-| Step | File | Change |
-|------|------|--------|
-| 1 | `src/lib/content.ts:66` | Normalize `data.comments` — map each comment's `date` through `instanceof Date` check |
-| 2 | `src/components/Comment.tsx` | Add `safeDateDisplay()` helper; remove `typeof` guards; add "Unknown date" fallback |
-| 3 | — | Build and verify manually |
+| Step | File                         | Change                                                                                |
+| ---- | ---------------------------- | ------------------------------------------------------------------------------------- |
+| 1    | `src/lib/content.ts:66`      | Normalize `data.comments` — map each comment's `date` through `instanceof Date` check |
+| 2    | `src/components/Comment.tsx` | Add `safeDateDisplay()` helper; remove `typeof` guards; add "Unknown date" fallback   |
+| 3    | —                            | Build and verify manually                                                             |
 
 **Total**: 2 files changed, 0 new dependencies, 0 new files.

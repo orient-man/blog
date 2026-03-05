@@ -84,8 +84,8 @@ Selecting and copying code text does NOT include the line numbers.
 **File**: `src/lib/rehype-copy-button.ts` (new file)
 
 ```typescript
-import { visit } from 'unist-util-visit'
-import type { Root, Element } from 'hast'
+import { visit } from "unist-util-visit";
+import type { Root, Element } from "hast";
 
 /**
  * Rehype plugin that appends a <button data-copy-btn> to every
@@ -94,20 +94,20 @@ import type { Root, Element } from 'hast'
  */
 export function rehypeCopyButton() {
   return (tree: Root) => {
-    visit(tree, 'element', (node: Element) => {
+    visit(tree, "element", (node: Element) => {
       if (
-        node.tagName === 'figure' &&
-        'dataRehypePrettyCodeFigure' in (node.properties ?? {})
+        node.tagName === "figure" &&
+        "dataRehypePrettyCodeFigure" in (node.properties ?? {})
       ) {
         node.children.push({
-          type: 'element',
-          tagName: 'button',
-          properties: { 'data-copy-btn': '' },
-          children: [{ type: 'text', value: 'Copy' }],
-        })
+          type: "element",
+          tagName: "button",
+          properties: { "data-copy-btn": "" },
+          children: [{ type: "text", value: "Copy" }],
+        });
       }
-    })
-  }
+    });
+  };
 }
 ```
 
@@ -123,19 +123,19 @@ dependencies of `rehype-pretty-code` — no new packages needed.
 Find the `evaluate()` call and add `rehypeCopyButton` to `rehypePlugins`:
 
 ```typescript
-import { rehypeCopyButton } from '@/lib/rehype-copy-button'
+import { rehypeCopyButton } from "@/lib/rehype-copy-button";
 
 // ...
 
 const { default: Content } = await evaluate(source, {
-  format: 'md',
+  format: "md",
   remarkPlugins: [remarkGfm],
   rehypePlugins: [
     [rehypePrettyCode, prettyCodeOptions],
-    rehypeCopyButton,           // ← add after rehype-pretty-code
+    rehypeCopyButton, // ← add after rehype-pretty-code
   ],
   ...runtime,
-})
+});
 ```
 
 ### 4b. `next.config.mjs`
@@ -143,7 +143,7 @@ const { default: Content } = await evaluate(source, {
 Find the `withMDX({ ... })` options block and add the plugin:
 
 ```javascript
-import { rehypeCopyButton } from './src/lib/rehype-copy-button.js'
+import { rehypeCopyButton } from "./src/lib/rehype-copy-button.js";
 
 // ...
 
@@ -152,10 +152,10 @@ const withMDX = createMDX({
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
       [rehypePrettyCode, prettyCodeOptions],
-      rehypeCopyButton,         // ← add after rehype-pretty-code
+      rehypeCopyButton, // ← add after rehype-pretty-code
     ],
   },
-})
+});
 ```
 
 ---
@@ -193,7 +193,7 @@ Style the copy button so it appears in the top-right corner of the code figure:
 }
 
 [data-copy-btn][data-copied]::after {
-  content: 'Copied!';
+  content: "Copied!";
   position: absolute;
   right: calc(100% + 0.4rem);
   top: 50%;
@@ -280,6 +280,7 @@ After running the audit script, review each flagged post and manually:
 5. Check the rendered output in a browser
 
 **Target posts** (from research.md Section 5.2):
+
 - `checking-for-outdated-package-references-during-build-with-fake-paket.mdx`
 - `how--not--to-upgrade-to-asp-net-core-2-0-just-yet-with-paket.mdx`
 - `chutzpah-to-run-javascript-tests.mdx`
@@ -317,14 +318,14 @@ npm run build
 
 ## Implementation Order Summary
 
-| Step | File(s) Changed | What |
-|------|-----------------|------|
-| 1 | `globals.css` | Dual-theme token CSS |
-| 2 | `globals.css` | Line number counter CSS |
-| 3 | `src/lib/rehype-copy-button.ts` | Build plugin (new file) |
-| 4 | `page.tsx`, `next.config.mjs` | Register plugin in both pipeline paths |
-| 5 | `globals.css` | Copy button styles |
-| 6 | `src/app/layout.tsx` | Inline clipboard script |
-| 7 | `scripts/audit-code-blocks.ts` | Audit script (new file) |
-| 8 | `content/posts/*.mdx` | Manual content conversions (~5-8 posts) |
-| 9 | — | Build and verify |
+| Step | File(s) Changed                 | What                                    |
+| ---- | ------------------------------- | --------------------------------------- |
+| 1    | `globals.css`                   | Dual-theme token CSS                    |
+| 2    | `globals.css`                   | Line number counter CSS                 |
+| 3    | `src/lib/rehype-copy-button.ts` | Build plugin (new file)                 |
+| 4    | `page.tsx`, `next.config.mjs`   | Register plugin in both pipeline paths  |
+| 5    | `globals.css`                   | Copy button styles                      |
+| 6    | `src/app/layout.tsx`            | Inline clipboard script                 |
+| 7    | `scripts/audit-code-blocks.ts`  | Audit script (new file)                 |
+| 8    | `content/posts/*.mdx`           | Manual content conversions (~5-8 posts) |
+| 9    | —                               | Build and verify                        |

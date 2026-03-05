@@ -5,11 +5,11 @@
 
 ## Prerequisites
 
-| Tool | Version | Check Command |
-|------|---------|--------------|
+| Tool    | Version           | Check Command    |
+| ------- | ----------------- | ---------------- |
 | Node.js | 20 LTS (>=20.0.0) | `node --version` |
-| npm | >=10.0.0 | `npm --version` |
-| Git | >=2.30 | `git --version` |
+| npm     | >=10.0.0          | `npm --version`  |
+| Git     | >=2.30            | `git --version`  |
 
 ## Initial Setup
 
@@ -84,10 +84,16 @@ wordpressUrl: "/2026/02/27/my-new-post/"
 
 ```mdx
 {/* GitHub Gist */}
+
 <GistEmbed id="abc123def456" />
 
 {/* Tweet (static snapshot) */}
-<TweetEmbed url="https://twitter.com/user/status/123" content="Tweet text here" author="@user" />
+
+<TweetEmbed
+  url="https://twitter.com/user/status/123"
+  content="Tweet text here"
+  author="@user"
+/>
 ```
 
 No imports needed — components are registered globally in `mdx-components.tsx`.
@@ -135,26 +141,26 @@ npm run test:e2e
 
 ## Project Scripts
 
-| Script | Command | Purpose |
-|--------|---------|---------|
-| `dev` | `npm run dev` | Next.js development server |
-| `build` | `npm run build` | Static export + Pagefind indexing |
-| `test` | `npm run test` | Run Vitest unit tests |
-| `test:e2e` | `npm run test:e2e` | Run Playwright smoke tests |
-| `lint` | `npm run lint` | ESLint + Prettier check |
-| `migrate` | `npx tsx scripts/migrate.ts <wxr-file>` | WordPress → MDX conversion |
-| `download-images` | `npx tsx scripts/download-images.ts` | Download WordPress-hosted images |
-| `validate` | `npx tsx scripts/validate-migration.ts` | Post-migration content verification |
+| Script            | Command                                 | Purpose                             |
+| ----------------- | --------------------------------------- | ----------------------------------- |
+| `dev`             | `npm run dev`                           | Next.js development server          |
+| `build`           | `npm run build`                         | Static export + Pagefind indexing   |
+| `test`            | `npm run test`                          | Run Vitest unit tests               |
+| `test:e2e`        | `npm run test:e2e`                      | Run Playwright smoke tests          |
+| `lint`            | `npm run lint`                          | ESLint + Prettier check             |
+| `migrate`         | `npx tsx scripts/migrate.ts <wxr-file>` | WordPress → MDX conversion          |
+| `download-images` | `npx tsx scripts/download-images.ts`    | Download WordPress-hosted images    |
+| `validate`        | `npx tsx scripts/validate-migration.ts` | Post-migration content verification |
 
 ## Key Files
 
-| File | Purpose |
-|------|---------|
-| `next.config.mjs` | Static export config (`output: 'export'`) |
-| `tailwind.config.ts` | Tailwind + Typography plugin |
-| `mdx-components.tsx` | Global MDX component mapping |
-| `src/lib/content.ts` | Content loading API (getPosts, getBySlug, etc.) |
-| `src/lib/types.ts` | TypeScript interfaces |
-| `content/posts/` | Blog post MDX files |
-| `content/pages/` | Static page MDX files |
-| `content/data/blogroll.json` | Blogroll entries |
+| File                         | Purpose                                         |
+| ---------------------------- | ----------------------------------------------- |
+| `next.config.mjs`            | Static export config (`output: 'export'`)       |
+| `tailwind.config.ts`         | Tailwind + Typography plugin                    |
+| `mdx-components.tsx`         | Global MDX component mapping                    |
+| `src/lib/content.ts`         | Content loading API (getPosts, getBySlug, etc.) |
+| `src/lib/types.ts`           | TypeScript interfaces                           |
+| `content/posts/`             | Blog post MDX files                             |
+| `content/pages/`             | Static page MDX files                           |
+| `content/data/blogroll.json` | Blogroll entries                                |
