@@ -10,9 +10,9 @@
   --border: #e2e8f0;
   --card-bg: #f8fafc;
   --code-bg: #f1f5f9;
-  --link: #2563eb;
-  --link-hover: #1d4ed8;
-  --accent: #3b82f6;
+  --link: #4d7c0f;
+  --link-hover: #88c34b;
+  --accent: #88c34b;
 }
 
 .dark {
@@ -22,9 +22,9 @@
   --border: #1e293b;
   --card-bg: #1e293b;
   --code-bg: #1e293b;
-  --link: #60a5fa;
-  --link-hover: #93c5fd;
-  --accent: #60a5fa;
+  --link: #a3e635;
+  --link-hover: #bef264;
+  --accent: #a3e635;
 }
 
 body {

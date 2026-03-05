@@ -73,7 +73,7 @@ window.addEventListener('load',function(){
           href={gistLink}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-blue-600 dark:text-blue-400 hover:underline"
+          className="text-brand-600 dark:text-brand-400 hover:underline"
         >
           View Gist on GitHub &rarr;
         </a>

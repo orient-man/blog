@@ -22,7 +22,7 @@ export function RelatedPosts({ posts }: RelatedPostsProps) {
             <li key={post.slug}>
               <Link
                 href={url}
-                className="font-medium text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                className="font-medium text-gray-900 dark:text-gray-100 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
               >
                 {post.title}
               </Link>
@@ -37,7 +37,7 @@ export function RelatedPosts({ posts }: RelatedPostsProps) {
                   <Link
                     key={tag}
                     href={`/tag/${slugify(tag)}/`}
-                    className="text-xs px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-blue-900 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+                    className="text-xs px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-brand-100 dark:hover:bg-brand-900 hover:text-brand-700 dark:hover:text-brand-300 transition-colors"
                   >
                     {tag}
                   </Link>

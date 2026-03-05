@@ -15,7 +15,7 @@ interface TweetEmbedProps {
  */
 export default function TweetEmbed({ url, content, author }: TweetEmbedProps) {
   return (
-    <blockquote className="my-6 pl-4 border-l-4 border-blue-400 dark:border-blue-500 bg-blue-50 dark:bg-blue-950/30 rounded-r p-4 not-italic">
+    <blockquote className="my-6 pl-4 border-l-4 border-brand-400 dark:border-brand-500 bg-brand-50 dark:bg-brand-950/30 rounded-r p-4 not-italic">
       {content && (
         <p className="text-base text-gray-800 dark:text-gray-200 leading-relaxed mb-3">
           {content}
@@ -27,7 +27,7 @@ export default function TweetEmbed({ url, content, author }: TweetEmbedProps) {
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-blue-600 dark:text-blue-400 hover:underline ml-auto"
+          className="text-brand-600 dark:text-brand-400 hover:underline ml-auto"
           aria-label="View original tweet"
         >
           View on Twitter/X &rarr;

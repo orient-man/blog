@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Lora } from "next/font/google";
 import Link from "next/link";
 
 import "@/styles/globals.css";
@@ -10,6 +11,14 @@ import {
   getBlogroll,
   getAllPosts,
 } from "@/lib/content";
+
+const lora = Lora({
+  subsets: ["latin", "latin-ext"],
+  weight: ["400", "700"],
+  style: ["normal", "italic"],
+  variable: "--font-lora",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: {
@@ -40,7 +49,7 @@ export default function RootLayout({
   const recentPosts = getAllPosts().slice(0, 5);
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className={lora.variable} suppressHydrationWarning>
       <head />
       <body className="bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100 antialiased">
         {/* Dark-mode init script — runs before paint to avoid flash */}
@@ -57,18 +66,38 @@ export default function RootLayout({
         />
 
         <div className="min-h-screen flex flex-col">
+          {/* ── Top accent border ──────────────────────────────────────── */}
+          <div className="h-1 w-full bg-brand-500" />
+
           {/* ── Header ─────────────────────────────────────────────────── */}
           <header className="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950">
             <div className="max-w-5xl mx-auto px-4 py-6 flex items-center justify-between">
               <Link href="/" className="group block">
-                <h1 className="text-2xl font-bold tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                <h1 className="text-2xl font-serif italic font-bold tracking-tight group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
                   Just A Programmer
                 </h1>
                 <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
-                  Don Quixote fighting entropy
+                  ~ Don Quixote fighting entropy
                 </p>
               </Link>
-              <DarkModeToggle />
+              <nav className="hidden sm:flex items-center gap-4 text-sm">
+                <Link
+                  href="/"
+                  className="text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+                >
+                  Home
+                </Link>
+                <Link
+                  href="/page/curriculum-vitae-pl/"
+                  className="text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+                >
+                  CV
+                </Link>
+                <DarkModeToggle />
+              </nav>
+              <div className="sm:hidden">
+                <DarkModeToggle />
+              </div>
             </div>
           </header>
 

@@ -13,7 +13,23 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: ["Inter", "system-ui", "sans-serif"],
+        serif: ["var(--font-lora)", "Georgia", "serif"],
         mono: ["JetBrains Mono", "Menlo", "monospace"],
+      },
+      colors: {
+        brand: {
+          50: "#f4fce6",
+          100: "#e6f7c8",
+          200: "#ccef96",
+          300: "#aee35b",
+          400: "#93d633",
+          500: "#88c34b",
+          600: "#6b9e2e",
+          700: "#4d7c0f",
+          800: "#3f6212",
+          900: "#365314",
+          950: "#1a2e0a",
+        },
       },
       typography: {
         DEFAULT: {
