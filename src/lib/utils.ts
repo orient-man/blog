@@ -1,3 +1,11 @@
+import { toHtml } from "hast-util-to-html";
+import type { Root, RootContent } from "mdast";
+import { toString as mdastToString } from "mdast-util-to-string";
+import remarkGfm from "remark-gfm";
+import remarkParse from "remark-parse";
+import remarkRehype from "remark-rehype";
+import { unified } from "unified";
+
 // ── Date formatting ───────────────────────────────────────────────────────────
 
 const MONTH_NAMES = [
@@ -109,6 +117,135 @@ export function generateExcerpt(content: string, maxLength = 500): string {
   if (stripped.length <= maxLength) return stripped;
   const cut = stripped.lastIndexOf(" ", maxLength);
   return stripped.slice(0, cut > 0 ? cut : maxLength) + "…";
+}
+
+// ── HTML excerpt generation ───────────────────────────────────────────────
+
+/**
+ * Strip YAML frontmatter (`---...---`) from raw file content.
+ * `gray-matter` does this when parsing metadata, but `post.content`
+ * in the codebase is the raw file string and may still include it.
+ */
+function stripFrontmatter(raw: string): string {
+  return raw.replace(/^---[\s\S]*?---\n?/, "");
+}
+
+/**
+ * Custom remark plugin that transforms the mdast for excerpt extraction:
+ * - Keep paragraphs, blockquotes, lists (count text toward ~maxLen limit).
+ * - Replace code fences with a `...` placeholder paragraph (collapse consecutive).
+ * - Strip headings, images, HTML, JSX, and thematic breaks.
+ * - Stop collecting once accumulated text length >= maxLen.
+ * - Truncate the last node at a word boundary if it pushes over the limit.
+ */
+function remarkExcerptTransform(maxLen: number) {
+  return () => (tree: Root) => {
+    const kept: RootContent[] = [];
+    let textLen = 0;
+    let lastWasPlaceholder = false;
+
+    for (const node of tree.children) {
+      if (textLen >= maxLen) break;
+
+      // Strip these node types entirely
+      if (
+        node.type === "heading" ||
+        node.type === "html" ||
+        node.type === "thematicBreak" ||
+        node.type === "mdxJsxFlowElement"
+      ) {
+        lastWasPlaceholder = false;
+        continue;
+      }
+
+      // Strip image-only paragraphs (a paragraph whose sole child is an image)
+      if (node.type === "paragraph") {
+        const children = (
+          node as { children: Array<{ type: string }> }
+        ).children.filter((c) => c.type !== "image");
+        if (children.length === 0) {
+          lastWasPlaceholder = false;
+          continue;
+        }
+        // Remove inline images from paragraph children
+        (node as { children: Array<{ type: string }> }).children = children;
+      }
+
+      // Replace code blocks with `...` placeholder, collapse consecutive
+      if (node.type === "code") {
+        if (!lastWasPlaceholder) {
+          kept.push({
+            type: "paragraph",
+            children: [{ type: "text", value: "\u2026" }],
+          } as RootContent);
+          lastWasPlaceholder = true;
+        }
+        continue;
+      }
+
+      lastWasPlaceholder = false;
+
+      // Kept node types: paragraph, blockquote, list
+      const nodeText = mdastToString(node);
+      textLen += nodeText.length;
+      kept.push(node);
+
+      // If we've exceeded the limit, truncate the last text in this node
+      if (textLen > maxLen) {
+        truncateNode(node, textLen - maxLen);
+      }
+    }
+
+    tree.children = kept;
+  };
+}
+
+/**
+ * Recursively find the last text node in a subtree and truncate it
+ * at a word boundary, removing `excessChars` characters and appending `...`.
+ */
+function truncateNode(node: RootContent, excessChars: number): void {
+  if (node.type === "text") {
+    const text = (node as { value: string }).value;
+    const target = text.length - excessChars;
+    if (target <= 0) {
+      (node as { value: string }).value = "\u2026";
+      return;
+    }
+    const cut = text.lastIndexOf(" ", target);
+    (node as { value: string }).value =
+      text.slice(0, cut > 0 ? cut : target) + "\u2026";
+    return;
+  }
+
+  // Recurse into children (paragraph, blockquote, list, listItem, etc.)
+  const children = (node as { children?: RootContent[] }).children;
+  if (children && children.length > 0) {
+    truncateNode(children[children.length - 1], excessChars);
+  }
+}
+
+/**
+ * Generate an HTML excerpt from raw MDX/Markdown content.
+ * Uses a unified/remark pipeline to produce formatted HTML preserving
+ * inline formatting (bold, italic, strikethrough, links, inline code)
+ * and blockquote structure. Code fences are replaced with `...`.
+ */
+export function generateHtmlExcerpt(
+  rawContent: string,
+  maxLength = 500,
+): string {
+  const content = stripFrontmatter(rawContent);
+
+  const processor = unified()
+    .use(remarkParse)
+    .use(remarkGfm)
+    .use(remarkExcerptTransform(maxLength))
+    .use(remarkRehype);
+
+  const mdast = processor.parse(content);
+  const hast = processor.runSync(mdast);
+  return toHtml(hast);
 }
 
 // ── Tag font sizing ───────────────────────────────────────────────────────

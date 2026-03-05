@@ -14,7 +14,12 @@ import type {
   Comment,
 } from "./types";
 import { CATEGORIES } from "./types";
-import { slugify, estimateReadingTime, generateExcerpt } from "./utils";
+import {
+  slugify,
+  estimateReadingTime,
+  generateExcerpt,
+  generateHtmlExcerpt,
+} from "./utils";
 
 // ── Paths ─────────────────────────────────────────────────────────────────────
 
@@ -68,6 +73,7 @@ function loadPosts(): Post[] {
       format: data.format ?? "standard",
       slug: data.slug ?? path.basename(filePath, path.extname(filePath)),
       excerpt: data.excerpt ?? generateExcerpt(content),
+      htmlExcerpt: generateHtmlExcerpt(raw),
       wordpressUrl: data.wordpressUrl ?? "",
       comments: Array.isArray(data.comments)
         ? data.comments.map((c: Record<string, unknown>) => ({
