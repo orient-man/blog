@@ -6,13 +6,14 @@ import { evaluate } from '@mdx-js/mdx';
 import rehypePrettyCode from 'rehype-pretty-code';
 import remarkGfm from 'remark-gfm';
 import { rehypeCopyButton } from '@/lib/rehype-copy-button';
-import { getAllPosts, getPostBySlug } from '@/lib/content';
+import { getAllPosts, getPostBySlug, getRelatedPosts } from '@/lib/content';
 import { formatDate, postUrlPath, slugify } from '@/lib/utils';
 import { CATEGORIES } from '@/lib/types';
 import QuotePost from '@/components/QuotePost';
 import GistEmbed from '@/components/GistEmbed';
 import TweetEmbed from '@/components/TweetEmbed';
 import CommentList from '@/components/CommentList';
+import { RelatedPosts } from '@/components/RelatedPosts';
 
 // ── Shared rehype-pretty-code options ─────────────────────────────────────────
 
@@ -171,6 +172,9 @@ export default async function PostPage({
       {post.comments && post.comments.length > 0 && (
         <CommentList comments={post.comments} />
       )}
+
+      {/* ── Related Posts ──────────────────────────────────────────────────── */}
+      <RelatedPosts posts={getRelatedPosts(post.slug, 3)} />
 
       {/* ── Post navigation ───────────────────────────────────────────────── */}
       <nav className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800 flex justify-between gap-4 text-sm">
