@@ -15,19 +15,19 @@ export default function QuotePost({ children }: QuotePostProps) {
       {/* Decorative opening quotation mark */}
       <span
         aria-hidden="true"
-        className="absolute -top-4 -left-2 text-7xl font-serif text-blue-200 dark:text-blue-900 select-none leading-none pointer-events-none"
+        className="absolute -top-4 -left-2 text-7xl font-serif text-brand-200 dark:text-brand-900 select-none leading-none pointer-events-none"
       >
         &ldquo;
       </span>
 
-      <blockquote className="relative pl-6 pr-4 py-4 border-l-4 border-blue-400 dark:border-blue-500 bg-blue-50 dark:bg-blue-950/30 rounded-r italic text-lg leading-relaxed text-gray-800 dark:text-gray-200">
+      <blockquote className="relative pl-6 pr-4 py-4 border-l-4 border-brand-400 dark:border-brand-500 bg-brand-50 dark:bg-brand-950/30 rounded-r italic text-lg leading-relaxed text-gray-800 dark:text-gray-200">
         {children}
       </blockquote>
 
       {/* Decorative closing quotation mark */}
       <span
         aria-hidden="true"
-        className="absolute -bottom-6 right-0 text-7xl font-serif text-blue-200 dark:text-blue-900 select-none leading-none pointer-events-none"
+        className="absolute -bottom-6 right-0 text-7xl font-serif text-brand-200 dark:text-brand-900 select-none leading-none pointer-events-none"
       >
         &rdquo;
       </span>

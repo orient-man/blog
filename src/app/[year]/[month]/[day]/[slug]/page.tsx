@@ -120,7 +120,9 @@ export default async function PostPage({
     <article className="max-w-prose mx-auto" data-pagefind-body>
       {/* ── Post header ──────────────────────────────────────────────────── */}
       <header className="mb-8">
-        <h1 className="text-3xl font-bold leading-tight mb-3">{post.title}</h1>
+        <h1 className="text-3xl font-bold font-serif leading-tight mb-3">
+          {post.title}
+        </h1>
 
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-500 dark:text-gray-400">
           <time dateTime={post.date}>{formatDate(post.date)}</time>
@@ -137,7 +139,7 @@ export default async function PostPage({
               <span>&middot;</span>
               <Link
                 href={`/category/${category.slug}/`}
-                className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                className="hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
               >
                 {category.name}
               </Link>
@@ -151,7 +153,7 @@ export default async function PostPage({
               <Link
                 key={tag}
                 href={`/tag/${tag}/`}
-                className="text-xs px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-blue-900 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+                className="text-xs px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-brand-100 dark:hover:bg-brand-900 hover:text-brand-700 dark:hover:text-brand-300 transition-colors"
               >
                 {tag}
               </Link>
@@ -203,7 +205,7 @@ export default async function PostPage({
               </span>
               <Link
                 href={postUrlPath(olderPost.date, olderPost.slug)}
-                className="font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                className="font-medium hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
               >
                 {olderPost.title}
               </Link>
@@ -218,7 +220,7 @@ export default async function PostPage({
               </span>
               <Link
                 href={postUrlPath(newerPost.date, newerPost.slug)}
-                className="font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                className="font-medium hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
               >
                 {newerPost.title}
               </Link>

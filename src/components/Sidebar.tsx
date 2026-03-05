@@ -41,7 +41,7 @@ export default function Sidebar({
           Don Quixote fighting entropy — a programming blog by{" "}
           <Link
             href="/page/curriculum-vitae-pl/"
-            className="text-blue-600 dark:text-blue-400 hover:underline"
+            className="text-brand-600 dark:text-brand-400 hover:underline"
           >
             Marcin Malinowski
           </Link>
@@ -60,7 +60,7 @@ export default function Sidebar({
               <li key={post.slug}>
                 <Link
                   href={postUrlPath(post.date, post.slug)}
-                  className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors line-clamp-2"
+                  className="text-gray-700 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400 transition-colors line-clamp-2"
                 >
                   {post.title}
                 </Link>
@@ -80,7 +80,7 @@ export default function Sidebar({
             <li key={cat.slug}>
               <Link
                 href={`/category/${cat.slug}/`}
-                className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                className="text-gray-700 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
               >
                 {cat.name}
               </Link>
@@ -110,7 +110,7 @@ export default function Sidebar({
               <li key={`${year}-${month}`}>
                 <Link
                   href={`/archive/${year}/${pad2(month)}/`}
-                  className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                  className="text-gray-700 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
                 >
                   {formatMonthYear(year, month)}{" "}
                   <span className="text-gray-400 dark:text-gray-500">
@@ -136,7 +136,7 @@ export default function Sidebar({
                   href={entry.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                  className="text-gray-700 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
                 >
                   {entry.name}
                 </a>
@@ -153,7 +153,7 @@ export default function Sidebar({
         </h2>
         <Link
           href="/search/"
-          className="inline-block w-full text-center px-3 py-1.5 rounded border border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+          className="inline-block w-full text-center px-3 py-1.5 rounded border border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-brand-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
         >
           Search posts
         </Link>

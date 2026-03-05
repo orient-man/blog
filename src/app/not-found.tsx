@@ -13,13 +13,13 @@ export default function NotFound() {
       <nav className="flex justify-center gap-6 text-sm">
         <Link
           href="/"
-          className="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition-colors"
+          className="px-4 py-2 rounded-md bg-brand-600 text-white hover:bg-brand-700 transition-colors"
         >
           Go home
         </Link>
         <Link
           href="/search/"
-          className="px-4 py-2 rounded-md border border-gray-300 dark:border-gray-700 hover:border-blue-400 transition-colors"
+          className="px-4 py-2 rounded-md border border-gray-300 dark:border-gray-700 hover:border-brand-400 transition-colors"
         >
           Search posts
         </Link>

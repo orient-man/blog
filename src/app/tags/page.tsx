@@ -32,7 +32,7 @@ export default function TagsIndexPage() {
             <Link
               key={tag.slug}
               href={`/tag/${tag.slug}/`}
-              className="inline-flex items-center px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-blue-900 hover:text-blue-700 dark:hover:text-blue-300 transition-colors leading-snug"
+              className="inline-flex items-center px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-brand-100 dark:hover:bg-brand-900 hover:text-brand-700 dark:hover:text-brand-300 transition-colors leading-snug"
               style={{ fontSize: `${size.toFixed(2)}rem` }}
             >
               {tag.name}{" "}
