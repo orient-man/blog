@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
 import type { Post } from '@/lib/types';
 import { PostCard } from './PostCard';
+import { usePageParam } from '@/hooks/use-page-param';
 
 interface PostListProps {
   posts: Post[];
@@ -13,9 +13,9 @@ interface PostListProps {
 const DEFAULT_PAGE_SIZE = 10;
 
 export function PostList({ posts, pageSize = DEFAULT_PAGE_SIZE, title }: PostListProps) {
-  const [page, setPage] = useState(0);
-
   const totalPages = Math.ceil(posts.length / pageSize);
+  const [page, setPage] = usePageParam(totalPages);
+
   const start = page * pageSize;
   const end = Math.min(start + pageSize, posts.length);
   const pagePosts = posts.slice(start, end);
@@ -51,7 +51,7 @@ export function PostList({ posts, pageSize = DEFAULT_PAGE_SIZE, title }: PostLis
               aria-label="Post pagination"
             >
               <button
-                onClick={() => { setPage((p) => p - 1); window.scrollTo(0, 0); }}
+                onClick={() => { setPage(page - 1); window.scrollTo(0, 0); }}
                 disabled={!hasPrev}
                 className="px-4 py-2 rounded bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm font-medium disabled:opacity-40 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
               >
@@ -63,7 +63,7 @@ export function PostList({ posts, pageSize = DEFAULT_PAGE_SIZE, title }: PostLis
               </span>
 
               <button
-                onClick={() => { setPage((p) => p + 1); window.scrollTo(0, 0); }}
+                onClick={() => { setPage(page + 1); window.scrollTo(0, 0); }}
                 disabled={!hasNext}
                 className="px-4 py-2 rounded bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm font-medium disabled:opacity-40 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
               >
