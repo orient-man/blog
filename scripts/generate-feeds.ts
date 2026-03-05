@@ -47,14 +47,14 @@ function loadPosts(): PostMeta[] {
       const day = String(d.getUTCDate()).padStart(2, "0");
       const url = `${SITE_URL}/${y}/${m}/${day}/${slug}/`;
 
-      const plain = content
+      const stripped = content
         .replace(/^---[\s\S]*?---\n?/, "")
         .replace(/<[^>]+>/g, "")
         .replace(/[#*`]/g, "")
         .replace(/\s+/g, " ")
-        .trim()
-        .slice(0, 200);
-      const excerpt = plain.length < content.length ? plain + "…" : plain;
+        .trim();
+      const plain = stripped.slice(0, 500);
+      const excerpt = plain.length < stripped.length ? plain + "…" : plain;
 
       return {
         slug,

@@ -82,9 +82,9 @@ export function estimateReadingTime(content: string): number {
 /**
  * Generate a plain-text excerpt from raw MDX/Markdown content.
  * Strips Markdown syntax, frontmatter delimiters, and JSX tags,
- * then truncates to `maxLength` characters (default 160).
+ * then truncates to `maxLength` characters (default 500).
  */
-export function generateExcerpt(content: string, maxLength = 160): string {
+export function generateExcerpt(content: string, maxLength = 500): string {
   const stripped = content
     // Remove frontmatter
     .replace(/^---[\s\S]*?---\n?/, "")

@@ -99,7 +99,7 @@ export function PostCard({ post }: PostCardProps) {
           </time>
 
           {excerpt && (
-            <p className="mt-3 text-gray-600 dark:text-gray-300 text-sm leading-relaxed line-clamp-6">
+            <p className="mt-3 text-gray-600 dark:text-gray-300 text-sm leading-relaxed line-clamp-10">
               {excerpt}
             </p>
           )}
