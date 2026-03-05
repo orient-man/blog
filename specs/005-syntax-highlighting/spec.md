@@ -5,7 +5,7 @@
 **Status**: Draft  
 **Input**: User description: "add feature: syntax highlighting for code blocks"
 
-## User Scenarios & Testing _(mandatory)_
+## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Reader Views Code with Language-Appropriate Highlighting (Priority: P1)
 
@@ -95,7 +95,7 @@ The authoring workflow already supports fenced code blocks via standard Markdown
 - What happens when a code block is empty (opening and closing fence with no content)? It MUST not cause a rendering error.
 - What happens when code appears inside inline backticks rather than fenced blocks? Inline code MUST remain styled as inline code and not be processed through the block highlighting pipeline.
 
-## Requirements _(mandatory)_
+## Requirements *(mandatory)*
 
 ### Functional Requirements
 
@@ -123,7 +123,7 @@ The authoring workflow already supports fenced code blocks via standard Markdown
 - The minimum set of supported languages (C#, F#, C++, JavaScript, TypeScript, HTML, CSS, XML, Bash, Diff) covers all languages found in existing posts. If additional languages are discovered during the audit, they will be added.
 - Of the 33 migrated posts, approximately 22 have no fenced code blocks; however only an estimated 5-8 of those actually contain code content (commands, config snippets, or multi-line code). These are the posts requiring manual conversion. The remaining posts without fenced blocks are prose-only and need no action.
 
-## Success Criteria _(mandatory)_
+## Success Criteria *(mandatory)*
 
 ### Measurable Outcomes
 

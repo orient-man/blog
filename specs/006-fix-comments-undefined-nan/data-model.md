@@ -18,15 +18,14 @@ introduced by this fix, and the before/after transformation pipeline.
 
 Represents a single historical WordPress comment associated with a blog post.
 
-| Field       | Type (after fix)                        | Source                                    | Notes                                                                                                   |
-| ----------- | --------------------------------------- | ----------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `author`    | `string`                                | YAML frontmatter                          | Display name of the comment author                                                                      |
-| `date`      | `string` — ISO 8601 date (`YYYY-MM-DD`) | YAML frontmatter, normalized at load time | **Before fix**: could be a `Date` object from gray-matter. **After fix**: always a `YYYY-MM-DD` string. |
-| `content`   | `string`                                | YAML frontmatter                          | Comment body; may contain simple HTML entities                                                          |
-| `avatarUrl` | `string \| undefined`                   | YAML frontmatter                          | Optional avatar URL; not present in existing data                                                       |
+| Field | Type (after fix) | Source | Notes |
+|-------|-----------------|--------|-------|
+| `author` | `string` | YAML frontmatter | Display name of the comment author |
+| `date` | `string` — ISO 8601 date (`YYYY-MM-DD`) | YAML frontmatter, normalized at load time | **Before fix**: could be a `Date` object from gray-matter. **After fix**: always a `YYYY-MM-DD` string. |
+| `content` | `string` | YAML frontmatter | Comment body; may contain simple HTML entities |
+| `avatarUrl` | `string \| undefined` | YAML frontmatter | Optional avatar URL; not present in existing data |
 
 **Invariants (after fix)**:
-
 - `date` MUST be a `string` by the time it leaves `loadPosts()` in `content.ts`
 - `date` SHOULD match the pattern `/^\d{4}-\d{2}-\d{2}$/` for all valid comments
 - `date` MAY be an empty string `""` for comments with missing/malformed frontmatter dates; the renderer MUST display "Unknown date" in this case
@@ -148,11 +147,11 @@ src/lib/types.ts
 
 ## What Does NOT Change
 
-| Item                                          | Status                                                  |
-| --------------------------------------------- | ------------------------------------------------------- |
-| `src/lib/types.ts` — `Comment` interface      | Unchanged — `date: string` was already correct          |
-| `src/lib/utils.ts` — `formatDate()`           | Unchanged — works correctly for valid ISO strings       |
-| `src/lib/types.ts` — `Post` interface         | Unchanged                                               |
-| `src/components/CommentList.tsx`              | Unchanged — just renders a list of `Comment` components |
-| `content/posts/*.mdx`                         | Unchanged — FR-007 prohibits modifying source files     |
-| Post-level date normalization in `content.ts` | Unchanged — FR-006 prohibits altering it                |
+| Item | Status |
+|------|--------|
+| `src/lib/types.ts` — `Comment` interface | Unchanged — `date: string` was already correct |
+| `src/lib/utils.ts` — `formatDate()` | Unchanged — works correctly for valid ISO strings |
+| `src/lib/types.ts` — `Post` interface | Unchanged |
+| `src/components/CommentList.tsx` | Unchanged — just renders a list of `Comment` components |
+| `content/posts/*.mdx` | Unchanged — FR-007 prohibits modifying source files |
+| Post-level date normalization in `content.ts` | Unchanged — FR-006 prohibits altering it |

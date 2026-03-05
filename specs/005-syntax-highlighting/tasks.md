@@ -172,16 +172,13 @@
 ### Parallel Opportunities
 
 Within Phase 2 (Foundational):
-
 - T004, T005, T006 can run in parallel (different files, same change pattern)
 - T008, T009 can run in parallel (different CSS sections, no overlap)
 
 Within Phase 5 (US3):
-
 - T017, T018, T019, T020, T021 can ALL run in parallel (different content files)
 
 Cross-story parallelism:
-
 - US3 content conversion (T015–T022) can proceed in parallel with US1 (T010–T011) after Phase 2 completes
 - US4 test post (T024–T026) can proceed in parallel with US2 (T012–T014) after Phase 2 completes
 

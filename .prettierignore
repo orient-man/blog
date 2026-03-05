@@ -3,6 +3,11 @@ out/
 content/
 node_modules/
 public/
+.opencode/
+.github/prompts/
+.github/skills/
+openspec/
+specs/
 *.mdx
 pnpm-lock.yaml
 package-lock.json

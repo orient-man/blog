@@ -32,7 +32,6 @@ No special-case display-name mapping SHALL exist.
 ### Requirement: FR-003 Hyphenated tag display names (TAG_SLUG_MAP clause)
 
 The following clause from the original FR-003 is removed:
-
 > "Tags with explicit entries in `TAG_SLUG_MAP` SHALL continue to use their mapped display name (e.g., slug `fsharp` displays as `F#`)."
 
 **Reason**: The `TAG_SLUG_MAP` constant is being removed entirely.

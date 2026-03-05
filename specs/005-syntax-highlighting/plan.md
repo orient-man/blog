@@ -33,18 +33,18 @@ All work builds on packages already in `package.json`
 
 ## Constitution Check
 
-_GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
+*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
 ### Pre-Design Evaluation
 
-| Principle         | Gate                                 | Evaluation                                                                           | Status |
-| ----------------- | ------------------------------------ | ------------------------------------------------------------------------------------ | ------ |
-| I. Simplicity     | Static site — no server-side runtime | All highlighting is build-time via `rehype-pretty-code`. Output is static HTML.      | PASS   |
-| I. Simplicity     | No databases, no dynamic backends    | Zero runtime state. Copy-to-clipboard is a minimal inline script.                    | PASS   |
-| I. Simplicity     | Dependencies kept to minimum         | Zero new npm dependencies. All packages already installed.                           | PASS   |
-| I. Simplicity     | Prefer plain HTML/CSS over libraries | Line numbers: pure CSS counters. Copy button: build-time HTML + 6-line vanilla JS.   | PASS   |
-| II. Content-First | Markdown is canonical content format | Posts remain MDX/Markdown. Audit adds standard fenced code blocks.                   | PASS   |
-| II. Content-First | Serve content readability            | Syntax highlighting directly improves code readability. Dual-theme ensures contrast. | PASS   |
+| Principle | Gate | Evaluation | Status |
+|-----------|------|-----------|--------|
+| I. Simplicity | Static site — no server-side runtime | All highlighting is build-time via `rehype-pretty-code`. Output is static HTML. | PASS |
+| I. Simplicity | No databases, no dynamic backends | Zero runtime state. Copy-to-clipboard is a minimal inline script. | PASS |
+| I. Simplicity | Dependencies kept to minimum | Zero new npm dependencies. All packages already installed. | PASS |
+| I. Simplicity | Prefer plain HTML/CSS over libraries | Line numbers: pure CSS counters. Copy button: build-time HTML + 6-line vanilla JS. | PASS |
+| II. Content-First | Markdown is canonical content format | Posts remain MDX/Markdown. Audit adds standard fenced code blocks. | PASS |
+| II. Content-First | Serve content readability | Syntax highlighting directly improves code readability. Dual-theme ensures contrast. | PASS |
 
 ### Post-Design Re-Evaluation
 
@@ -106,5 +106,5 @@ This follows the existing project layout exactly.
 No violations — table intentionally left empty.
 
 | Violation | Why Needed | Simpler Alternative Rejected Because |
-| --------- | ---------- | ------------------------------------ |
-| _(none)_  |            |                                      |
+|-----------|------------|-------------------------------------|
+| *(none)* | | |

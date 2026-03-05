@@ -57,7 +57,7 @@
 **Goal**: Confirm that GFM tables and task lists also render correctly as a natural side-effect of enabling `remark-gfm`.
 
 **Independent Test**: Manually inspect the built site for any post that uses GFM tables or task lists; confirm they render as structured HTML.  
-_(No existing posts use these features; this story is validated by the build succeeding and the absence of regressions.)_
+*(No existing posts use these features; this story is validated by the build succeeding and the absence of regressions.)*
 
 ### Implementation for User Story 3
 
@@ -116,13 +116,13 @@ Task: T005 — next.config.mjs
 
 ## Summary
 
-| Metric                 | Value                         |
-| ---------------------- | ----------------------------- |
-| Total tasks            | 10                            |
-| Phase 1 (Setup)        | 1                             |
-| US1 tasks              | 3                             |
-| US2 tasks              | 2                             |
-| US3 tasks              | 1                             |
-| Polish tasks           | 3                             |
+| Metric | Value |
+|--------|-------|
+| Total tasks | 10 |
+| Phase 1 (Setup) | 1 |
+| US1 tasks | 3 |
+| US2 tasks | 2 |
+| US3 tasks | 1 |
+| Polish tasks | 3 |
 | Parallel opportunities | T002, T003, T005 (after T001) |
-| MVP scope              | Phase 1 + Phase 2 (T001–T004) |
+| MVP scope | Phase 1 + Phase 2 (T001–T004) |

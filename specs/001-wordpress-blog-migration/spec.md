@@ -5,7 +5,7 @@
 **Status**: Draft  
 **Input**: User description: "Migrate all content and features from the existing WordPress blog at orientman.wordpress.com to a new static blog"
 
-## User Scenarios & Testing _(mandatory)_
+## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Read Any Existing Blog Post (Priority: P1)
 
@@ -112,7 +112,7 @@ A reader can view existing comments that were on the original WordPress posts. N
 - What happens when an embedded image URL from WordPress is no longer accessible? Images should be downloaded and hosted locally as part of the migration to avoid broken links.
 - How does the blog handle the transition from WordPress URLs to new URLs? The new blog MUST preserve the original WordPress URL structure (e.g., `/2017/08/15/post-slug/`) to maintain SEO and existing inbound links.
 
-## Requirements _(mandatory)_
+## Requirements *(mandatory)*
 
 ### Functional Requirements
 
@@ -147,7 +147,7 @@ A reader can view existing comments that were on the original WordPress posts. N
 - **Static Page**: A standalone page not part of the chronological post stream (e.g., Curriculum Vitae). Has a title and body content but no date/category/tag metadata.
 - **Blogroll Entry**: An external blog reference with a name and URL. 11 entries exist in the original blog's "Blogs I Follow" list.
 
-## Success Criteria _(mandatory)_
+## Success Criteria *(mandatory)*
 
 ### Measurable Outcomes
 

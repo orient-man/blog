@@ -42,7 +42,7 @@ Expected output should contain a `<del>` element (or `<s>` -- both are valid GFM
 It must **not** contain literal tilde characters around "framework":
 
 ```html
-~~framework~~ ← BAD: fix did not work
+~~framework~~   ← BAD: fix did not work
 ```
 
 ## Step 4: Spot-check posts with tilde characters (regression check)
@@ -65,7 +65,6 @@ npx serve out
 ```
 
 Navigate to the affected post and confirm:
-
 - The word "framework" appears with a visible line-through decoration
 - No raw `~~` characters are visible anywhere on the page
 - All other formatting (bold, italic, links, code blocks) renders correctly

@@ -35,7 +35,6 @@ Content-based similarity (TF-IDF, cosine similarity) would require text processi
 With only 33 posts, tag overlap produces meaningful results — most tags appear on 2–7 posts.
 
 **Alternatives considered:**
-
 - TF-IDF on post content: Adds complexity and a dependency; overkill for the corpus size.
 - Manual `relatedPosts` frontmatter field: High authoring friction; easy to forget updating.
 - Category-only grouping: Too coarse — only 2 categories, both language-based.
@@ -49,7 +48,6 @@ A compact format avoids visual competition with the main article content (Princi
 `PostCard` includes excerpts and more visual weight than appropriate for this context.
 
 **Alternatives considered:**
-
 - Reuse `PostCard` as-is: Too visually heavy; excerpts add noise in a "see also" context.
 - Title-only links: Too minimal; date and tags help readers judge relevance at a glance.
 

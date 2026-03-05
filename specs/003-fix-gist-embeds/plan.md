@@ -25,12 +25,12 @@ No changes to the rendering pipeline; `format: 'md'` mode is preserved.
 
 ## Constitution Check
 
-_GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
+*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-| Principle                                                                                                             | Status  | Notes                                                                                                              |
-| --------------------------------------------------------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------ |
-| **I. Simplicity** — no server-side runtime, no databases, no dynamic backends; prefer plain HTML/CSS/Markdown         | ✅ PASS | Content is pasted as static Markdown fenced code blocks. Zero new dependencies. No build-time or runtime fetching. |
-| **II. Content-First** — Markdown is the canonical content format; design decisions must prioritize reading experience | ✅ PASS | Bare URLs (unreadable) replaced with syntax-highlighted code blocks (readable). Strictly content improvement.      |
+| Principle | Status | Notes |
+|-----------|--------|-------|
+| **I. Simplicity** — no server-side runtime, no databases, no dynamic backends; prefer plain HTML/CSS/Markdown | ✅ PASS | Content is pasted as static Markdown fenced code blocks. Zero new dependencies. No build-time or runtime fetching. |
+| **II. Content-First** — Markdown is the canonical content format; design decisions must prioritize reading experience | ✅ PASS | Bare URLs (unreadable) replaced with syntax-highlighted code blocks (readable). Strictly content improvement. |
 
 **Gate verdict: PASS — proceed to Phase 0.**
 

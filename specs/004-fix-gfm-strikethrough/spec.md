@@ -5,7 +5,7 @@
 **Status**: Draft  
 **Input**: User description: "fix: strikethrough (~~) formatting is not working in my blog posts"
 
-## User Scenarios & Testing _(mandatory)_
+## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Strikethrough Text Renders Correctly (Priority: P1)
 
@@ -67,7 +67,7 @@ If the author later uses GFM tables, task lists, or autolinks in posts, these SH
 - What happens to existing posts that do not use any GFM-specific features?
   - They MUST render identically to their current output with zero regressions.
 
-## Requirements _(mandatory)_
+## Requirements *(mandatory)*
 
 ### Functional Requirements
 
@@ -86,7 +86,7 @@ If the author later uses GFM tables, task lists, or autolinks in posts, these SH
 - The author's existing use of `~~framework~~` in "There Is No Such Thing as a Free (Free Monad)" is the only currently affected post, though the fix must be generic.
 - The fix aligns with the project constitution's simplicity principle: it addresses a standard Markdown convention that readers and authors expect to work out of the box.
 
-## Success Criteria _(mandatory)_
+## Success Criteria *(mandatory)*
 
 ### Measurable Outcomes
 

@@ -33,7 +33,6 @@ Four listing pages consume the `PostList` component: homepage, category, tag, an
 **Choice**: `?page=N` search parameter.
 
 **Alternatives considered**:
-
 - Route-based (`/page/2/`): Would require new dynamic route segments, `generateStaticParams` for every listing surface, and multiply the number of static HTML files generated. Rejected per Constitution Principle I (Simplicity).
 - Hash fragment (`#page=2`): Not sent to server (irrelevant for static site, but non-standard for pagination). Worse discoverability. Rejected.
 
@@ -45,7 +44,6 @@ They require no build changes, no new routes, and are the standard web conventio
 **Choice**: `history.replaceState` when user clicks Newer/Older.
 
 **Alternatives considered**:
-
 - `pushState`: Creates a new history entry per page click. A user browsing 4 pages would need 4 back-button presses to leave the listing page. Rejected as poor UX.
 - `router.push` / `router.replace` (Next.js): Triggers React re-rendering through Next.js navigation. Heavier than needed for a search-param-only change. May cause unexpected Suspense boundary issues in static export. Rejected for simplicity.
 
@@ -57,7 +55,6 @@ The component re-renders through normal React state flow.
 **Choice**: Extract a `usePageParam(totalPages)` hook in `src/hooks/use-page-param.ts`.
 
 **Alternatives considered**:
-
 - Inline in `PostList.tsx`: Keeps everything in one file but mixes URL concerns with rendering. Harder to test independently.
 - Next.js `useSearchParams()`: Requires wrapping in `<Suspense>` for static export, adds framework coupling for a single parameter read.
 

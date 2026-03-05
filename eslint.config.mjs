@@ -7,7 +7,18 @@ import tseslint from "typescript-eslint";
 const config = [
   // Global ignore patterns
   {
-    ignores: ["out/", ".next/", "content/", "node_modules/", "public/"],
+    ignores: [
+      "out/",
+      ".next/",
+      "content/",
+      "node_modules/",
+      "public/",
+      ".opencode/",
+      ".github/prompts/",
+      ".github/skills/",
+      "openspec/",
+      "specs/",
+    ],
   },
 
   // Base JS recommended rules

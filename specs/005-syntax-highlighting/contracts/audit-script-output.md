@@ -69,39 +69,39 @@ When `--json` is passed, stdout contains a single JSON object:
 
 ### Top-Level Fields
 
-| Field          | Type                | Description                                                       |
-| -------------- | ------------------- | ----------------------------------------------------------------- |
-| `generatedAt`  | ISO 8601 string     | UTC timestamp of script execution                                 |
-| `totalPosts`   | number              | Total MDX files scanned                                           |
-| `flaggedCount` | number              | Number of posts where `flagged === true`                          |
-| `posts`        | `PostAuditResult[]` | One entry per **flagged** post only (unflagged posts are omitted) |
+| Field | Type | Description |
+|-------|------|-------------|
+| `generatedAt` | ISO 8601 string | UTC timestamp of script execution |
+| `totalPosts` | number | Total MDX files scanned |
+| `flaggedCount` | number | Number of posts where `flagged === true` |
+| `posts` | `PostAuditResult[]` | One entry per **flagged** post only (unflagged posts are omitted) |
 
 ### `PostAuditResult`
 
-| Field                  | Type          | Description                                                |
-| ---------------------- | ------------- | ---------------------------------------------------------- |
-| `filePath`             | string        | Path relative to repository root                           |
-| `slug`                 | string        | Post slug (derived from filename)                          |
-| `flagged`              | boolean       | Always `true` in this array (unflagged posts are excluded) |
-| `existingFencedBlocks` | number        | Count of fenced code blocks already present                |
-| `heuristics`           | `Heuristic[]` | One entry per detected pattern instance                    |
+| Field | Type | Description |
+|-------|------|-------------|
+| `filePath` | string | Path relative to repository root |
+| `slug` | string | Post slug (derived from filename) |
+| `flagged` | boolean | Always `true` in this array (unflagged posts are excluded) |
+| `existingFencedBlocks` | number | Count of fenced code blocks already present |
+| `heuristics` | `Heuristic[]` | One entry per detected pattern instance |
 
 ### `Heuristic`
 
-| Field        | Type        | Description                                     |
-| ------------ | ----------- | ----------------------------------------------- |
-| `type`       | string enum | See heuristic types below                       |
-| `lineNumber` | number      | 1-based line number in the MDX file             |
-| `excerpt`    | string      | Up to 80 characters of the flagged line content |
+| Field | Type | Description |
+|-------|------|-------------|
+| `type` | string enum | See heuristic types below |
+| `lineNumber` | number | 1-based line number in the MDX file |
+| `excerpt` | string | Up to 80 characters of the flagged line content |
 
 ### Heuristic Types
 
-| Type               | Detection Rule                                                                                                                       |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `shell-command`    | Line (trimmed) starts with `$`, `>`, or a known CLI prefix (`npm`, `npx`, `paket`, `nuget`, `mono`, `dotnet`, `git`, `curl`, `wget`) |
-| `indented-block`   | Line starts with 4+ spaces or a tab, outside of an existing fenced block, and is not front matter                                    |
-| `long-inline-code` | Inline backtick span (`` `…` ``) whose content exceeds 30 characters                                                                 |
-| `raw-xml-html`     | Line contains an XML/HTML tag pattern (`<[A-Za-z]`) outside of a fenced block and not inside an MDX JSX expression                   |
+| Type | Detection Rule |
+|------|---------------|
+| `shell-command` | Line (trimmed) starts with `$`, `>`, or a known CLI prefix (`npm`, `npx`, `paket`, `nuget`, `mono`, `dotnet`, `git`, `curl`, `wget`) |
+| `indented-block` | Line starts with 4+ spaces or a tab, outside of an existing fenced block, and is not front matter |
+| `long-inline-code` | Inline backtick span (`` `…` ``) whose content exceeds 30 characters |
+| `raw-xml-html` | Line contains an XML/HTML tag pattern (`<[A-Za-z]`) outside of a fenced block and not inside an MDX JSX expression |
 
 ---
 

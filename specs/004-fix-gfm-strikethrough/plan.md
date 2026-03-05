@@ -26,25 +26,25 @@ remark plugin to all three content compilation paths (the `@next/mdx` config and
 
 ## Constitution Check
 
-_GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
+*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
 ### Pre-Research Check
 
-| Gate | Principle                                  | Status           | Notes                                                                      |
-| ---- | ------------------------------------------ | ---------------- | -------------------------------------------------------------------------- |
-| G1   | I. Simplicity -- Static site, no runtime   | PASS             | `remark-gfm` runs at build time only; zero runtime impact on deployed site |
-| G2   | I. Simplicity -- Minimize dependencies     | PASS (justified) | New dependency justified; see Complexity Tracking                          |
-| G3   | II. Content-First -- Markdown is canonical | PASS             | Enables standard GFM Markdown to render as authors expect                  |
-| G4   | II. Content-First -- Reading experience    | PASS             | Fixes broken formatting that degrades reader comprehension                 |
+| Gate | Principle | Status | Notes |
+|------|-----------|--------|-------|
+| G1 | I. Simplicity -- Static site, no runtime | PASS | `remark-gfm` runs at build time only; zero runtime impact on deployed site |
+| G2 | I. Simplicity -- Minimize dependencies | PASS (justified) | New dependency justified; see Complexity Tracking |
+| G3 | II. Content-First -- Markdown is canonical | PASS | Enables standard GFM Markdown to render as authors expect |
+| G4 | II. Content-First -- Reading experience | PASS | Fixes broken formatting that degrades reader comprehension |
 
 ### Post-Design Re-Check
 
-| Gate | Principle                                  | Status           | Notes                                                                                                                                        |
-| ---- | ------------------------------------------ | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| G1   | I. Simplicity -- Static site, no runtime   | PASS             | No change from pre-research assessment                                                                                                       |
-| G2   | I. Simplicity -- Minimize dependencies     | PASS (justified) | Research confirmed `remark-gfm` is the canonical solution recommended by both MDX and Next.js docs; alternatives are worse (see research.md) |
-| G3   | II. Content-First -- Markdown is canonical | PASS             | No change from pre-research assessment                                                                                                       |
-| G4   | II. Content-First -- Reading experience    | PASS             | No change from pre-research assessment                                                                                                       |
+| Gate | Principle | Status | Notes |
+|------|-----------|--------|-------|
+| G1 | I. Simplicity -- Static site, no runtime | PASS | No change from pre-research assessment |
+| G2 | I. Simplicity -- Minimize dependencies | PASS (justified) | Research confirmed `remark-gfm` is the canonical solution recommended by both MDX and Next.js docs; alternatives are worse (see research.md) |
+| G3 | II. Content-First -- Markdown is canonical | PASS | No change from pre-research assessment |
+| G4 | II. Content-First -- Reading experience | PASS | No change from pre-research assessment |
 
 ## Project Structure
 
@@ -86,7 +86,7 @@ Add `"remark-gfm": "^4.0.0"` to the `dependencies` section, then run `npm instal
 Import `remarkGfm` and add it to the `remarkPlugins` array:
 
 ```js
-import remarkGfm from "remark-gfm";
+import remarkGfm from 'remark-gfm';
 
 const withMDX = createMDX({
   options: {
@@ -101,11 +101,11 @@ const withMDX = createMDX({
 Import `remarkGfm` and add `remarkPlugins` to the `evaluate()` options:
 
 ```ts
-import remarkGfm from "remark-gfm";
+import remarkGfm from 'remark-gfm';
 
 const { default: Content } = await evaluate(post.content, {
   ...(runtime as any),
-  format: "md",
+  format: 'md',
   remarkPlugins: [remarkGfm],
   rehypePlugins: [[rehypePrettyCode as any, prettyCodeOptions]],
   development: false,
@@ -117,11 +117,11 @@ const { default: Content } = await evaluate(post.content, {
 Identical pattern to change #3:
 
 ```ts
-import remarkGfm from "remark-gfm";
+import remarkGfm from 'remark-gfm';
 
 const { default: Content } = await evaluate(page.content, {
   ...(runtime as any),
-  format: "md",
+  format: 'md',
   remarkPlugins: [remarkGfm],
   rehypePlugins: [[rehypePrettyCode as any, prettyCodeOptions]],
   development: false,
@@ -130,6 +130,6 @@ const { default: Content } = await evaluate(page.content, {
 
 ## Complexity Tracking
 
-| Violation                                                            | Why Needed                                                                                                                  | Simpler Alternative Rejected Because                                                                                                                                                                                                                                                                                                                                                                        |
-| -------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Violation | Why Needed | Simpler Alternative Rejected Because |
+|-----------|------------|-------------------------------------|
 | Adding `remark-gfm` dependency (+1 package, ~20 transitive, ~1-2 MB) | Enables `~~strikethrough~~`, GFM tables, task lists, and autolinks -- all standard Markdown conventions expected by authors | **`<del>` HTML tags**: forces non-standard authoring syntax, requires editing all existing posts, violates the Content-First principle that Markdown should "just work". **Strikethrough-only custom plugin**: no off-the-shelf package exists; requires hand-wiring `micromark-extension-gfm-strikethrough` + `mdast-util-gfm-strikethrough` manually, saves only ~1.6 MB, adds ongoing maintenance burden |

@@ -33,7 +33,7 @@ US1 (fix dates) and US2 (graceful fallback) are implemented together in the same
 **Purpose**: No shared infrastructure required — this fix has no foundational
 prerequisites beyond a clean build. This phase is intentionally empty.
 
-_All user story work may begin immediately after Phase 1._
+*All user story work may begin immediately after Phase 1.*
 
 ---
 
@@ -143,12 +143,12 @@ Task T010: "Inspect <time datetime> attribute in DevTools on 3+ comments"
 
 ### Summary
 
-| Phase    | Tasks     | Files Changed                | Deliverable                   |
-| -------- | --------- | ---------------------------- | ----------------------------- |
-| 1 Setup  | T001–T002 | —                            | Clean baseline                |
-| 3 US1    | T003–T004 | `src/lib/content.ts`         | Bug fixed for all 16 comments |
-| 4 US2    | T005–T007 | `src/components/Comment.tsx` | Graceful fallback added       |
-| 5 Polish | T008–T011 | —                            | All success criteria verified |
+| Phase | Tasks | Files Changed | Deliverable |
+|-------|-------|--------------|-------------|
+| 1 Setup | T001–T002 | — | Clean baseline |
+| 3 US1 | T003–T004 | `src/lib/content.ts` | Bug fixed for all 16 comments |
+| 4 US2 | T005–T007 | `src/components/Comment.tsx` | Graceful fallback added |
+| 5 Polish | T008–T011 | — | All success criteria verified |
 
 **Total tasks**: 11
 **Files changed**: 2 (`src/lib/content.ts`, `src/components/Comment.tsx`)

@@ -10,15 +10,15 @@ No server-side rendering. `next.config.mjs` sets `output: 'export'` and `trailin
 
 ## Route Table
 
-| Route Pattern       | Page File                                  | Purpose                                      | Params Source                            | Spec Requirement       |
-| ------------------- | ------------------------------------------ | -------------------------------------------- | ---------------------------------------- | ---------------------- |
-| `/`                 | `app/page.tsx`                             | Homepage — paginated post list, newest first | None                                     | FR-008                 |
-| `/YYYY/MM/DD/slug/` | `app/[year]/[month]/[day]/[slug]/page.tsx` | Individual post                              | `generateStaticParams()` from all posts  | FR-001, FR-002, FR-020 |
-| `/page/slug/`       | `app/page/[slug]/page.tsx`                 | Static page (CV)                             | `generateStaticParams()` from all pages  | FR-010                 |
-| `/category/slug/`   | `app/category/[slug]/page.tsx`             | Posts in a category                          | `generateStaticParams()` from categories | FR-006, FR-009         |
-| `/tag/slug/`        | `app/tag/[slug]/page.tsx`                  | Posts with a tag                             | `generateStaticParams()` from tags       | FR-007, FR-009         |
-| `/archive/YYYY/MM/` | `app/archive/[year]/[month]/page.tsx`      | Monthly archive                              | `generateStaticParams()` from months     | FR-009                 |
-| `/search/`          | `app/search/page.tsx`                      | Search page (Pagefind UI)                    | None                                     | FR-014                 |
+| Route Pattern | Page File | Purpose | Params Source | Spec Requirement |
+|---------------|-----------|---------|---------------|-----------------|
+| `/` | `app/page.tsx` | Homepage — paginated post list, newest first | None | FR-008 |
+| `/YYYY/MM/DD/slug/` | `app/[year]/[month]/[day]/[slug]/page.tsx` | Individual post | `generateStaticParams()` from all posts | FR-001, FR-002, FR-020 |
+| `/page/slug/` | `app/page/[slug]/page.tsx` | Static page (CV) | `generateStaticParams()` from all pages | FR-010 |
+| `/category/slug/` | `app/category/[slug]/page.tsx` | Posts in a category | `generateStaticParams()` from categories | FR-006, FR-009 |
+| `/tag/slug/` | `app/tag/[slug]/page.tsx` | Posts with a tag | `generateStaticParams()` from tags | FR-007, FR-009 |
+| `/archive/YYYY/MM/` | `app/archive/[year]/[month]/page.tsx` | Monthly archive | `generateStaticParams()` from months | FR-009 |
+| `/search/` | `app/search/page.tsx` | Search page (Pagefind UI) | None | FR-014 |
 
 ## Route Details
 
@@ -28,7 +28,6 @@ No server-side rendering. `next.config.mjs` sets `output: 'export'` and `trailin
 **Type**: Static (no dynamic segments)
 **Data**: `getAllPosts()` — returns all posts sorted newest-first
 **Rendering**:
-
 - Paginated list of `<PostCard>` components (10 posts per page)
 - Pagination via client-side state or static page generation (`/page/2/`, `/page/3/`)
 - Sidebar with about section, categories, tag cloud, blogroll, archive links
@@ -47,7 +46,6 @@ where older posts are loaded via "Older posts" link.
 **Type**: Dynamic (4 segments), statically generated
 
 **`generateStaticParams()`**:
-
 ```typescript
 export async function generateStaticParams() {
   const posts = getAllPosts();
@@ -55,8 +53,8 @@ export async function generateStaticParams() {
     const d = new Date(post.date);
     return {
       year: String(d.getFullYear()),
-      month: String(d.getMonth() + 1).padStart(2, "0"),
-      day: String(d.getDate()).padStart(2, "0"),
+      month: String(d.getMonth() + 1).padStart(2, '0'),
+      day: String(d.getDate()).padStart(2, '0'),
       slug: post.slug,
     };
   });
@@ -65,7 +63,6 @@ export async function generateStaticParams() {
 
 **Data**: `getPostBySlug(slug)` — returns full post with content and comments
 **Rendering**:
-
 - Full MDX content rendered via `@next/mdx`
 - Post metadata: title, date, author, category link, tag links
 - If `format === "quote"`: wrap in `<QuotePost>` styling (blockquote visual)
@@ -75,7 +72,6 @@ export async function generateStaticParams() {
 
 **URL Preservation Contract (FR-020)**:
 The route MUST produce URLs identical to the original WordPress structure:
-
 - WordPress: `https://orientman.wordpress.com/2017/08/15/some-post-slug/`
 - New blog: `https://{domain}/2017/08/15/some-post-slug/`
 - Month and day MUST be zero-padded (e.g., `08`, `15`)
@@ -86,7 +82,6 @@ The route MUST produce URLs identical to the original WordPress structure:
 **Type**: Dynamic (1 segment), statically generated
 
 **`generateStaticParams()`**:
-
 ```typescript
 export async function generateStaticParams() {
   const pages = getAllPages();
@@ -96,7 +91,6 @@ export async function generateStaticParams() {
 
 **Data**: `getPageBySlug(slug)`
 **Rendering**:
-
 - Full MDX content
 - No date, no category, no tags (visually distinct from posts per US3-2)
 - Sidebar (same as homepage)
@@ -107,16 +101,17 @@ export async function generateStaticParams() {
 **Type**: Dynamic (1 segment), statically generated
 
 **`generateStaticParams()`**:
-
 ```typescript
 export async function generateStaticParams() {
-  return [{ slug: "posts-in-english" }, { slug: "wpisy-po-polsku" }];
+  return [
+    { slug: "posts-in-english" },
+    { slug: "wpisy-po-polsku" },
+  ];
 }
 ```
 
 **Data**: `getPostsByCategory(slug)`
 **Rendering**:
-
 - Category name as heading
 - List of `<PostCard>` components for posts in this category
 - Sidebar
@@ -127,7 +122,6 @@ export async function generateStaticParams() {
 **Type**: Dynamic (1 segment), statically generated
 
 **`generateStaticParams()`**:
-
 ```typescript
 export async function generateStaticParams() {
   const tags = getAllTags();
@@ -137,7 +131,6 @@ export async function generateStaticParams() {
 
 **Data**: `getPostsByTag(slug)`
 **Rendering**:
-
 - Tag name as heading
 - List of `<PostCard>` components
 - Sidebar
@@ -148,20 +141,18 @@ export async function generateStaticParams() {
 **Type**: Dynamic (2 segments), statically generated
 
 **`generateStaticParams()`**:
-
 ```typescript
 export async function generateStaticParams() {
   const months = getArchiveMonths();
   return months.map((m) => ({
     year: String(m.year),
-    month: String(m.month).padStart(2, "0"),
+    month: String(m.month).padStart(2, '0'),
   }));
 }
 ```
 
 **Data**: `getPostsByMonth(year, month)`
 **Rendering**:
-
 - "Archive: Month Year" as heading
 - List of `<PostCard>` components
 - Sidebar
@@ -172,7 +163,6 @@ export async function generateStaticParams() {
 **Type**: Static (no dynamic segments)
 **Data**: None (Pagefind loads its own index client-side)
 **Rendering**:
-
 - `<SearchInput>` component that mounts Pagefind UI
 - Results displayed by Pagefind's built-in result rendering
 - Sidebar
@@ -182,7 +172,7 @@ export async function generateStaticParams() {
 ```javascript
 // next.config.mjs
 const nextConfig = {
-  output: "export",
+  output: 'export',
   trailingSlash: true,
   images: {
     unoptimized: true,

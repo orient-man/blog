@@ -21,56 +21,54 @@ behaviour.
 #### Schema
 
 ```yaml
-name:
-  string # Workflow display name in Actions UI
-  # Value: "Deploy to GitHub Pages"
+name: string                    # Workflow display name in Actions UI
+                                # Value: "Deploy to GitHub Pages"
 
 on:
   push:
-    branches:
-      [string] # Trigger branches
-      # Value: ["main"]
-  workflow_dispatch: {} # Manual trigger (no inputs required)
+    branches: [string]          # Trigger branches
+                                # Value: ["main"]
+  workflow_dispatch: {}         # Manual trigger (no inputs required)
 
 permissions:
-  contents: string # "read" — checkout only
-  pages: string # "write" — deploy to Pages (top-level for build job)
-  id-token: string # "write" — OIDC token for Pages API (top-level)
+  contents: string              # "read" — checkout only
+  pages: string                 # "write" — deploy to Pages (top-level for build job)
+  id-token: string              # "write" — OIDC token for Pages API (top-level)
 
 concurrency:
-  group: string # Value: "pages"
-  cancel-in-progress: boolean # Value: true (cancels in-progress on new push)
+  group: string                 # Value: "pages"
+  cancel-in-progress: boolean   # Value: true (cancels in-progress on new push)
 
 jobs:
   build:
-    runs-on: string # Value: "ubuntu-latest"
+    runs-on: string             # Value: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: string # Value: "20"
-          cache: string # Value: "npm"
+          node-version: string  # Value: "20"
+          cache: string         # Value: "npm"
       - uses: actions/configure-pages@v5
       - uses: actions/cache@v4
         with:
-          path: string # Value: ".next/cache"
-          key: string # Dynamic: os + lockfile hash + source hash
-          restore-keys: string # Dynamic: os + lockfile hash (partial restore)
-      - run: string # Value: "npm ci"
-      - run: string # Value: "npm run build"
+          path: string          # Value: ".next/cache"
+          key: string           # Dynamic: os + lockfile hash + source hash
+          restore-keys: string  # Dynamic: os + lockfile hash (partial restore)
+      - run: string             # Value: "npm ci"
+      - run: string             # Value: "npm run build"
       - uses: actions/upload-pages-artifact@v4
         with:
-          path: string # Value: "./out"
+          path: string          # Value: "./out"
 
   deploy:
-    needs: [string] # Value: ["build"]
-    runs-on: string # Value: "ubuntu-latest"
+    needs: [string]             # Value: ["build"]
+    runs-on: string             # Value: "ubuntu-latest"
     environment:
-      name: string # Value: "github-pages"
-      url: string # Dynamic: ${{ steps.deployment.outputs.page_url }}
+      name: string              # Value: "github-pages"
+      url: string               # Dynamic: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/deploy-pages@v4
-        id: string # Value: "deployment"
+        id: string              # Value: "deployment"
 ```
 
 #### Key Constraints
@@ -127,11 +125,11 @@ Short description of the project.
 
 #### Key Fields
 
-| Field           | Value                                                                       |
-| --------------- | --------------------------------------------------------------------------- |
+| Field | Value |
+|-------|-------|
 | Badge image URL | `https://github.com/orient-man/blog/actions/workflows/deploy.yml/badge.svg` |
-| Badge link URL  | `https://github.com/orient-man/blog/actions/workflows/deploy.yml`           |
-| Badge alt text  | `Deploy`                                                                    |
+| Badge link URL | `https://github.com/orient-man/blog/actions/workflows/deploy.yml` |
+| Badge alt text | `Deploy` |
 
 #### Constraints
 

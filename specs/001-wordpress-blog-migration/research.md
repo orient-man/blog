@@ -7,31 +7,31 @@
 
 ### WordPress Blog Inventory
 
-| Metric              | Value                                                                                                                                    |
-| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| URL                 | orientman.wordpress.com                                                                                                                  |
-| Active period       | February 2011 – August 2017                                                                                                              |
-| Total posts         | ~30                                                                                                                                      |
-| Categories          | 2: "Posts In English (Wpisy po angielsku)", "Wpisy po polsku (Posts In Polish)"                                                          |
-| Tags                | 40+ (.NET, F#, C#, C++, TDD, JavaScript, git, Functional Programming, ASP.NET MVC, Books, Conferences, Career, Tools, Refactoring, etc.) |
-| Static pages        | 1: "Curriculum Vitae (pl)"                                                                                                               |
-| Blogroll entries    | 11 ("Blogs I Follow")                                                                                                                    |
-| Post formats        | Standard posts, Quote-type posts (~3 identified)                                                                                         |
-| Posts with comments | 5–6 posts, 1–4 comments each                                                                                                             |
-| Languages           | Polish and English                                                                                                                       |
-| Site title          | "Just A Programmer"                                                                                                                      |
-| Site subtitle       | "Don Quixote fighting entropy"                                                                                                           |
-| Author              | Marcin Malinowski                                                                                                                        |
+| Metric | Value |
+|--------|-------|
+| URL | orientman.wordpress.com |
+| Active period | February 2011 – August 2017 |
+| Total posts | ~30 |
+| Categories | 2: "Posts In English (Wpisy po angielsku)", "Wpisy po polsku (Posts In Polish)" |
+| Tags | 40+ (.NET, F#, C#, C++, TDD, JavaScript, git, Functional Programming, ASP.NET MVC, Books, Conferences, Career, Tools, Refactoring, etc.) |
+| Static pages | 1: "Curriculum Vitae (pl)" |
+| Blogroll entries | 11 ("Blogs I Follow") |
+| Post formats | Standard posts, Quote-type posts (~3 identified) |
+| Posts with comments | 5–6 posts, 1–4 comments each |
+| Languages | Polish and English |
+| Site title | "Just A Programmer" |
+| Site subtitle | "Don Quixote fighting entropy" |
+| Author | Marcin Malinowski |
 
 ### Embedded Content Types
 
-| Type                 | Frequency      | Conversion Strategy                                                           |
-| -------------------- | -------------- | ----------------------------------------------------------------------------- |
-| GitHub Gists         | Multiple posts | Custom `<GistEmbed>` MDX component; fallback to static code block + link      |
-| Code blocks          | Most posts     | Direct Markdown fenced blocks with language tags; rehype-pretty-code at build |
-| Images               | Multiple posts | Download from WordPress CDN (`i0.wp.com`), store in `public/images/posts/`    |
-| Embedded tweets      | Rare           | Static snapshot or `<TweetEmbed>` component with link                         |
-| WordPress shortcodes | Unknown        | Identify during migration, convert or flag for manual review                  |
+| Type | Frequency | Conversion Strategy |
+|------|-----------|-------------------|
+| GitHub Gists | Multiple posts | Custom `<GistEmbed>` MDX component; fallback to static code block + link |
+| Code blocks | Most posts | Direct Markdown fenced blocks with language tags; rehype-pretty-code at build |
+| Images | Multiple posts | Download from WordPress CDN (`i0.wp.com`), store in `public/images/posts/` |
+| Embedded tweets | Rare | Static snapshot or `<TweetEmbed>` component with link |
+| WordPress shortcodes | Unknown | Identify during migration, convert or flag for manual review |
 
 ### WordPress Export Format (WXR)
 
@@ -48,7 +48,6 @@ WordPress exports content as WXR (WordPress eXtended RSS), an XML format.
 **Decision**: Next.js 14 with `output: 'export'`
 
 **Rationale**:
-
 - User requirement — Next.js was explicitly specified
 - `output: 'export'` generates a fully static `out/` directory (HTML, CSS, JS)
 - No server runtime needed at deploy time
@@ -56,7 +55,6 @@ WordPress exports content as WXR (WordPress eXtended RSS), an XML format.
 - Mature ecosystem with excellent TypeScript support
 
 **Key Constraints of Static Export**:
-
 - All dynamic routes MUST use `generateStaticParams()` with `dynamicParams = false`
 - No ISR (Incremental Static Regeneration)
 - No Server Actions
@@ -77,7 +75,6 @@ WordPress exports content as WXR (WordPress eXtended RSS), an XML format.
 **Decision**: MDX files with YAML frontmatter, processed by `@next/mdx` + `gray-matter`
 
 **Rationale**:
-
 - MDX = Markdown + JSX — allows embedding React components (GistEmbed, TweetEmbed) directly in content
 - YAML frontmatter stores structured metadata (title, date, tags, category) alongside content
 - `@next/mdx` is the official Next.js MDX integration for App Router
@@ -85,7 +82,6 @@ WordPress exports content as WXR (WordPress eXtended RSS), an XML format.
 - Requires `mdx-components.tsx` at project root (App Router requirement)
 
 **Frontmatter via remark-frontmatter vs gray-matter**:
-
 - `remark-frontmatter` operates in the remark/rehype pipeline — good for rendering, not for querying
 - `gray-matter` parses frontmatter outside the pipeline — better for building post indexes and listings
 - Decision: Use `gray-matter` for content loading (listings, metadata queries) and let `@next/mdx` handle rendering
@@ -102,7 +98,6 @@ WordPress exports content as WXR (WordPress eXtended RSS), an XML format.
 **Decision**: `rehype-pretty-code` with Shiki as the highlighter
 
 **Rationale**:
-
 - Build-time highlighting — zero runtime JavaScript shipped to client
 - Uses VS Code's TextMate grammars (same highlighting as the editor)
 - Supports line highlighting, word highlighting, line numbers
@@ -110,18 +105,14 @@ WordPress exports content as WXR (WordPress eXtended RSS), an XML format.
 - Supports all required languages: C#, F#, C++, JavaScript, HTML/CSS, XSLT
 
 **Configuration**:
-
 ```js
 // next.config.mjs (inside mdx plugin options)
 rehypePlugins: [
-  [
-    rehypePrettyCode,
-    {
-      theme: "one-dark-pro", // or 'github-dark'
-      keepBackground: true,
-    },
-  ],
-];
+  [rehypePrettyCode, {
+    theme: 'one-dark-pro', // or 'github-dark'
+    keepBackground: true,
+  }]
+]
 ```
 
 **Alternatives Rejected**:
@@ -136,7 +127,6 @@ rehypePlugins: [
 **Decision**: Pagefind as a post-build search indexer
 
 **Rationale**:
-
 - Runs after `next build && next export` — indexes the static HTML output
 - Generates a chunked search index (<300kB typical for ~30 posts)
 - Ships a tiny JS widget; loads index chunks on demand
@@ -144,7 +134,6 @@ rehypePlugins: [
 - Works with any static site generator
 
 **Integration**:
-
 ```bash
 # Add to build script in package.json
 "build": "next build && pagefind --site out"
@@ -164,7 +153,6 @@ The `<SearchInput>` component mounts the Pagefind UI widget.
 **Decision**: Tailwind CSS with the Typography plugin
 
 **Rationale**:
-
 - `prose` classes from Typography plugin handle Markdown content beautifully — headings, paragraphs, lists, code blocks, blockquotes, tables
 - Utility-first approach keeps CSS maintainable
 - Purged at build time — only used classes ship in production
@@ -183,7 +171,6 @@ The `<SearchInput>` component mounts the Pagefind UI widget.
 **Decision**: Custom Node.js script using `fast-xml-parser` + `turndown`
 
 **Rationale**:
-
 - WordPress exports content as WXR (XML) — need XML parser
 - `fast-xml-parser` is fast, well-maintained, handles WXR's nested structure
 - `turndown` converts HTML → Markdown with configurable rules
@@ -194,7 +181,6 @@ The `<SearchInput>` component mounts the Pagefind UI widget.
 - Dev dependency only — not shipped to production
 
 **Pipeline Steps**:
-
 1. Export WordPress content via WXR (Dashboard → Tools → Export → All Content)
 2. Run `scripts/migrate.ts`: parse WXR XML, extract posts/pages/comments/categories/tags
 3. For each post: convert HTML body → Markdown via Turndown, generate YAML frontmatter, write `.mdx` file
@@ -215,14 +201,12 @@ The `<SearchInput>` component mounts the Pagefind UI widget.
 **WordPress URL pattern**: `https://orientman.wordpress.com/YYYY/MM/DD/post-slug/`
 
 **Implementation**:
-
 - Next.js route: `app/[...slug]/page.tsx` catch-all route OR nested `app/[year]/[month]/[day]/[slug]/page.tsx`
 - Simpler approach: store the full WordPress path in frontmatter as `wordpressPath`, use `generateStaticParams()` to emit matching routes
 - `trailingSlash: true` in `next.config.mjs` to match WordPress convention
 
 **Decision**: Use `app/[year]/[month]/[day]/[slug]/page.tsx` with `generateStaticParams()`.
 Each post's frontmatter contains `date` — extract year/month/day from it. This approach:
-
 - Maps 1:1 to WordPress URLs
 - Uses standard Next.js dynamic segments (no catch-all complexity)
 - Each segment is typed and validated
@@ -232,14 +216,12 @@ Each post's frontmatter contains `date` — extract year/month/day from it. This
 **Challenge**: WordPress images are hosted on `i0.wp.com` CDN. These URLs may break.
 
 **Strategy**:
-
 1. During migration, extract all `<img>` URLs from post HTML
 2. Download each image to `public/images/posts/{post-slug}/`
 3. Replace URLs in Markdown output with local paths `/images/posts/{post-slug}/filename.ext`
 4. Use `next/image` with `unoptimized: true` (static export limitation) or plain `<img>` tags
 
 **next/image in static export**:
-
 - Default loader requires a server — not available in static export
 - Options: `unoptimized: true` (serves original images) or custom loader that just returns the path
 - For ~30 posts with modest image count, `unoptimized: true` is sufficient
@@ -249,7 +231,6 @@ Each post's frontmatter contains `date` — extract year/month/day from it. This
 **Requirement**: FR-019 — modern tech blog aesthetic with dark mode support
 
 **Implementation**:
-
 - Tailwind's `darkMode: 'class'` strategy
 - Toggle button in header saves preference to `localStorage`
 - CSS transitions for smooth theme switching
@@ -258,10 +239,10 @@ Each post's frontmatter contains `date` — extract year/month/day from it. This
 
 ## 6. Open Questions
 
-| #   | Question                                                                    | Impact                     | Proposed Resolution                                        |
-| --- | --------------------------------------------------------------------------- | -------------------------- | ---------------------------------------------------------- |
-| 1   | Is the WordPress WXR export file already available, or must it be exported? | Blocks migration script    | User to export via WordPress Dashboard → Tools → Export    |
-| 2   | Should the blogroll be a sidebar widget or a dedicated page?                | FR-013 layout              | Sidebar widget (matches original WordPress layout)         |
-| 3   | Hosting target? (GitHub Pages, Vercel, Netlify, other)                      | Deployment config, CI/CD   | Defer to implementation phase; all work with static `out/` |
-| 4   | Custom domain?                                                              | DNS config                 | Defer to deployment phase                                  |
-| 5   | Should embedded tweets use live oEmbed or static snapshots?                 | Tweet component complexity | Static snapshots (simpler, no external API dependency)     |
+| # | Question | Impact | Proposed Resolution |
+|---|----------|--------|-------------------|
+| 1 | Is the WordPress WXR export file already available, or must it be exported? | Blocks migration script | User to export via WordPress Dashboard → Tools → Export |
+| 2 | Should the blogroll be a sidebar widget or a dedicated page? | FR-013 layout | Sidebar widget (matches original WordPress layout) |
+| 3 | Hosting target? (GitHub Pages, Vercel, Netlify, other) | Deployment config, CI/CD | Defer to implementation phase; all work with static `out/` |
+| 4 | Custom domain? | DNS config | Defer to deployment phase |
+| 5 | Should embedded tweets use live oEmbed or static snapshots? | Tweet component complexity | Static snapshots (simpler, no external API dependency) |

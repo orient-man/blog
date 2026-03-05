@@ -5,12 +5,12 @@
 
 ## Prerequisites
 
-| Requirement           | Details                                                        |
-| --------------------- | -------------------------------------------------------------- |
-| GitHub account        | Must have push access to `orient-man/blog`                     |
+| Requirement | Details |
+|-------------|---------|
+| GitHub account | Must have push access to `orient-man/blog` |
 | Repository visibility | Must be **public** (or GitHub Pro/Team/Enterprise for private) |
-| DNS access            | Must be able to add a CNAME record for `blog.orientman.com`    |
-| Node.js 20 LTS        | For local build verification only (`node --version`)           |
+| DNS access | Must be able to add a CNAME record for `blog.orientman.com` |
+| Node.js 20 LTS | For local build verification only (`node --version`) |
 
 ## One-Time Manual Setup
 
@@ -33,8 +33,8 @@ They are outside the automated workflow and cannot be scripted.
 
 At your DNS provider (registrar or DNS host for `orientman.com`), add:
 
-| Type    | Name   | Value                  | TTL            |
-| ------- | ------ | ---------------------- | -------------- |
+| Type | Name | Value | TTL |
+|------|------|-------|-----|
 | `CNAME` | `blog` | `orient-man.github.io` | 3600 (or auto) |
 
 This points `blog.orientman.com` to GitHub Pages.
@@ -57,15 +57,15 @@ git push origin main
 
 The workflow triggers automatically. Expected timeline:
 
-| Step                | Duration         |
-| ------------------- | ---------------- |
-| Runner provisioning | ~15s             |
-| Checkout + setup    | ~20s             |
-| npm ci (cached)     | ~30s             |
-| npm run build       | ~60–120s         |
-| Upload artifact     | ~15s             |
-| Deploy to Pages     | ~30s             |
-| **Total**           | **~3–4 minutes** |
+| Step | Duration |
+|------|----------|
+| Runner provisioning | ~15s |
+| Checkout + setup | ~20s |
+| npm ci (cached) | ~30s |
+| npm run build | ~60–120s |
+| Upload artifact | ~15s |
+| Deploy to Pages | ~30s |
+| **Total** | **~3–4 minutes** |
 
 The site is live at `https://blog.orientman.com` within 5 minutes.
 
