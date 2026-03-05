@@ -10,6 +10,7 @@ interface PostCardProps {
     | "date"
     | "slug"
     | "excerpt"
+    | "htmlExcerpt"
     | "category"
     | "tags"
     | "format"
@@ -36,7 +37,8 @@ const MONTHS = [
 ] as const;
 
 export function PostCard({ post }: PostCardProps) {
-  const { title, date, slug, excerpt, category, tags, format } = post;
+  const { title, date, slug, excerpt, htmlExcerpt, category, tags, format } =
+    post;
   const url = postUrlPath(date, slug);
   const visibleTags = tags.slice(0, MAX_TAGS);
   const extraTags = tags.length - MAX_TAGS;
@@ -98,10 +100,17 @@ export function PostCard({ post }: PostCardProps) {
             {weekday}, {month} {day}, {year}
           </time>
 
-          {excerpt && (
-            <p className="mt-3 text-gray-600 dark:text-gray-300 text-sm leading-relaxed line-clamp-10">
-              {excerpt}
-            </p>
+          {htmlExcerpt ? (
+            <div
+              className="mt-3 prose prose-sm dark:prose-invert line-clamp-10"
+              dangerouslySetInnerHTML={{ __html: htmlExcerpt }}
+            />
+          ) : (
+            excerpt && (
+              <p className="mt-3 text-gray-600 dark:text-gray-300 text-sm leading-relaxed line-clamp-10">
+                {excerpt}
+              </p>
+            )
           )}
 
           <div className="mt-3 flex flex-wrap items-center gap-2">

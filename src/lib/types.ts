@@ -48,6 +48,7 @@ export interface Post {
   format: "standard" | "quote";
   slug: string;
   excerpt?: string;
+  htmlExcerpt?: string;
   wordpressUrl: string;
   comments?: Comment[];
 
