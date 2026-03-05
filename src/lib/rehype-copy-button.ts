@@ -1,5 +1,5 @@
-import { visit } from 'unist-util-visit'
-import type { Root, Element } from 'hast'
+import type { Root, Element } from "hast";
+import { visit } from "unist-util-visit";
 
 /**
  * Rehype plugin that appends a <button data-copy-btn> to every
@@ -8,18 +8,18 @@ import type { Root, Element } from 'hast'
  */
 export function rehypeCopyButton() {
   return (tree: Root) => {
-    visit(tree, 'element', (node: Element) => {
+    visit(tree, "element", (node: Element) => {
       if (
-        node.tagName === 'figure' &&
-        'dataRehypePrettyCodeFigure' in (node.properties ?? {})
+        node.tagName === "figure" &&
+        "dataRehypePrettyCodeFigure" in (node.properties ?? {})
       ) {
         node.children.push({
-          type: 'element',
-          tagName: 'button',
-          properties: { 'data-copy-btn': '' },
-          children: [{ type: 'text', value: 'Copy' }],
-        })
+          type: "element",
+          tagName: "button",
+          properties: { "data-copy-btn": "" },
+          children: [{ type: "text", value: "Copy" }],
+        });
       }
-    })
-  }
+    });
+  };
 }

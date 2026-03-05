@@ -13,13 +13,18 @@
  *   1  Script error (unreadable files, unexpected exception)
  */
 
-import fs from 'fs';
-import path from 'path';
-import matter from 'gray-matter';
+import fs from "fs";
+import path from "path";
+
+import matter from "gray-matter";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
-type HeuristicType = 'shell-command' | 'indented-block' | 'long-inline-code' | 'raw-xml-html';
+type HeuristicType =
+  | "shell-command"
+  | "indented-block"
+  | "long-inline-code"
+  | "raw-xml-html";
 
 interface Heuristic {
   type: HeuristicType;
@@ -44,10 +49,14 @@ interface AuditReport {
 
 // ── Heuristic detection ───────────────────────────────────────────────────────
 
-const SHELL_PREFIXES = /^(\$|>|npm |npx |paket |nuget |mono |dotnet |git |curl |wget )/;
+const SHELL_PREFIXES =
+  /^(\$|>|npm |npx |paket |nuget |mono |dotnet |git |curl |wget )/;
 
-function detectHeuristics(content: string): { heuristics: Heuristic[]; existingFencedBlocks: number } {
-  const lines = content.split('\n');
+function detectHeuristics(content: string): {
+  heuristics: Heuristic[];
+  existingFencedBlocks: number;
+} {
+  const lines = content.split("\n");
   const heuristics: Heuristic[] = [];
   let insideFence = false;
   let existingFencedBlocks = 0;
@@ -75,13 +84,13 @@ function detectHeuristics(content: string): { heuristics: Heuristic[]; existingF
 
     // shell-command: line (trimmed) starts with $ / > / known CLI prefix
     if (SHELL_PREFIXES.test(trimmed)) {
-      heuristics.push({ type: 'shell-command', lineNumber, excerpt });
+      heuristics.push({ type: "shell-command", lineNumber, excerpt });
       continue; // only flag once per line
     }
 
     // indented-block: starts with 4+ spaces or a tab (not front matter)
-    if (/^(    |\t)/.test(raw) && trimmed.length > 0) {
-      heuristics.push({ type: 'indented-block', lineNumber, excerpt });
+    if (/^( {4}|\t)/.test(raw) && trimmed.length > 0) {
+      heuristics.push({ type: "indented-block", lineNumber, excerpt });
       continue;
     }
 
@@ -89,14 +98,14 @@ function detectHeuristics(content: string): { heuristics: Heuristic[]; existingF
     const backtickMatches = raw.matchAll(/`([^`]+)`/g);
     for (const match of backtickMatches) {
       if (match[1].length > 30) {
-        heuristics.push({ type: 'long-inline-code', lineNumber, excerpt });
+        heuristics.push({ type: "long-inline-code", lineNumber, excerpt });
         break; // one flag per line
       }
     }
 
     // raw-xml-html: contains an XML/HTML tag pattern outside fenced block
     if (/<[A-Za-z]/.test(raw)) {
-      heuristics.push({ type: 'raw-xml-html', lineNumber, excerpt });
+      heuristics.push({ type: "raw-xml-html", lineNumber, excerpt });
     }
   }
 
@@ -108,20 +117,20 @@ function detectHeuristics(content: string): { heuristics: Heuristic[]; existingF
 function auditPosts(postsDir: string): AuditReport {
   const files = fs
     .readdirSync(postsDir)
-    .filter((f) => f.endsWith('.mdx'))
+    .filter((f) => f.endsWith(".mdx"))
     .sort();
 
   const flaggedPosts: PostAuditResult[] = [];
 
   for (const file of files) {
-    const filePath = path.join('content/posts', file);
+    const filePath = path.join("content/posts", file);
     const fullPath = path.join(postsDir, file);
-    const raw = fs.readFileSync(fullPath, 'utf8');
+    const raw = fs.readFileSync(fullPath, "utf8");
 
     // Strip frontmatter before analysis
     const { content } = matter(raw);
 
-    const slug = file.replace(/^\d{4}-\d{2}-\d{2}-/, '').replace(/\.mdx$/, '');
+    const slug = file.replace(/^\d{4}-\d{2}-\d{2}-/, "").replace(/\.mdx$/, "");
     const { heuristics, existingFencedBlocks } = detectHeuristics(content);
 
     if (heuristics.length > 0) {
@@ -146,27 +155,29 @@ function auditPosts(postsDir: string): AuditReport {
 // ── Output formatting ─────────────────────────────────────────────────────────
 
 function printHumanReadable(report: AuditReport): void {
-  console.log('Audit: Code Block Coverage');
-  console.log('==========================');
+  console.log("Audit: Code Block Coverage");
+  console.log("==========================");
   console.log(`Scanned:  ${report.totalPosts} posts`);
   console.log(`Flagged:   ${report.flaggedCount} posts requiring review`);
 
   if (report.flaggedCount === 0) {
-    console.log('\nNo posts flagged. All code blocks appear to be fenced.');
+    console.log("\nNo posts flagged. All code blocks appear to be fenced.");
     return;
   }
 
-  console.log('\nFLAGGED POSTS:');
+  console.log("\nFLAGGED POSTS:");
   for (const post of report.posts) {
     console.log(`\n  ${post.filePath}`);
     console.log(`    Existing fenced blocks: ${post.existingFencedBlocks}`);
     for (const h of post.heuristics) {
       const typeLabel = h.type.padEnd(18);
-      console.log(`    Line ${String(h.lineNumber).padStart(4)}  [${typeLabel}]  ${h.excerpt}`);
+      console.log(
+        `    Line ${String(h.lineNumber).padStart(4)}  [${typeLabel}]  ${h.excerpt}`,
+      );
     }
   }
 
-  console.log('\nRun with --json for machine-readable output.');
+  console.log("\nRun with --json for machine-readable output.");
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────────
@@ -187,17 +198,17 @@ Exit codes:
 function main(): void {
   const args = process.argv.slice(2);
 
-  if (args.includes('--help') || args.includes('-h')) {
+  if (args.includes("--help") || args.includes("-h")) {
     printUsage();
     process.exit(0);
   }
 
-  const jsonMode = args.includes('--json');
-  const pathsOnly = args.includes('--paths-only');
+  const jsonMode = args.includes("--json");
+  const pathsOnly = args.includes("--paths-only");
 
   try {
-    const repoRoot = path.resolve(path.dirname(process.argv[1]), '..');
-    const postsDir = path.join(repoRoot, 'content', 'posts');
+    const repoRoot = path.resolve(path.dirname(process.argv[1]), "..");
+    const postsDir = path.join(repoRoot, "content", "posts");
 
     if (!fs.existsSync(postsDir)) {
       process.stderr.write(`ERROR: posts directory not found: ${postsDir}\n`);
@@ -218,7 +229,9 @@ function main(): void {
 
     process.exit(0);
   } catch (err) {
-    process.stderr.write(`ERROR: ${err instanceof Error ? err.message : String(err)}\n`);
+    process.stderr.write(
+      `ERROR: ${err instanceof Error ? err.message : String(err)}\n`,
+    );
     process.exit(1);
   }
 }

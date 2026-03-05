@@ -1,6 +1,7 @@
-import type { MDXComponents } from 'mdx/types';
-import GistEmbed from '@/components/GistEmbed';
-import TweetEmbed from '@/components/TweetEmbed';
+import type { MDXComponents } from "mdx/types";
+
+import GistEmbed from "@/components/GistEmbed";
+import TweetEmbed from "@/components/TweetEmbed";
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {

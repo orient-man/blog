@@ -1,11 +1,12 @@
-import Link from 'next/link';
-import { getAllTags } from '@/lib/content';
-import { tagFontSize } from '@/lib/utils';
-import type { Metadata } from 'next';
+import type { Metadata } from "next";
+import Link from "next/link";
+
+import { getAllTags } from "@/lib/content";
+import { tagFontSize } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: 'Tags',
-  description: 'Browse all tags used across blog posts.',
+  title: "Tags",
+  description: "Browse all tags used across blog posts.",
 };
 
 export default function TagsIndexPage() {
@@ -13,7 +14,7 @@ export default function TagsIndexPage() {
 
   // Sort alphabetically by display name (case-insensitive)
   const sorted = [...tags].sort((a, b) =>
-    a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
+    a.name.localeCompare(b.name, undefined, { sensitivity: "base" }),
   );
 
   // Compute min/max counts across all tags for proportional sizing
@@ -34,7 +35,7 @@ export default function TagsIndexPage() {
               className="inline-flex items-center px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-blue-900 hover:text-blue-700 dark:hover:text-blue-300 transition-colors leading-snug"
               style={{ fontSize: `${size.toFixed(2)}rem` }}
             >
-              {tag.name}{' '}
+              {tag.name}{" "}
               <span className="text-gray-400 dark:text-gray-500">
                 ({tag.count})
               </span>

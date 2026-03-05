@@ -1,5 +1,6 @@
-import type { Comment } from '@/lib/types';
-import CommentComponent from './Comment';
+import type { Comment } from "@/lib/types";
+
+import CommentComponent from "./Comment";
 
 interface CommentListProps {
   comments: Comment[];
@@ -17,7 +18,8 @@ export default function CommentList({ comments }: CommentListProps) {
         Comments ({comments.length})
       </h2>
       <p className="text-xs text-gray-400 dark:text-gray-500 mb-6">
-        Comments are from the original WordPress blog. New comments are not supported.
+        Comments are from the original WordPress blog. New comments are not
+        supported.
       </p>
 
       <div className="space-y-6">

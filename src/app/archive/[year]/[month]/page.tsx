@@ -1,7 +1,8 @@
-import { notFound } from 'next/navigation';
-import { getPostsByMonth, getArchiveMonths } from '@/lib/content';
-import { PostList } from '@/components/PostList';
-import { formatMonthYear, pad2 } from '@/lib/utils';
+import { notFound } from "next/navigation";
+
+import { PostList } from "@/components/PostList";
+import { getPostsByMonth, getArchiveMonths } from "@/lib/content";
+import { formatMonthYear, pad2 } from "@/lib/utils";
 
 interface Props {
   params: { year: string; month: string };
@@ -33,10 +34,5 @@ export default function ArchivePage({ params }: Props) {
 
   const label = formatMonthYear(year, month);
 
-  return (
-    <PostList
-      posts={posts}
-      title={`Archive: ${label}`}
-    />
-  );
+  return <PostList posts={posts} title={`Archive: ${label}`} />;
 }

@@ -1,7 +1,7 @@
-import createMDX from '@next/mdx';
-import rehypePrettyCode from 'rehype-pretty-code';
-import remarkGfm from 'remark-gfm';
-import { visit } from 'unist-util-visit';
+import createMDX from "@next/mdx";
+import rehypePrettyCode from "rehype-pretty-code";
+import remarkGfm from "remark-gfm";
+import { visit } from "unist-util-visit";
 
 /**
  * Inline JS version of the rehypeCopyButton plugin for next.config.mjs.
@@ -11,16 +11,16 @@ import { visit } from 'unist-util-visit';
  */
 function rehypeCopyButton() {
   return (tree) => {
-    visit(tree, 'element', (node) => {
+    visit(tree, "element", (node) => {
       if (
-        node.tagName === 'figure' &&
-        'dataRehypePrettyCodeFigure' in (node.properties ?? {})
+        node.tagName === "figure" &&
+        "dataRehypePrettyCodeFigure" in (node.properties ?? {})
       ) {
         node.children.push({
-          type: 'element',
-          tagName: 'button',
-          properties: { 'data-copy-btn': '' },
-          children: [{ type: 'text', value: 'Copy' }],
+          type: "element",
+          tagName: "button",
+          properties: { "data-copy-btn": "" },
+          children: [{ type: "text", value: "Copy" }],
         });
       }
     });
@@ -30,8 +30,8 @@ function rehypeCopyButton() {
 /** @type {import('rehype-pretty-code').Options} */
 const prettyCodeOptions = {
   theme: {
-    dark: 'github-dark',
-    light: 'github-light',
+    dark: "github-dark",
+    light: "github-light",
   },
   keepBackground: false,
 };
@@ -45,12 +45,12 @@ const withMDX = createMDX({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
+  output: "export",
   trailingSlash: true,
   images: {
     unoptimized: true,
   },
-  pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
+  pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
 };
 
 export default withMDX(nextConfig);

@@ -1,6 +1,8 @@
-import fs from 'fs';
-import path from 'path';
-import matter from 'gray-matter';
+import fs from "fs";
+import path from "path";
+
+import matter from "gray-matter";
+
 import type {
   Post,
   StaticPage,
@@ -10,15 +12,20 @@ import type {
   ArchiveMonth,
   CategorySlug,
   Comment,
-} from './types';
-import { CATEGORIES } from './types';
-import { slugify, estimateReadingTime, generateExcerpt } from './utils';
+} from "./types";
+import { CATEGORIES } from "./types";
+import { slugify, estimateReadingTime, generateExcerpt } from "./utils";
 
 // ── Paths ─────────────────────────────────────────────────────────────────────
 
-const POSTS_DIR = path.join(process.cwd(), 'content', 'posts');
-const PAGES_DIR = path.join(process.cwd(), 'content', 'pages');
-const BLOGROLL_PATH = path.join(process.cwd(), 'content', 'data', 'blogroll.json');
+const POSTS_DIR = path.join(process.cwd(), "content", "posts");
+const PAGES_DIR = path.join(process.cwd(), "content", "pages");
+const BLOGROLL_PATH = path.join(
+  process.cwd(),
+  "content",
+  "data",
+  "blogroll.json",
+);
 
 // ── Internal helpers ──────────────────────────────────────────────────────────
 
@@ -26,7 +33,7 @@ function readMdxFiles(dir: string): string[] {
   if (!fs.existsSync(dir)) return [];
   return fs
     .readdirSync(dir)
-    .filter((f) => f.endsWith('.mdx') || f.endsWith('.md'))
+    .filter((f) => f.endsWith(".mdx") || f.endsWith(".md"))
     .map((f) => path.join(dir, f));
 }
 
@@ -39,7 +46,7 @@ function loadPosts(): Post[] {
 
   const files = readMdxFiles(POSTS_DIR);
   const posts: Post[] = files.map((filePath) => {
-    const raw = fs.readFileSync(filePath, 'utf8');
+    const raw = fs.readFileSync(filePath, "utf8");
     const { data, content } = matter(raw);
 
     // Normalise frontmatter tags to slug form.
@@ -49,24 +56,26 @@ function loadPosts(): Post[] {
     });
 
     const post: Post = {
-      title: data.title ?? '(Untitled)',
+      title: data.title ?? "(Untitled)",
       // YAML may parse bare date strings (2012-02-06) as Date objects — coerce to ISO string
-      date: data.date instanceof Date
-        ? data.date.toISOString().slice(0, 10)
-        : String(data.date ?? '1970-01-01'),
-      author: data.author ?? 'Marcin Malinowski',
-      category: (data.category ?? 'posts-in-english') as CategorySlug,
+      date:
+        data.date instanceof Date
+          ? data.date.toISOString().slice(0, 10)
+          : String(data.date ?? "1970-01-01"),
+      author: data.author ?? "Marcin Malinowski",
+      category: (data.category ?? "posts-in-english") as CategorySlug,
       tags: tagSlugs,
-      format: data.format ?? 'standard',
+      format: data.format ?? "standard",
       slug: data.slug ?? path.basename(filePath, path.extname(filePath)),
       excerpt: data.excerpt ?? generateExcerpt(content),
-      wordpressUrl: data.wordpressUrl ?? '',
+      wordpressUrl: data.wordpressUrl ?? "",
       comments: Array.isArray(data.comments)
         ? data.comments.map((c: Record<string, unknown>) => ({
             ...(c as unknown as Comment),
-            date: c.date instanceof Date
-              ? c.date.toISOString().slice(0, 10)
-              : String(c.date ?? ''),
+            date:
+              c.date instanceof Date
+                ? c.date.toISOString().slice(0, 10)
+                : String(c.date ?? ""),
           }))
         : undefined,
       content,
@@ -98,7 +107,7 @@ export function getPostsByTag(tagSlug: string): Post[] {
 }
 
 export function getPostsByMonth(year: number, month: number): Post[] {
-  const prefix = `${year}-${String(month).padStart(2, '0')}`;
+  const prefix = `${year}-${String(month).padStart(2, "0")}`;
   return loadPosts().filter((p) => p.date.startsWith(prefix));
 }
 
@@ -182,7 +191,7 @@ export function getArchiveMonths(): ArchiveMonth[] {
 
   _archiveCache = Object.entries(counts)
     .map(([key, count]) => {
-      const [y, m] = key.split('-');
+      const [y, m] = key.split("-");
       return { year: Number(y), month: Number(m), count };
     })
     .sort((a, b) => b.year - a.year || b.month - a.month);
@@ -199,10 +208,10 @@ export function getAllPages(): StaticPage[] {
 
   const files = readMdxFiles(PAGES_DIR);
   _pagesCache = files.map((filePath) => {
-    const raw = fs.readFileSync(filePath, 'utf8');
+    const raw = fs.readFileSync(filePath, "utf8");
     const { data, content } = matter(raw);
     return {
-      title: data.title ?? '(Untitled)',
+      title: data.title ?? "(Untitled)",
       slug: data.slug ?? path.basename(filePath, path.extname(filePath)),
       content,
     };
@@ -222,7 +231,7 @@ let _blogrollCache: BlogrollEntry[] | null = null;
 export function getBlogroll(): BlogrollEntry[] {
   if (_blogrollCache) return _blogrollCache;
   if (!fs.existsSync(BLOGROLL_PATH)) return [];
-  const raw = fs.readFileSync(BLOGROLL_PATH, 'utf8');
+  const raw = fs.readFileSync(BLOGROLL_PATH, "utf8");
   _blogrollCache = JSON.parse(raw) as BlogrollEntry[];
   return _blogrollCache;
 }

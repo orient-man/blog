@@ -1,6 +1,6 @@
 // ── Category ─────────────────────────────────────────────────────────────────
 
-export type CategorySlug = 'posts-in-english' | 'wpisy-po-polsku';
+export type CategorySlug = "posts-in-english" | "wpisy-po-polsku";
 
 export interface Category {
   slug: CategorySlug;
@@ -10,12 +10,12 @@ export interface Category {
 
 export const CATEGORIES: Category[] = [
   {
-    slug: 'posts-in-english',
-    name: 'Posts In English (Wpisy po angielsku)',
+    slug: "posts-in-english",
+    name: "Posts In English (Wpisy po angielsku)",
   },
   {
-    slug: 'wpisy-po-polsku',
-    name: 'Wpisy po polsku (Posts In Polish)',
+    slug: "wpisy-po-polsku",
+    name: "Wpisy po polsku (Posts In Polish)",
   },
 ];
 
@@ -45,7 +45,7 @@ export interface Post {
   author: string;
   category: CategorySlug;
   tags: string[];
-  format: 'standard' | 'quote';
+  format: "standard" | "quote";
   slug: string;
   excerpt?: string;
   wordpressUrl: string;

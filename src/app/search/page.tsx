@@ -1,8 +1,9 @@
-import type { Metadata } from 'next';
-import SearchInput from '@/components/SearchInput';
+import type { Metadata } from "next";
+
+import SearchInput from "@/components/SearchInput";
 
 export const metadata: Metadata = {
-  title: 'Search',
+  title: "Search",
 };
 
 export default function SearchPage() {

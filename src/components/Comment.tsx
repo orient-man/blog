@@ -1,5 +1,5 @@
-import { formatDateTime } from '@/lib/utils';
-import type { Comment } from '@/lib/types';
+import type { Comment } from "@/lib/types";
+import { formatDateTime } from "@/lib/utils";
 
 interface CommentProps {
   comment: Comment;
@@ -11,12 +11,13 @@ interface CommentProps {
  * ISO 8601 date or datetime string — providing a graceful fallback (SC-002).
  */
 function safeDateDisplay(date: string | undefined | null): string {
-  if (!date || typeof date !== 'string') return 'Unknown date';
+  if (!date || typeof date !== "string") return "Unknown date";
   // Must match YYYY-MM-DD or YYYY-MM-DDTHH:MM:SS
-  if (!/^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2})?$/.test(date)) return 'Unknown date';
-  const normalized = date.includes('T') ? date + 'Z' : date + 'T00:00:00Z';
+  if (!/^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2})?$/.test(date))
+    return "Unknown date";
+  const normalized = date.includes("T") ? date + "Z" : date + "T00:00:00Z";
   const d = new Date(normalized);
-  if (isNaN(d.getTime())) return 'Unknown date';
+  if (isNaN(d.getTime())) return "Unknown date";
   return formatDateTime(date);
 }
 
@@ -28,17 +29,19 @@ export default function CommentComponent({ comment }: CommentProps) {
   const initials = comment.author
     .split(/\s+/)
     .slice(0, 2)
-    .map((w) => w[0]?.toUpperCase() ?? '')
-    .join('');
+    .map((w) => w[0]?.toUpperCase() ?? "")
+    .join("");
 
   // Sanitise content: strip HTML tags except simple formatting
   const plainText = comment.content
-    .replace(/<br\s*\/?>/gi, '\n')
-    .replace(/<[^>]+>/g, '');
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<[^>]+>/g, "");
 
   const displayDate = safeDateDisplay(comment.date);
   // Only set dateTime attribute when the date is a valid ISO 8601 value
-  const dateTimeAttr = /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2})?$/.test(comment.date ?? '')
+  const dateTimeAttr = /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2})?$/.test(
+    comment.date ?? "",
+  )
     ? comment.date
     : undefined;
 
@@ -46,7 +49,7 @@ export default function CommentComponent({ comment }: CommentProps) {
     <div className="flex gap-3">
       {/* Avatar */}
       <div className="shrink-0 w-9 h-9 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-xs font-semibold text-gray-600 dark:text-gray-300 select-none">
-        {initials || '?'}
+        {initials || "?"}
       </div>
 
       {/* Body */}

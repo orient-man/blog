@@ -1,9 +1,20 @@
-import Link from 'next/link';
-import type { Post } from '@/lib/types';
-import { formatDate, postUrlPath, slugify } from '@/lib/utils';
+import Link from "next/link";
+
+import type { Post } from "@/lib/types";
+import { formatDate, postUrlPath, slugify } from "@/lib/utils";
 
 interface PostCardProps {
-  post: Pick<Post, 'title' | 'date' | 'slug' | 'excerpt' | 'category' | 'tags' | 'format' | 'wordpressUrl'>;
+  post: Pick<
+    Post,
+    | "title"
+    | "date"
+    | "slug"
+    | "excerpt"
+    | "category"
+    | "tags"
+    | "format"
+    | "wordpressUrl"
+  >;
 }
 
 const MAX_TAGS = 5;
@@ -17,13 +28,16 @@ export function PostCard({ post }: PostCardProps) {
   return (
     <article
       className={`rounded-lg border bg-white dark:bg-gray-800 p-5 shadow-sm transition-shadow hover:shadow-md ${
-        format === 'quote'
-          ? 'border-l-4 border-l-blue-500 dark:border-l-blue-400 border-gray-200 dark:border-gray-700'
-          : 'border-gray-200 dark:border-gray-700'
+        format === "quote"
+          ? "border-l-4 border-l-blue-500 dark:border-l-blue-400 border-gray-200 dark:border-gray-700"
+          : "border-gray-200 dark:border-gray-700"
       }`}
     >
-      {format === 'quote' && (
-        <span className="text-blue-500 dark:text-blue-400 text-2xl font-serif leading-none select-none" aria-hidden="true">
+      {format === "quote" && (
+        <span
+          className="text-blue-500 dark:text-blue-400 text-2xl font-serif leading-none select-none"
+          aria-hidden="true"
+        >
           &ldquo;
         </span>
       )}
@@ -56,7 +70,7 @@ export function PostCard({ post }: PostCardProps) {
           href={`/category/${category}/`}
           className="inline-block rounded bg-blue-100 dark:bg-blue-900 px-2 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-200 hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors"
         >
-          {category === 'posts-in-english' ? 'English' : 'Polish'}
+          {category === "posts-in-english" ? "English" : "Polish"}
         </Link>
 
         {/* Tag pills */}
