@@ -138,7 +138,9 @@ No remote is currently configured. No CI/CD pipeline exists.
 - Filesystem — MDX files in `content/posts/`, static output in `out/` (005-syntax-highlighting)
 - TypeScript 5.x, Node.js 20 LTS + Next.js 14.2.35 (`output: 'export'`), `@mdx-js/mdx` 3.x, `rehype-pretty-code` 0.14, `shiki` 1.29, `remark-gfm` 4.x (005-syntax-highlighting)
 - TypeScript 5.x, Node.js 20 LTS + Next.js 14.2.35 (`output: 'export'`), `@mdx-js/mdx` 3.x, `gray-matter` 4.x (006-fix-comments-undefined-nan)
+- ESLint v9 (flat config), `@eslint/js`, `typescript-eslint`, `eslint-config-next`, `eslint-config-prettier`, `eslint-plugin-import`, Prettier (eslint-prettier-setup)
 
 ## Recent Changes
 
+- eslint-prettier-setup: Added ESLint v9 flat config, Prettier, import ordering, CI lint step in deploy workflow
 - 001-wordpress-blog-migration: Added TypeScript 5.x, Node.js 20 LTS + Next.js 14 (`output: 'export'`), `@next/mdx`, `gray-matter`, `rehype-pretty-code` (Shiki), Tailwind CSS, `@tailwindcss/typography`, Pagefind
