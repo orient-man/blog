@@ -6,8 +6,9 @@ interface QuotePostProps {
 /**
  * QuotePost — visual wrapper for posts with `format: "quote"`.
  *
- * Renders content in a large, styled blockquote with decorative
- * quotation marks and a distinct background/border treatment.
+ * Adds decorative quotation marks around the content.
+ * Inner Markdown blockquotes provide their own visual treatment
+ * via Tailwind Typography prose styles.
  */
 export default function QuotePost({ children }: QuotePostProps) {
   return (
@@ -20,9 +21,7 @@ export default function QuotePost({ children }: QuotePostProps) {
         &ldquo;
       </span>
 
-      <blockquote className="relative pl-6 pr-4 py-4 border-l-4 border-brand-400 dark:border-brand-500 bg-brand-50 dark:bg-brand-950/30 rounded-r italic text-lg leading-relaxed text-gray-800 dark:text-gray-200">
-        {children}
-      </blockquote>
+      <div className="relative pl-8 pr-4">{children}</div>
 
       {/* Decorative closing quotation mark */}
       <span
