@@ -5,7 +5,7 @@ import { getPostsByMonth, getArchiveMonths } from "@/lib/content";
 import { formatMonthYear, pad2 } from "@/lib/utils";
 
 interface Props {
-  params: { year: string; month: string };
+  params: Promise<{ year: string; month: string }>;
 }
 
 export function generateStaticParams() {
@@ -16,16 +16,18 @@ export function generateStaticParams() {
   }));
 }
 
-export function generateMetadata({ params }: Props) {
-  const year = parseInt(params.year, 10);
-  const month = parseInt(params.month, 10);
+export async function generateMetadata({ params }: Props) {
+  const { year: yearStr, month: monthStr } = await params;
+  const year = parseInt(yearStr, 10);
+  const month = parseInt(monthStr, 10);
   const label = formatMonthYear(year, month);
   return { title: `Archive: ${label} — Just A Programmer` };
 }
 
-export default function ArchivePage({ params }: Props) {
-  const year = parseInt(params.year, 10);
-  const month = parseInt(params.month, 10);
+export default async function ArchivePage({ params }: Props) {
+  const { year: yearStr, month: monthStr } = await params;
+  const year = parseInt(yearStr, 10);
+  const month = parseInt(monthStr, 10);
 
   if (isNaN(year) || isNaN(month) || month < 1 || month > 12) notFound();
 

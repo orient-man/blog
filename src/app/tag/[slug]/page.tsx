@@ -4,7 +4,7 @@ import { PostList } from "@/components/PostList";
 import { getPostsByTag, getAllTags } from "@/lib/content";
 
 interface Props {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export function generateStaticParams() {
@@ -12,19 +12,21 @@ export function generateStaticParams() {
   return tags.map((tag) => ({ slug: tag.slug }));
 }
 
-export function generateMetadata({ params }: Props) {
+export async function generateMetadata({ params }: Props) {
+  const { slug } = await params;
   const tags = getAllTags();
-  const tag = tags.find((t) => t.slug === params.slug);
+  const tag = tags.find((t) => t.slug === slug);
   if (!tag) return {};
   return { title: `Posts tagged "${tag.name}" — Just A Programmer` };
 }
 
-export default function TagPage({ params }: Props) {
+export default async function TagPage({ params }: Props) {
+  const { slug } = await params;
   const tags = getAllTags();
-  const tag = tags.find((t) => t.slug === params.slug);
+  const tag = tags.find((t) => t.slug === slug);
   if (!tag) notFound();
 
-  const posts = getPostsByTag(params.slug);
+  const posts = getPostsByTag(slug);
 
   return <PostList posts={posts} title={`Posts tagged "${tag.name}"`} />;
 }
