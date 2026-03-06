@@ -76,6 +76,8 @@ function loadPosts(): Post[] {
       htmlExcerpt: generateHtmlExcerpt(raw),
       wordpressUrl: data.wordpressUrl ?? "",
       linkedinUrl: data.linkedinUrl ?? undefined,
+      librarythingUrl: data.librarythingUrl ?? undefined,
+      rating: data.rating != null ? Number(data.rating) : undefined,
       comments: Array.isArray(data.comments)
         ? data.comments.map((c: Record<string, unknown>) => ({
             ...(c as unknown as Comment),

@@ -51,6 +51,8 @@ export interface Post {
   htmlExcerpt?: string;
   wordpressUrl: string;
   linkedinUrl?: string;
+  librarythingUrl?: string;
+  rating?: number;
   comments?: Comment[];
 
   // Computed at load time
