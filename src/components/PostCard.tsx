@@ -3,6 +3,8 @@ import Link from "next/link";
 import type { Post } from "@/lib/types";
 import { postUrlPath, slugify } from "@/lib/utils";
 
+import { StarRating } from "./StarRating";
+
 interface PostCardProps {
   post: Pick<
     Post,
@@ -15,6 +17,7 @@ interface PostCardProps {
     | "tags"
     | "format"
     | "wordpressUrl"
+    | "rating"
   >;
 }
 
@@ -37,8 +40,17 @@ const MONTHS = [
 ] as const;
 
 export function PostCard({ post }: PostCardProps) {
-  const { title, date, slug, excerpt, htmlExcerpt, category, tags, format } =
-    post;
+  const {
+    title,
+    date,
+    slug,
+    excerpt,
+    htmlExcerpt,
+    category,
+    tags,
+    format,
+    rating,
+  } = post;
   const url = postUrlPath(date, slug);
   const visibleTags = tags.slice(0, MAX_TAGS);
   const extraTags = tags.length - MAX_TAGS;
@@ -121,6 +133,9 @@ export function PostCard({ post }: PostCardProps) {
             >
               {category === "posts-in-english" ? "English" : "Polish"}
             </Link>
+
+            {/* Star rating (book reviews only) */}
+            {rating != null && <StarRating rating={rating} size="sm" />}
 
             {/* Tag pills */}
             {visibleTags.map((tag) => (
