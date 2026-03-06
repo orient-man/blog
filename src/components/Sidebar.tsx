@@ -34,11 +34,12 @@ export default function Sidebar({
           className="rounded-full w-32 h-32 mx-auto mb-4 ring-2 ring-gray-200 dark:ring-gray-700"
         />
         <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-          Tata², mąż humanistki, mól książkowy, programista, konferencjoholik.{" "}
-          Don Kichot walczący z entropią. Kocha sprzeczności i humor.
+          Father², husband, bookworm, stubborn, programmer, conference addict.
+          Don Quixote fighting entropy. Delights in contradictions & humor.
+          Believes in chance. Beer philosopher. Occasionally goalkeeper.
         </p>
         <p className="mt-2 text-gray-600 dark:text-gray-400 leading-relaxed">
-          Don Quixote fighting entropy — a programming blog by{" "}
+          A programming blog by{" "}
           <Link
             href="/page/curriculum-vitae-pl/"
             className="text-brand-600 dark:text-brand-400 hover:underline"
