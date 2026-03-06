@@ -44,12 +44,12 @@ explore  -->  propose  -->  apply  -->  archive
    +-------------+------------+   (can interleave freely)
 ```
 
-| Action | Command | Skill | Purpose |
-|--------|---------|-------|---------|
-| Explore | `/opsx-explore` | `openspec-explore` | Think through ideas, investigate problems, clarify requirements. Read-only — no implementation. |
-| Propose | `/opsx-propose` | `openspec-propose` | Create a change with all artifacts (proposal, specs, design, tasks) in one step. |
-| Apply | `/opsx-apply` | `openspec-apply-change` | Implement tasks from a change, marking them complete as you go. |
-| Archive | `/opsx-archive` | `openspec-archive-change` | Archive a completed change, optionally syncing delta specs. |
+| Action  | Command         | Skill                     | Purpose                                                                                         |
+| ------- | --------------- | ------------------------- | ----------------------------------------------------------------------------------------------- |
+| Explore | `/opsx-explore` | `openspec-explore`        | Think through ideas, investigate problems, clarify requirements. Read-only — no implementation. |
+| Propose | `/opsx-propose` | `openspec-propose`        | Create a change with all artifacts (proposal, specs, design, tasks) in one step.                |
+| Apply   | `/opsx-apply`   | `openspec-apply-change`   | Implement tasks from a change, marking them complete as you go.                                 |
+| Archive | `/opsx-archive` | `openspec-archive-change` | Archive a completed change, optionally syncing delta specs.                                     |
 
 ### OpenSpec CLI
 
@@ -126,19 +126,15 @@ No remote is currently configured. No CI/CD pipeline exists.
 - There is no `.gitignore`, `.editorconfig`, or CI configuration yet.
 
 ## Active Technologies
-- TypeScript 5.x, Node.js 20 LTS + Next.js 14 (`output: 'export'`), `@next/mdx`, `gray-matter`, `rehype-pretty-code` (Shiki), Tailwind CSS, `@tailwindcss/typography`, Pagefind (001-wordpress-blog-migration)
+
+- TypeScript 5.x, Node.js 20 LTS + Next.js 16 (`output: 'export'`, `--webpack`), React 19, `@next/mdx` 16, `gray-matter`, `rehype-pretty-code` (Shiki), `remark-gfm`, Tailwind CSS, `@tailwindcss/typography`, Pagefind (upgrade-nextjs-v16 + 001-wordpress-blog-migration)
 - Filesystem only — MDX files in `content/posts/`, images in `public/images/` (001-wordpress-blog-migration)
 - YAML (GitHub Actions workflow); TypeScript 5.x / Node.js 20 LTS (build runtime) + `actions/checkout@v4`, `actions/setup-node@v4`, `actions/configure-pages@v5`, `actions/upload-pages-artifact@v4`, `actions/deploy-pages@v4`, `actions/cache@v4` (002-gh-pages-deploy)
-- N/A — no new data storage; workflow builds `out/` directory and uploads as GitHub Pages artifac (002-gh-pages-deploy)
-- TypeScript 5.x / Node.js 20 LTS (build runtime); Markdown (content) + Next.js 14 (`output: 'export'`), `@mdx-js/mdx`, `rehype-pretty-code` (Shiki) (003-fix-gist-embeds)
-- TypeScript 5.x / Node.js 20 LTS + Next.js 14.2.35 (`output: 'export'`), `@mdx-js/mdx` 3.x, `rehype-pretty-code` 0.14, `shiki` 1.29 (004-fix-gfm-strikethrough)
-- Filesystem -- MDX files in `content/posts/`, images in `public/images/` (004-fix-gfm-strikethrough)
-- TypeScript 5.x, Node.js 20 LTS, React 18 + Next.js 14.2.35 (`output: 'export'`), `@mdx-js/mdx` 3.x, (005-syntax-highlighting)
-- Filesystem — MDX files in `content/posts/`, static output in `out/` (005-syntax-highlighting)
-- TypeScript 5.x, Node.js 20 LTS + Next.js 14.2.35 (`output: 'export'`), `@mdx-js/mdx` 3.x, `rehype-pretty-code` 0.14, `shiki` 1.29, `remark-gfm` 4.x (005-syntax-highlighting)
-- TypeScript 5.x, Node.js 20 LTS + Next.js 14.2.35 (`output: 'export'`), `@mdx-js/mdx` 3.x, `gray-matter` 4.x (006-fix-comments-undefined-nan)
-- ESLint v9 (flat config), `@eslint/js`, `typescript-eslint`, `eslint-config-next`, `eslint-config-prettier`, `eslint-plugin-import`, Prettier (eslint-prettier-setup)
+- N/A — no new data storage; workflow builds `out/` directory and uploads as GitHub Pages artifact (002-gh-pages-deploy)
+- ESLint v9 (flat config), `@eslint/js`, `typescript-eslint`, `eslint-config-next` 16, `eslint-config-prettier`, `eslint-plugin-import`, Prettier (eslint-prettier-setup)
 
 ## Recent Changes
+
+- upgrade-nextjs-v16: Upgraded Next.js 14→16, React 18→19, `@next/mdx` 16; migrated 5 dynamic routes to async params; added `--webpack` build flag (Turbopack incompatible with MDX)
 - eslint-prettier-setup: Added ESLint v9 flat config, Prettier, import ordering, CI lint step in deploy workflow
 - 001-wordpress-blog-migration: Added TypeScript 5.x, Node.js 20 LTS + Next.js 14 (`output: 'export'`), `@next/mdx`, `gray-matter`, `rehype-pretty-code` (Shiki), Tailwind CSS, `@tailwindcss/typography`, Pagefind

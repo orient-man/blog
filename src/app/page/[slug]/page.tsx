@@ -29,9 +29,10 @@ export function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const page = getPageBySlug(params.slug);
+  const { slug } = await params;
+  const page = getPageBySlug(slug);
   if (!page) return {};
   return { title: page.title };
 }
@@ -41,9 +42,10 @@ export async function generateMetadata({
 export default async function StaticPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const page = getPageBySlug(params.slug);
+  const { slug } = await params;
+  const page = getPageBySlug(slug);
   if (!page) notFound();
 
   // Compile page content as plain Markdown (format:'md') to avoid any
