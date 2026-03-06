@@ -10,6 +10,7 @@ import CommentList from "@/components/CommentList";
 import GistEmbed from "@/components/GistEmbed";
 import QuotePost from "@/components/QuotePost";
 import { RelatedPosts } from "@/components/RelatedPosts";
+import { StarRating } from "@/components/StarRating";
 import TweetEmbed from "@/components/TweetEmbed";
 import { getAllPosts, getPostBySlug, getRelatedPosts } from "@/lib/content";
 import { rehypeCopyButton } from "@/lib/rehype-copy-button";
@@ -172,6 +173,12 @@ export default async function PostPage({
                 Originally on LibraryThing &rarr;
               </a>
             )}
+          </div>
+        )}
+
+        {post.rating != null && (
+          <div className="mt-2">
+            <StarRating rating={post.rating} />
           </div>
         )}
 
