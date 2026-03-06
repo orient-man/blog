@@ -50,6 +50,7 @@ export interface Post {
   excerpt?: string;
   htmlExcerpt?: string;
   wordpressUrl: string;
+  linkedinUrl?: string;
   comments?: Comment[];
 
   // Computed at load time
