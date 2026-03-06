@@ -322,11 +322,7 @@ function reviewToMarkdown(html: string): string {
 
 // ── Tag generation ────────────────────────────────────────────────────────────
 
-function generateTags(
-  _title: string,
-  _author: string,
-  _reviewText: string,
-): string[] {
+function generateTags(): string[] {
   // Every review gets these base tags (FR-008)
   return ["books", "reviews"];
 }
@@ -339,7 +335,7 @@ function generateMdx(review: ReviewData, category: string): string {
     review.author !== ""
       ? `"${review.title}" - ${review.author}`
       : `"${review.title}"`;
-  const tags = generateTags(review.title, review.author, review.reviewHtml);
+  const tags = generateTags();
   const markdown = reviewToMarkdown(review.reviewHtml);
 
   const frontmatter = [
