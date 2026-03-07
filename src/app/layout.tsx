@@ -179,8 +179,7 @@ export default function RootLayout({
           <footer className="border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950">
             <div className="max-w-5xl mx-auto px-4 py-6 text-sm text-gray-500 dark:text-gray-400 flex flex-col sm:flex-row justify-between gap-2">
               <span>
-                &copy; {new Date().getFullYear()} {siteConfig.author}. Migrated
-                from WordPress.
+                &copy; 2011&ndash;{new Date().getFullYear()} {siteConfig.author}
               </span>
               <nav className="flex gap-4">
                 <Link
