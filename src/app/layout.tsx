@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Lora } from "next/font/google";
 import Link from "next/link";
+import Script from "next/script";
 
 import "@/styles/globals.css";
 import DarkModeToggle from "@/components/DarkModeToggle";
@@ -65,6 +66,13 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `document.addEventListener('click',function(e){var btn=e.target.closest('[data-copy-btn]');if(!btn)return;var pre=btn.closest('[data-rehype-pretty-code-figure]').querySelector('pre');navigator.clipboard&&navigator.clipboard.writeText(pre.innerText).then(function(){btn.setAttribute('data-copied','');setTimeout(function(){btn.removeAttribute('data-copied');},2000);});});`,
           }}
+        />
+
+        {/* GoatCounter analytics — privacy-first, cookieless, GDPR-compliant */}
+        <Script
+          src="//gc.zgo.at/count.js"
+          data-goatcounter="https://orientman.goatcounter.com/count"
+          strategy="afterInteractive"
         />
 
         <div className="min-h-screen flex flex-col">
