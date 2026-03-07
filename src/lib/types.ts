@@ -52,6 +52,7 @@ export interface Post {
   wordpressUrl: string;
   linkedinUrl?: string;
   librarythingUrl?: string;
+  coverImage?: string;
   rating?: number;
   comments?: Comment[];
 
