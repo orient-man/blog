@@ -20,8 +20,8 @@ Unfortunately, there are some flaws:
 
 -   tests are run in the full browser - which is slow
 -   the only available browser option is Internet Explorer (on our CI server it can't be upgraded beyond v8)
--   the are some privileges problems described in one of my [previous posts](/2013/01/15/blanket-js-qunit-and-ie8-please-die-now/)
--   it requires some boilerplate C# code, which - of course - need to be compiled
+-   there are some privileges problems described in one of my [previous posts](/2013/01/15/blanket-js-qunit-and-ie8-please-die-now/)
+-   it requires some boilerplate C# code, which - of course - needs to be compiled
 -   tests can't be run selectively
 -   doesn't play nice with continuous testing tools like [NCrunch](http://www.ncrunch.net/)
 -   supports only QUnit and only tests wrapped with HTML (forget about bare JavaScript tests or other frameworks e.g. [Jasmine](http://pivotal.github.io/jasmine/) or [Mocha](http://visionmedia.github.io/mocha/))
@@ -50,7 +50,7 @@ Parameter _testMode_ is optional. Other values are: _All_ (default), _Html_, _Al
 
 # CI server support
 
-Chutzpah support [TeamCity](http://www.jetbrains.com/teamcity/) OOTB. For other servers there is _/junit_ switch that output results to JUnit-style XML file. I've used it for our [CruiseControl.NET](http://www.cruisecontrolnet.org/) server. My MSBuild target looks as follows:
+Chutzpah supports [TeamCity](http://www.jetbrains.com/teamcity/) OOTB. For other servers there is _/junit_ switch that outputs results to JUnit-style XML file. I've used it for our [CruiseControl.NET](http://www.cruisecontrolnet.org/) server. My MSBuild target looks as follows:
 
 ```xml
 <Target Name="RunJavaScriptTests">

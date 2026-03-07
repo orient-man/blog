@@ -16,7 +16,7 @@ format: standard
 
 #### Problem statement
 
-Your codebase is growing. Every week brings handful of new microservices. Each one uses (potentially) different languages, libraries, frameworks, data stores etc. The freedom is in the air and everyone is happy but... There is always "but" :).  For solving cross-cutting concerns (e.g. logging, monitoring, authorization...) you have **_small_** list of **_common_** libraries which need to be in sync. You want at least to know if there are any outdated dependencies.
+Your codebase is growing. Every week brings a handful of new microservices. Each one uses (potentially) different languages, libraries, frameworks, data stores etc. The freedom is in the air and everyone is happy but... There is always "but" :).  For solving cross-cutting concerns (e.g. logging, monitoring, authorization...) you have **_small_** list of **_common_** libraries which need to be in sync. You want at least to know if there are any outdated dependencies.
 
 #### Solution
 
@@ -112,7 +112,7 @@ Target "Outdated" <| fun _ ->
 
 #### Postscriptum
 
-Do you remember that Paket manages [not only](https://fsprojects.github.io/Paket/github-dependencies.html) NuGet references? We can use it to share our target with other developers. Just save it as a [Gist](https://gist.github.com/orient-man/c29c299ed970fd097f80124ffde734ce). Now you can add it as a reference in _paket.depencencies_ file:
+Do you remember that Paket manages [not only](https://fsprojects.github.io/Paket/github-dependencies.html) NuGet references? We can use it to share our target with other developers. Just save it as a [Gist](https://gist.github.com/orient-man/c29c299ed970fd097f80124ffde734ce). Now you can add it as a reference in _paket.dependencies_ file:
 
 ```text
 ...

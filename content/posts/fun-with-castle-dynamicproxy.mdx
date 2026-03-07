@@ -45,7 +45,7 @@ public bool Validate(IValidationListener listener)
 }
 ```
 
-Validator stops on first error as it should by it doesn't collect all warnings because of "short-circuit" evaluation of "&&". I couldn't use "&" operator because it would change semantics (i.e. evaluate all validators regardless of possible errors). Instead I wanted something like this:
+Validator stops on first error as it should but it doesn't collect all warnings because of "short-circuit" evaluation of "&&". I couldn't use "&" operator because it would change semantics (i.e. evaluate all validators regardless of possible errors). Instead I wanted something like this:
 
 ```csharp
 public bool Validate(IValidationListener listener)

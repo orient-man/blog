@@ -18,9 +18,9 @@ comments:
     content: "[...] The time has come to retire NQUnit. NQUnit runs QUnit tests inside .NET by using WatiN. That means it can be used with any test runner supporting NUnit (e.g. TestDriven.NET or – since VS2012 – built-in + adapter). If you use CI server to run NUnit you got JavaScript tests nicely integrated for free (well, almost). [...]"
 ---
 
-[![QUnit tests with code coverage](/images/posts/blanket-js-qunit-and-ie8-please-die-now/qunit-with-blanketjs.jpg)](/images/posts/blanket-js-qunit-and-ie8-please-die-now/qunit-with-blanketjs.jpg) Besides the funny name [Blanket.js](http://migrii.github.com/blanket/ "Blanket.js") delivers what it promises: seamless code coverage. Adding it to an existing QUnit test suit is very easy and I'm not going to repeat after their website. But I had two special requirements which complicates matters:
+[![QUnit tests with code coverage](/images/posts/blanket-js-qunit-and-ie8-please-die-now/qunit-with-blanketjs.jpg)](/images/posts/blanket-js-qunit-and-ie8-please-die-now/qunit-with-blanketjs.jpg) Besides the funny name [Blanket.js](http://migrii.github.com/blanket/ "Blanket.js") delivers what it promises: seamless code coverage. Adding it to an existing QUnit test suite is very easy and I'm not going to repeat after their website. But I had two special requirements which complicates matters:
 
--   My test suits must work on IE8 (that sucks, I know)
+-   My test suites must work on IE8 (that sucks, I know)
 -   and run in browser both locally (using the file:// protocol) and remotely.
 
 During development I use Chrome and IE9 (tests are run against IE8 automatically on build server) so the first point boils down to disabling Blanket.js completely for IE8:
@@ -56,7 +56,7 @@ Index: blanket.js
 
 [View on GitHub](https://gist.github.com/4539327)
 
-Not related to Blanket.js but I encountered one more gotcha with IE: security zones. Build server refused to run my tests until I forced Local Intranet Zone by adding this line to beginning of each HTML files:
+Not related to Blanket.js but I encountered one more gotcha with IE: security zones. Build server refused to run my tests until I forced Local Intranet Zone by adding this line to beginning of each HTML file:
 
 ```html
 <!-- saved from url=(0016)http://localhost -->
@@ -64,4 +64,4 @@ Not related to Blanket.js but I encountered one more gotcha with IE: security zo
 
 [View on GitHub](https://gist.github.com/4539471)
 
-This is an obscure IE feature called [Mark of the Web (MOTW)](http://msdn.microsoft.com/en-us/library/ms537628\(v=vs.85\).aspx "Mark of the Web (MOTW)"). To sum up: all of this workarounds are caused by IE8. **Internet Explorer, please die now!**
+This is an obscure IE feature called [Mark of the Web (MOTW)](http://msdn.microsoft.com/en-us/library/ms537628\(v=vs.85\).aspx "Mark of the Web (MOTW)"). To sum up: all of these workarounds are caused by IE8. **Internet Explorer, please die now!**

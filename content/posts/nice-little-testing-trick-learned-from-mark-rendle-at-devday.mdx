@@ -25,8 +25,8 @@ public void CancelledOrderCannotBeAccepted()
 }
 ```
 
-See the `dynamic` keyword? `OrdersService` doesn't have `Accept` method yet but the test compiles and... fails of course. That's good. You can shape your API in tests as you like without even touching implementation (or interfaces). No need for placing `NotImplementedException` etc. Than you make it gradually work. This trick works especially well with continuous testing tools like [NCrunch](http://www.ncrunch.net/ "NCrunch") or [Mighty Moose](http://continuoustests.com/ "Mighty Moose") which provide almost instant feedback on your test(s).
+See the `dynamic` keyword? `OrdersService` doesn't have `Accept` method yet but the test compiles and... fails of course. That's good. You can shape your API in tests as you like without even touching implementation (or interfaces). No need for placing `NotImplementedException` etc. Then you make it gradually work. This trick works especially well with continuous testing tools like [NCrunch](http://www.ncrunch.net/ "NCrunch") or [Mighty Moose](http://continuoustests.com/ "Mighty Moose") which provide almost instant feedback on your test(s).
 
 After making test pass you can change `dynamic` to `var` and get static typing (for example allowing automatic renaming with VS refactoring tools).
 
-EDIT 2012/11/10: This idea could be expanded to situations where target type doesn't even exists yet. See i.e.: [https://coderwall.com/p/0uzmdw](https://coderwall.com/p/0uzmdw)
+EDIT 2012/11/10: This idea could be expanded to situations where target type doesn't even exist yet. See i.e.: [https://coderwall.com/p/0uzmdw](https://coderwall.com/p/0uzmdw)

@@ -21,7 +21,7 @@ Until now we had many excuses for not writing integration tests:
 
 -   we prefer unit tests over integration tests
 -   our business logic (aka services) is separated and thoroughly tested
--   [we keep our ontrollers on a diet](http://lostechies.com/jimmybogard/2013/10/10/put-your-controllers-on-a-diet-redux/)
+-   [we keep our controllers on a diet](http://lostechies.com/jimmybogard/2013/10/10/put-your-controllers-on-a-diet-redux/)
 -   UI consists mostly of standard elements (aka widgets) which are tested on their [own](/2013/04/24/chutzpah-to-run-javascript-tests/)
 -   we are lazy
 
@@ -82,7 +82,7 @@ namespace Pincasso.MvcApp.Tests.Integration
                     result.StatusCode
                         .Should().Be((int)HttpStatusCode.OK, "Wrong status code for page: " + link);
                     // Global filter catches all exceptions and put "user friendly" Error.cshtml instead
-                    // ... which contains special maker (Yeah, I know but it works)
+                    // ... which contains special marker (Yeah, I know but it works)
                     result.ResponseText
                         .Should()
                         .NotContain(
@@ -121,4 +121,4 @@ namespace Pincasso.MvcApp.Tests.Integration
 
 It's slow, it's somewhat brittle but relatively concise, works OOTB and thanks to it we found a few bugs already.
 
-[^1]: I cannot fail to mention [Maciej Aniserowicz](https://twitter.com/maniserowicz) talk which convinced me that I should have used [Nancy](http://nancyfx.org/) instead of ASP.NET MVC in the first place [but... it's to late to apologize ;)](http://www.youtube.com/watch?v=ePyRrb2-fzs)
+[^1]: I cannot fail to mention [Maciej Aniserowicz](https://twitter.com/maniserowicz) talk which convinced me that I should have used [Nancy](http://nancyfx.org/) instead of ASP.NET MVC in the first place [but... it's too late to apologize ;)](http://www.youtube.com/watch?v=ePyRrb2-fzs)
