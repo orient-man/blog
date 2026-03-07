@@ -29,6 +29,27 @@ export const metadata: Metadata = {
     template: siteConfig.titleTemplate,
   },
   description: siteConfig.description,
+  icons: {
+    icon: [
+      {
+        url: `https://www.gravatar.com/avatar/${siteConfig.gravatarHash}?s=16`,
+        sizes: "16x16",
+        type: "image/png",
+      },
+      {
+        url: `https://www.gravatar.com/avatar/${siteConfig.gravatarHash}?s=32`,
+        sizes: "32x32",
+        type: "image/png",
+      },
+      {
+        url: `https://www.gravatar.com/avatar/${siteConfig.gravatarHash}?s=192`,
+        sizes: "192x192",
+        type: "image/png",
+      },
+    ],
+    shortcut: `https://www.gravatar.com/avatar/${siteConfig.gravatarHash}?s=32`,
+    apple: `https://www.gravatar.com/avatar/${siteConfig.gravatarHash}?s=180`,
+  },
   openGraph: {
     siteName: siteConfig.title,
     type: "website",
