@@ -7,6 +7,7 @@ import rehypePrettyCode from "rehype-pretty-code";
 import remarkGfm from "remark-gfm";
 
 import CommentList from "@/components/CommentList";
+import GiscusComments from "@/components/GiscusComments";
 import GistEmbed from "@/components/GistEmbed";
 import QuotePost from "@/components/QuotePost";
 import { RelatedPosts } from "@/components/RelatedPosts";
@@ -230,9 +231,13 @@ export default async function PostPage({
       </div>
 
       {/* ── Comments ─────────────────────────────────────────────────────── */}
-      {post.comments && post.comments.length > 0 && (
+      {post.comments && post.comments.length > 0 ? (
         <div data-pagefind-ignore>
           <CommentList comments={post.comments} />
+        </div>
+      ) : (
+        <div data-pagefind-ignore>
+          <GiscusComments />
         </div>
       )}
 
