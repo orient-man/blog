@@ -11,10 +11,12 @@ import GiscusComments from "@/components/GiscusComments";
 import GistEmbed from "@/components/GistEmbed";
 import QuotePost from "@/components/QuotePost";
 import { RelatedPosts } from "@/components/RelatedPosts";
+import ShareButtons from "@/components/ShareButtons";
 import { StarRating } from "@/components/StarRating";
 import TweetEmbed from "@/components/TweetEmbed";
 import { getAllPosts, getPostBySlug, getRelatedPosts } from "@/lib/content";
 import { rehypeCopyButton } from "@/lib/rehype-copy-button";
+import { siteConfig } from "@/lib/siteConfig";
 import { CATEGORIES } from "@/lib/types";
 import { formatDate, postUrlPath } from "@/lib/utils";
 
@@ -73,9 +75,11 @@ export default async function PostPage({
 }: {
   params: Promise<{ year: string; month: string; day: string; slug: string }>;
 }) {
-  const { slug } = await params;
+  const { year, month, day, slug } = await params;
   const post = getPostBySlug(slug);
   if (!post) notFound();
+
+  const canonicalUrl = `${siteConfig.siteUrl}/${year}/${month}/${day}/${slug}/`;
 
   const allPosts = getAllPosts();
   const currentIndex = allPosts.findIndex((p) => p.slug === post.slug);
@@ -228,6 +232,14 @@ export default async function PostPage({
             {post.content}
           </p>
         )}
+      </div>
+
+      {/* ── Share buttons ────────────────────────────────────────────────── */}
+      <div
+        className="mt-10 pt-6 border-t border-gray-200 dark:border-gray-800"
+        data-pagefind-ignore
+      >
+        <ShareButtons url={canonicalUrl} title={post.title} />
       </div>
 
       {/* ── Comments ─────────────────────────────────────────────────────── */}
