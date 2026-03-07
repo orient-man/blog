@@ -50,8 +50,7 @@ export interface Post {
   excerpt?: string;
   htmlExcerpt?: string;
   wordpressUrl: string;
-  linkedinUrl?: string;
-  librarythingUrl?: string;
+  externalLinks?: { label: string; url: string }[];
   coverImage?: string;
   rating?: number;
   comments?: Comment[];

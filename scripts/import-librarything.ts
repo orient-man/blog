@@ -166,7 +166,7 @@ interface ReviewData {
   rating: number;
   date: string; // ISO 8601
   reviewHtml: string;
-  librarythingUrl: string;
+  externalLinks: { label: string; url: string }[];
 }
 
 function parseReviews(html: string): ReviewData[] {
@@ -264,7 +264,7 @@ function parseReviews(html: string): ReviewData[] {
       rating,
       date: isoDate,
       reviewHtml,
-      librarythingUrl,
+      externalLinks: [{ label: "LibraryThing", url: librarythingUrl }],
     });
   }
 
@@ -345,7 +345,10 @@ function generateMdx(review: ReviewData, category: string): string {
     `author: orientman`,
     `slug: ${slug}`,
     `wordpressUrl: ""`,
-    `librarythingUrl: ${review.librarythingUrl}`,
+    `externalLinks:`,
+    ...review.externalLinks.map(
+      (link) => `  - label: "${link.label}"\n    url: ${link.url}`,
+    ),
     `category: ${category}`,
     `tags:`,
     ...tags.map((t) => `  - ${t}`),
