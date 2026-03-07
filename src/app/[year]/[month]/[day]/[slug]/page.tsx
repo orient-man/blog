@@ -151,28 +151,19 @@ export default async function PostPage({
         </div>
 
         {/* Source links (external origins) */}
-        {(post.linkedinUrl || post.librarythingUrl) && (
+        {post.externalLinks && post.externalLinks.length > 0 && (
           <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm">
-            {post.linkedinUrl && (
+            {post.externalLinks.map((link) => (
               <a
-                href={post.linkedinUrl}
+                key={link.url}
+                href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
               >
-                Originally on LinkedIn &rarr;
+                Also on {link.label} &rarr;
               </a>
-            )}
-            {post.librarythingUrl && (
-              <a
-                href={post.librarythingUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
-              >
-                Originally on LibraryThing &rarr;
-              </a>
-            )}
+            ))}
           </div>
         )}
 

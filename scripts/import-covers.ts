@@ -40,7 +40,7 @@ interface ReviewPost {
   title: string; // raw frontmatter title, e.g. '"Thinking, fast and slow" - Daniel Kahneman'
   bookTitle: string; // parsed book title
   author: string; // parsed author name
-  librarythingUrl: string;
+  externalLinks: { label: string; url: string }[];
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -227,7 +227,12 @@ async function main() {
     const raw = fs.readFileSync(filePath, "utf8");
     const { data: frontmatter } = matter(raw);
 
-    if (!frontmatter.librarythingUrl) continue;
+    const externalLinks: { label: string; url: string }[] =
+      frontmatter.externalLinks ?? [];
+    const hasLibraryThing = externalLinks.some(
+      (l) => l.label === "LibraryThing",
+    );
+    if (!hasLibraryThing) continue;
 
     const slug =
       frontmatter.slug || path.basename(filePath, path.extname(filePath));
@@ -240,11 +245,11 @@ async function main() {
       title: rawTitle,
       bookTitle,
       author,
-      librarythingUrl: frontmatter.librarythingUrl,
+      externalLinks,
     });
   }
 
-  console.log(`Found ${reviews.length} review posts with librarythingUrl`);
+  console.log(`Found ${reviews.length} review posts with LibraryThing link`);
   if (DRY_RUN) console.log("(--dry-run: no files will be written)\n");
 
   let downloaded = 0;

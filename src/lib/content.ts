@@ -75,8 +75,9 @@ function loadPosts(): Post[] {
       excerpt: data.excerpt ?? generateExcerpt(content),
       htmlExcerpt: generateHtmlExcerpt(raw),
       wordpressUrl: data.wordpressUrl ?? "",
-      linkedinUrl: data.linkedinUrl ?? undefined,
-      librarythingUrl: data.librarythingUrl ?? undefined,
+      externalLinks: Array.isArray(data.externalLinks)
+        ? (data.externalLinks as { label: string; url: string }[])
+        : undefined,
       coverImage: data.coverImage ? String(data.coverImage) : undefined,
       rating: data.rating != null ? Number(data.rating) : undefined,
       comments: Array.isArray(data.comments)
