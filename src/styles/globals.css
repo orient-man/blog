@@ -27,6 +27,22 @@
   --accent: #a3e635;
 }
 
+/* ── Pagefind UI theme integration ───────────────────────────────── */
+/* Scoped to .pagefind-ui so these beat Pagefind's own :root defaults
+   (its CSS loads dynamically after ours). */
+.pagefind-ui {
+  --pagefind-ui-text: var(--fg);
+  --pagefind-ui-background: var(--bg);
+  --pagefind-ui-border: var(--border);
+  --pagefind-ui-tag: var(--border);
+  --pagefind-ui-primary: var(--accent);
+}
+
+.dark .pagefind-ui mark {
+  background-color: rgba(163, 230, 53, 0.3);
+  color: var(--fg);
+}
+
 body {
   background-color: var(--bg);
   color: var(--fg);
