@@ -23,11 +23,20 @@ Random musings on managing state, side effects and decoupling.
 
 #### Intro
 
-This post was supposed to be about [DurableTask](https://github.com/Azure/durabletask) ~~framework~~library and how we use it at [FinAi](https://finai.com/) to orchestrate biometric authentication process. In the meantime, I got inspired by Mark Seemann's writings about "pure interactions". Go [read it](http://blog.ploeh.dk/2017/07/10/pure-interactions/) - it's wonderful! I call DurableTask _library_ because it's very easy to _decouple_ your application logic from it (at least in F#). Yeah!, _decoupling_ is great, isn't it?  Believe me, you can go astray with _decoupling_. See for yourself.
+This post was supposed to be about
+[DurableTask](https://github.com/Azure/durabletask) ~~framework~~library and how
+we use it at [FinAi](https://finai.com/) to orchestrate biometric authentication
+process. In the meantime, I got inspired by Mark Seemann's writings about "pure
+interactions". Go [read it](http://blog.ploeh.dk/2017/07/10/pure-interactions/)
+- it's wonderful! I call DurableTask _library_ because it's very easy to
+_decouple_ your application logic from it (at least in F#). Yeah!, _decoupling_
+is great, isn't it?  Believe me, you can go astray with _decoupling_. See for
+yourself.
 
 #### Biometric authentication
 
-In essence (and vast simplification) biometric authentication process looks like this:
+In essence (and vast simplification) biometric authentication process looks like
+this:
 
 - acquire user's identity document scan
 - verify it and if valid continue
@@ -50,7 +59,13 @@ let verifyUser getDocImage verifyDoc getFaceImage verifyFace publishResult =
         publishResult false
 ```
 
-We have lots of dependencies (this way it's almost like using constructor injection in C#) but we can mock & test it for sure. If we want to go asynchronous we need to wrap it with _async {}_ block and add bangs (!) everywhere. But what if process is long running? For example: doc/face verification in some corner cases could be done by "mechanical Turk". What about saving state? What happens if process crashes? Can we run this code on multiple machines? And so on...
+We have lots of dependencies (this way it's almost like using constructor
+injection in C#) but we can mock & test it for sure. If we want to go
+asynchronous we need to wrap it with _async {}_ block and add bangs (!)
+everywhere. But what if process is long running? For example: doc/face
+verification in some corner cases could be done by "mechanical Turk". What about
+saving state? What happens if process crashes? Can we run this code on multiple
+machines? And so on...
 
 The question is, can we _decouple_ it little more?
 
@@ -96,7 +111,8 @@ let verifyUserProgram () =
 
 Ugly, isn't it? (or beautiful if you're Lisp fanatic)
 
-Let's add some syntactic sugar (most of this code is boilerplate which languages with more powerful type systems - like Haskell - can generate):
+Let's add some syntactic sugar (most of this code is boilerplate which languages
+with more powerful type systems - like Haskell - can generate):
 
 ```fsharp
 // BEGIN: Monadic stuff that Haskell does automatically
@@ -129,7 +145,8 @@ let verifyFace docVerificationId faceId =
 let publishResult r = Free (PublishResult r)
 ```
 
-Now we can write BiometryProgram that looks almost exactly like our pseudo-code at the beginning:
+Now we can write BiometryProgram that looks almost exactly like our pseudo-code
+at the beginning:
 
 ```fsharp
 let verifyUserProgram () =
@@ -148,7 +165,9 @@ let verifyUserProgram () =
 
 #### Going down
 
-Very readable but how to run it? We must write an interpreter. Let's start with basic synchronized version. Instead of taking photos & doing real verification we will generate GUIDs and return true :)
+Very readable but how to run it? We must write an interpreter. Let's start with
+basic synchronized version. Instead of taking photos & doing real verification
+we will generate GUIDs and return true :)
 
 ```fsharp
 module SyncInterpreter =
@@ -209,12 +228,21 @@ Result is true
 
 #### Reaping rewards
 
-At last, let's use [DurableTask](https://github.com/Azure/durabletask) to address our reliability questions. This library "allow users to write long running persistent workflows" and in our situation it makes process:
+At last, let's use [DurableTask](https://github.com/Azure/durabletask) to
+address our reliability questions. This library "allow users to write long
+running persistent workflows" and in our situation it makes process:
 
-- _Resilient_: State will be persisted at "checkpoints" (e.g. image capture, results of doc/face verification) and restored if needed (e.g. after crash or for audit/monitoring purposes)
-- _Scalable_: Backend leverages [Azure Service Bus](https://azure.microsoft.com/pl-pl/services/service-bus/) (or - in new version - [Service Fabric](https://azure.microsoft.com/pl-pl/services/service-fabric/)) and what started on one node can continue on another
+- _Resilient_: State will be persisted at "checkpoints" (e.g. image capture,
+  results of doc/face verification) and restored if needed (e.g. after crash or
+  for audit/monitoring purposes)
+- _Scalable_: Backend leverages [Azure Service
+  Bus](https://azure.microsoft.com/pl-pl/services/service-bus/) (or - in new
+  version - [Service
+  Fabric](https://azure.microsoft.com/pl-pl/services/service-fabric/)) and what
+  started on one node can continue on another
 
-DurableTask is OOP friendly and it hurts my FP eyes but thanks to _decoupling_ we can reuse _verifyUserProgram_:
+DurableTask is OOP friendly and it hurts my FP eyes but thanks to _decoupling_
+we can reuse _verifyUserProgram_:
 
 ```fsharp
 // abstract external dependencies serving as "checkpoints" for Orchestration
@@ -253,12 +281,25 @@ type BiometryOrchestration() =
 
 Most interesting points:
 
-- Orchestration process starts when identity document arrives (DocId is an input)
+- Orchestration process starts when identity document arrives (DocId is an
+  input)
 - Face image (FaceId) can arrive at any time (as an event sent to Orchestration)
-- Because RunTask method can be run many times (replaying all previous events and activities results) we must reset all "state" (TaskCompletionSource) each time
-- Code inside RunTask should be side effects free (BiometryProgram is great fit here) or wrapped with Task activity (that's the job for interpreter)
-- DurableTask depends on TPL semantics and that's why [TaskBuilder.fs](https://github.com/rspeele/TaskBuilder.fs) is used instead of default F#'s async (see [Tomas Petricek post](http://tomasp.net/blog/async-csharp-differences.aspx/) on C#/F# async differences)
+- Because RunTask method can be run many times (replaying all previous events
+  and activities results) we must reset all "state" (TaskCompletionSource) each
+  time
+- Code inside RunTask should be side effects free (BiometryProgram is great fit
+  here) or wrapped with Task activity (that's the job for interpreter)
+- DurableTask depends on TPL semantics and that's why
+  [TaskBuilder.fs](https://github.com/rspeele/TaskBuilder.fs) is used instead of
+  default F#'s async (see [Tomas Petricek
+  post](http://tomasp.net/blog/async-csharp-differences.aspx/) on C#/F# async
+  differences)
 
 #### Final thoughts
 
-Surprise, surprise, I didn't go this route in my production code. Purity and decoupling are great but I value simplicity more. IMHO using such heavy abstraction (counted more in mental operations than lines of code) is not justified for one-off use. What's your opinion? Anyway I found it interesting enough to write this post. DurableTask definitely deserves post on its own which will come some day. Bye!
+Surprise, surprise, I didn't go this route in my production code. Purity and
+decoupling are great but I value simplicity more. IMHO using such heavy
+abstraction (counted more in mental operations than lines of code) is not
+justified for one-off use. What's your opinion? Anyway I found it interesting
+enough to write this post. DurableTask definitely deserves post on its own which
+will come some day. Bye!

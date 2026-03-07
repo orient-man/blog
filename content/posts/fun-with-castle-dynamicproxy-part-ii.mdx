@@ -12,7 +12,11 @@ tags:
 format: standard
 ---
 
-It's time for another adventure with [Castle.DynamicProxy](http://www.castleproject.org/projects/dynamicproxy/). One of the few things I really like in C++ is [RAII](http://en.wikipedia.org/wiki/Resource_Acquisition_Is_Initialization) - for example you can write code like this:
+It's time for another adventure with
+[Castle.DynamicProxy](http://www.castleproject.org/projects/dynamicproxy/). One
+of the few things I really like in C++ is
+[RAII](http://en.wikipedia.org/wiki/Resource_Acquisition_Is_Initialization) -
+for example you can write code like this:
 
 ```cpp
 class DatabaseContext {
@@ -32,7 +36,10 @@ void DoSomething() {
 }
 ```
 
-`ExecuteNonQuery` opens connection to the database and `DatabaseContext` destructor takes care of closing it regardless if an exception occurred or not. Great! In C# you need more verbose `using/IDisposable` or `try/finally` and... you have a chance to forget about them.
+`ExecuteNonQuery` opens connection to the database and `DatabaseContext`
+destructor takes care of closing it regardless if an exception occurred or not.
+Great! In C# you need more verbose `using/IDisposable` or `try/finally` and...
+you have a chance to forget about them.
 
 But Castle.DynamicProxy comes to the rescue:
 
@@ -134,7 +141,9 @@ namespace MyCompany.Infrastructure
 
 [View on GitHub](https://gist.github.com/4109938)
 
-Initially this proxy was much simpler but I wanted to support also iterators. Methods returning `IEnumerable` are tricky. The compiler rewrites them to the state machine i.e. code:
+Initially this proxy was much simpler but I wanted to support also iterators.
+Methods returning `IEnumerable` are tricky. The compiler rewrites them to the
+state machine i.e. code:
 
 ```csharp
 IEnumerable<int> GetEnumerable() {
@@ -148,7 +157,11 @@ List<int> GetList() {
 }
 ```
 
-Here `yield return` is only a promise: it will be executed later when the `.ToList()` is called. As a result proxying those methods is not enough in my situation. What I really need to emulate RAII is to catch the moment after execution of the iterator. But how to do that? Well, the compiler can handle `using` statements inside iterators:
+Here `yield return` is only a promise: it will be executed later when the
+`.ToList()` is called. As a result proxying those methods is not enough in my
+situation. What I really need to emulate RAII is to catch the moment after
+execution of the iterator. But how to do that? Well, the compiler can handle
+`using` statements inside iterators:
 
 ```csharp
 IEnumerable<int> GetEnumerable() {
@@ -163,4 +176,7 @@ List<int> GetList() {
 }
 ```
 
-That's because it returns control to the iterator after leaving `foreach` loop (`ToList` method is actually a `foreach` loop). So the easiest way to do the same is to wrap `GetEnumerable` with another iterator i.e. effectively proxying resulting iterator object. That's what I did.
+That's because it returns control to the iterator after leaving `foreach` loop
+(`ToList` method is actually a `foreach` loop). So the easiest way to do the
+same is to wrap `GetEnumerable` with another iterator i.e. effectively proxying
+resulting iterator object. That's what I did.

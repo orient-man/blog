@@ -12,12 +12,25 @@ tags:
 format: standard
 ---
 
-I've just finished reading [C# Smorgasbord](http://www.amazon.com/C-Smorgasbord-Filip-Ekberg/dp/1468152106 "C# Smorgasbord") (will write review another time) and I am ashamed to admit I didn't play with IL generation before. So I started with simple examples from the book (get the source from [Bitbucket](https://bitbucket.org/orientman/ilexperiments/)) and was curious if they work on Mono. Actually not all of them... But besides that the whole experience with Mono on Mac was very smooth. Here are steps to install Mono, MonoDevelop and NuGet - all you need to run typical Visual Studio solution:
+I've just finished reading [C#
+Smorgasbord](http://www.amazon.com/C-Smorgasbord-Filip-Ekberg/dp/1468152106 "C#
+Smorgasbord") (will write review another time) and I am ashamed to admit I
+didn't play with IL generation before. So I started with simple examples from
+the book (get the source from
+[Bitbucket](https://bitbucket.org/orientman/ilexperiments/)) and was curious if
+they work on Mono. Actually not all of them... But besides that the whole
+experience with Mono on Mac was very smooth. Here are steps to install Mono,
+MonoDevelop and NuGet - all you need to run typical Visual Studio solution:
 
--   Download and install Mono Framework SDK from [http://www.go-mono.com/mono-downloads/download.html](http://www.go-mono.com/mono-downloads/download.html). Current stable version is 2.10.10. On Mountain Lion you need to temporary disable [Gatekeeper](http://support.apple.com/kb/HT5290) to proceed with installation.
+-   Download and install Mono Framework SDK from
+    [http://www.go-mono.com/mono-downloads/download.html](http://www.go-mono.com/mono-downloads/download.html).
+    Current stable version is 2.10.10. On Mountain Lion you need to temporary
+    disable [Gatekeeper](http://support.apple.com/kb/HT5290) to proceed with
+    installation.
 -   Download and install MonoDevelop from [http://monodevelop.com/Download](http://monodevelop.com/Download). Current stable version is 3.0.5.
 -   Download NuGet.exe Command Line bootstrapper from [http://nuget.codeplex.com/downloads/get/222685](http://nuget.codeplex.com/downloads/get/222685)
--   Because bootstrapper and NuGet itself use HTTPS we need to import trusted root certificates from Mozilla's LXR into Mono's certificate store:
+-   Because bootstrapper and NuGet itself use HTTPS we need to import trusted
+    root certificates from Mozilla's LXR into Mono's certificate store:
 
     ```bash
     # mozroots --import --sync
@@ -35,4 +48,5 @@ How to restore NuGet packages for solution:
 # mono --runtime=v4.0.30319 NuGet.exe install ./packages.config -OutputDirectory ./packages
 ```
 
-Screenshot of MonoDevelop running unit tests: [![MonoDevelop](/images/posts/for-the-record-how-to-run-nuget-exe-on-os-x-mountain-lion/zrzut-ekranu-2012-12-29-o-12-59-56.png)](/images/posts/for-the-record-how-to-run-nuget-exe-on-os-x-mountain-lion/zrzut-ekranu-2012-12-29-o-12-59-56.png)
+Screenshot of MonoDevelop running unit tests:
+[![MonoDevelop](/images/posts/for-the-record-how-to-run-nuget-exe-on-os-x-mountain-lion/zrzut-ekranu-2012-12-29-o-12-59-56.png)](/images/posts/for-the-record-how-to-run-nuget-exe-on-os-x-mountain-lion/zrzut-ekranu-2012-12-29-o-12-59-56.png)

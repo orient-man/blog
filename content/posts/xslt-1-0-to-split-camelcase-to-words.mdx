@@ -11,7 +11,11 @@ tags:
 format: standard
 ---
 
-What is the best practice for unit-test names? [CamelCase or underscore or mixed or...?](http://stackoverflow.com/questions/155436/unit-test-naming-best-practices) Good question. But you can side step it somehow. Here is the code I use for transforming unit-test names as displayed in CI server reports e.g. OrdersWithNoProductsShouldFail -> orders with no products should fail:
+What is the best practice for unit-test names? [CamelCase or underscore or mixed
+or...?](http://stackoverflow.com/questions/155436/unit-test-naming-best-practices)
+Good question. But you can side step it somehow. Here is the code I use for
+transforming unit-test names as displayed in CI server reports e.g.
+OrdersWithNoProductsShouldFail -> orders with no products should fail:
 
 ```xml
 <xsl:template name="SplitCamelCase">

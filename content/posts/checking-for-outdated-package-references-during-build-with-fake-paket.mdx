@@ -16,11 +16,22 @@ format: standard
 
 #### Problem statement
 
-Your codebase is growing. Every week brings a handful of new microservices. Each one uses (potentially) different languages, libraries, frameworks, data stores etc. The freedom is in the air and everyone is happy but... There is always "but" :).  For solving cross-cutting concerns (e.g. logging, monitoring, authorization...) you have **_small_** list of **_common_** libraries which need to be in sync. You want at least to know if there are any outdated dependencies.
+Your codebase is growing. Every week brings a handful of new microservices. Each
+one uses (potentially) different languages, libraries, frameworks, data stores
+etc. The freedom is in the air and everyone is happy but... There is always
+"but" :).  For solving cross-cutting concerns (e.g. logging, monitoring,
+authorization...) you have **_small_** list of **_common_** libraries which need
+to be in sync. You want at least to know if there are any outdated dependencies.
 
 #### Solution
 
-Automate checking for outdated references! For a .NET developer dependency is roughly equivalent to NuGet package. The best tool for managing NuGet (as we will see later, not only!) references is [Paket](https://fsprojects.github.io/Paket/). And there is [a command](https://fsprojects.github.io/Paket/paket-outdated.html) for that! All we need is to run it in a build script and potentially break the build if there are some important upgrades.
+Automate checking for outdated references! For a .NET developer dependency
+is roughly equivalent to NuGet package. The best tool for managing NuGet (as we
+will see later, not only!) references is
+[Paket](https://fsprojects.github.io/Paket/). And there is [a
+command](https://fsprojects.github.io/Paket/paket-outdated.html) for that! All
+we need is to run it in a build script and potentially break the build if there
+are some important upgrades.
 
 #### Details
 
@@ -61,7 +72,10 @@ let parseOutput (lines: string seq) =
     |> List.rev
 ```
 
-Yep, that's F# code! I use [FAKE](https://fake.build/) for my build scripts, so you should because it's great! FAKE gives me easy domain-specific language (DSL) for build tasks together with power of F#. Using FAKE's ProcessHelper I can run _paket outdated_ command and feed output into my function:
+Yep, that's F# code! I use [FAKE](https://fake.build/) for my build scripts, so
+you should because it's great! FAKE gives me easy domain-specific language (DSL)
+for build tasks together with power of F#. Using FAKE's ProcessHelper I can run
+_paket outdated_ command and feed output into my function:
 
 ```fsharp
 let runPaket () =
@@ -74,7 +88,9 @@ let runPaket () =
 let outdated = runPaket () |> parseOutput
 ```
 
-Given list of outdated packages I want to decide which are important (i.e. break the build). For example, all packages with the name starting with "MyCompany." should pull the trigger:
+Given list of outdated packages I want to decide which are important (i.e. break
+the build). For example, all packages with the name starting with "MyCompany."
+should pull the trigger:
 
 ```fsharp
 let filterByPrefix prefix (msg: string) =
@@ -112,7 +128,12 @@ Target "Outdated" <| fun _ ->
 
 #### Postscriptum
 
-Do you remember that Paket manages [not only](https://fsprojects.github.io/Paket/github-dependencies.html) NuGet references? We can use it to share our target with other developers. Just save it as a [Gist](https://gist.github.com/orient-man/c29c299ed970fd097f80124ffde734ce). Now you can add it as a reference in _paket.dependencies_ file:
+Do you remember that Paket manages [not
+only](https://fsprojects.github.io/Paket/github-dependencies.html) NuGet
+references? We can use it to share our target with other developers. Just save
+it as a
+[Gist](https://gist.github.com/orient-man/c29c299ed970fd097f80124ffde734ce). Now
+you can add it as a reference in _paket.dependencies_ file:
 
 ```text
 ...

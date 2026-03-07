@@ -18,13 +18,26 @@ comments:
     content: "[…] How _not_ to upgrade to ASP.NET Core 2.0 just yet (with Paket) – Marcin Malinowski […]"
 ---
 
-Yesterday I returned from 1 week vacations and found everything broken. I love programming :). What I did:
+Yesterday I returned from 1 week vacations and found everything broken. I love
+programming :). What I did:
 
 ```bash
 .paket\paket.exe update
 ```
 
-Meanwhile, Microsoft [released](https://blogs.msdn.microsoft.com/dotnet/2017/08/14/announcing-net-core-2-0/) new ASP.NET Core and after packages update I got broken app with mixed 1.1/2.0 references. I tried to specify version number ("~> 1") in [paket.dependecies file](https://fsprojects.github.io/Paket/dependencies-file.html) but it didn't help much. Root references resolved at 1.1.2 (current newest 1.x version) but transient not. That's because Paket resolves them with _highest matching version_ [strategy](https://fsprojects.github.io/Paket/dependencies-file.html#Resolver-strategy-for-transitive-dependencies) and ASP.NET Core 1.x packages don't set upper limit (e.g. < 2) for their dependencies. "Highest matching strategy" is desired behavior most of the time but not in this situation. Luckily, it's configurable globally or per dependency:
+Meanwhile, Microsoft
+[released](https://blogs.msdn.microsoft.com/dotnet/2017/08/14/announcing-net-core-2-0/)
+new ASP.NET Core and after packages update I got broken app with mixed 1.1/2.0
+references. I tried to specify version number ("~> 1") in [paket.dependecies
+file](https://fsprojects.github.io/Paket/dependencies-file.html) but it didn't
+help much. Root references resolved at 1.1.2 (current newest 1.x version) but
+transient not. That's because Paket resolves them with _highest matching
+version_
+[strategy](https://fsprojects.github.io/Paket/dependencies-file.html#Resolver-strategy-for-transitive-dependencies)
+and ASP.NET Core 1.x packages don't set upper limit (e.g. < 2) for their
+dependencies. "Highest matching strategy" is desired behavior most of the time
+but not in this situation. Luckily, it's configurable globally or per
+dependency:
 
 ```diff
 -nuget Microsoft.AspNetCore.Hosting

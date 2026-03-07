@@ -14,19 +14,36 @@ tags:
 format: standard
 ---
 
-The time has come to retire [NQUnit](https://github.com/robdmoore/NQUnit). NQUnit runs [QUnit](http://qunitjs.com/) tests inside .NET by using [WatiN](http://watin.org/). That means it can be used with any test runner supporting [NUnit](http://www.nunit.org/) (e.g. [TestDriven.NET](http://testdriven.net/) or - since VS2012 - built-in + [adapter](http://nunit.org/index.php?p=vsTestAdapter&r=2.6.2)). If you use CI server to run NUnit you got JavaScript tests nicely integrated for free ([well, almost](/2013/01/15/blanket-js-qunit-and-ie8-please-die-now/)).
+The time has come to retire [NQUnit](https://github.com/robdmoore/NQUnit).
+NQUnit runs [QUnit](http://qunitjs.com/) tests inside .NET by using
+[WatiN](http://watin.org/). That means it can be used with any test runner
+supporting [NUnit](http://www.nunit.org/) (e.g.
+[TestDriven.NET](http://testdriven.net/) or - since VS2012 - built-in +
+[adapter](http://nunit.org/index.php?p=vsTestAdapter&r=2.6.2)). If you use CI
+server to run NUnit you got JavaScript tests nicely integrated for free ([well,
+almost](/2013/01/15/blanket-js-qunit-and-ie8-please-die-now/)).
 
 Unfortunately, there are some flaws:
 
 -   tests are run in the full browser - which is slow
--   the only available browser option is Internet Explorer (on our CI server it can't be upgraded beyond v8)
+-   the only available browser option is Internet Explorer (on our CI server it
+    can't be upgraded beyond v8)
 -   there are some privileges problems described in one of my [previous posts](/2013/01/15/blanket-js-qunit-and-ie8-please-die-now/)
--   it requires some boilerplate C# code, which - of course - needs to be compiled
+-   it requires some boilerplate C# code, which - of course - needs to be
+    compiled
 -   tests can't be run selectively
 -   doesn't play nice with continuous testing tools like [NCrunch](http://www.ncrunch.net/)
--   supports only QUnit and only tests wrapped with HTML (forget about bare JavaScript tests or other frameworks e.g. [Jasmine](http://pivotal.github.io/jasmine/) or [Mocha](http://visionmedia.github.io/mocha/))
+-   supports only QUnit and only tests wrapped with HTML (forget about bare
+    JavaScript tests or other frameworks e.g.
+    [Jasmine](http://pivotal.github.io/jasmine/) or
+    [Mocha](http://visionmedia.github.io/mocha/))
 
-[NuGet Gallery](http://nuget.org/) showed me several candidates of whom I've chosen [Chutzpah](http://chutzpah.codeplex.com/) and so far I'm not disappointed. Chutzpah supports both the QUnit and Jasmine. Uses the [PhantomJS](http://phantomjs.org/) headless browser to run tests. Not only JavaScript but also TypeScript and CoffeeScript are supported. Chutzpah consists of 3 components:
+[NuGet Gallery](http://nuget.org/) showed me several candidates of whom I've
+chosen [Chutzpah](http://chutzpah.codeplex.com/) and so far I'm not
+disappointed. Chutzpah supports both the QUnit and Jasmine. Uses the
+[PhantomJS](http://phantomjs.org/) headless browser to run tests. Not only
+JavaScript but also TypeScript and CoffeeScript are supported. Chutzpah consists
+of 3 components:
 
 -   [Command Line Runner](http://chutzpah.codeplex.com/releases)
 -   [Visual Studio Test Runner for 2010 and 2012](http://visualstudiogallery.msdn.microsoft.com/71a4e9bd-f660-448f-bd92-f5a65d39b7f0)
@@ -46,11 +63,16 @@ Unfortunately, there are some flaws:
     > chutzpah.console.exe /testMode Html /path .\Facts\JS\
     ```
 
-Parameter _testMode_ is optional. Other values are: _All_ (default), _Html_, _AllExceptHTML_, _TypeScript_, _CoffeeScript_, _JavaScript_. For more info see [docs](https://chutzpah.codeplex.com/wikipage?title=Command%20Line%20Options&referringTitle=Documentation).
+Parameter _testMode_ is optional. Other values are: _All_ (default), _Html_,
+_AllExceptHTML_, _TypeScript_, _CoffeeScript_, _JavaScript_. For more info see
+[docs](https://chutzpah.codeplex.com/wikipage?title=Command%20Line%20Options&referringTitle=Documentation).
 
 # CI server support
 
-Chutzpah supports [TeamCity](http://www.jetbrains.com/teamcity/) OOTB. For other servers there is _/junit_ switch that outputs results to JUnit-style XML file. I've used it for our [CruiseControl.NET](http://www.cruisecontrolnet.org/) server. My MSBuild target looks as follows:
+Chutzpah supports [TeamCity](http://www.jetbrains.com/teamcity/) OOTB. For other
+servers there is _/junit_ switch that outputs results to JUnit-style XML file.
+I've used it for our [CruiseControl.NET](http://www.cruisecontrolnet.org/)
+server. My MSBuild target looks as follows:
 
 ```xml
 <Target Name="RunJavaScriptTests">
@@ -61,4 +83,7 @@ Chutzpah supports [TeamCity](http://www.jetbrains.com/teamcity/) OOTB. For other
 </Target>
 ```
 
-PS Today's [Chutzpah 2.4](http://matthewmanela.com/blog/chutzpah-2-4-code-coverage-is-a-go/) release brings code coverage (via [BlanketJS](http://blanketjs.org/)) and contains my [tiny patch](https://chutzpah.codeplex.com/workitem/111) for unicode support :).
+PS Today's [Chutzpah
+2.4](http://matthewmanela.com/blog/chutzpah-2-4-code-coverage-is-a-go/) release
+brings code coverage (via [BlanketJS](http://blanketjs.org/)) and contains my
+[tiny patch](https://chutzpah.codeplex.com/workitem/111) for unicode support :).

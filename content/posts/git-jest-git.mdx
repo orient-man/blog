@@ -21,37 +21,72 @@ comments:
     content: "Dzięki, nie znałem tego wcześniej, ale widzę, że zainspirowane tą samą prezentacją. Zabawny wstęp, może tylko to tłumaczenie grafów trochę za bardzo na palcach. Wszyscy to mieli na studiach, racja? Dobra ja spaczony jestem... Sensowne wzorce np.: z savepointem. Przeczytam jeszcze uważnie w wolnej chwili. Na pewno lepsze niż \"ProGit\" na początek, bo to drugie przecież \"Pro\" i naprawdę trzeba już używać na co dzień, żeby to było ciekawe."
 ---
 
-W zeszłym tygodniu przeprowadziłem _w końcu_ szkolenie z git'a dla moich "kołorkerów". Czyrak musiał nabrzmieć. Minął rok odkąd przywlokłem gita z domu do pracy i po cichutku podpiąłem się przez git-svn do centralnego repo. Może i było lekkie zdziwko, skąd nagle 20 commitów w ciągu minuty, ale generalnie to się nie chwaliłem. Nie chciałem spalić tematu i nie czułem jeszcze mocy. Jak już trochę okrzepłem (m.in. dzięki [wpisowi Arka](http://www.benedykt.net/2013/03/22/kodzic-po-ludzku-czyli-jak-sie-pozbyc-svn-a/)), to zacząłem puszczać balony próbne:
+W zeszłym tygodniu przeprowadziłem _w końcu_ szkolenie z git'a dla moich
+"kołorkerów". Czyrak musiał nabrzmieć. Minął rok odkąd przywlokłem gita z domu
+do pracy i po cichutku podpiąłem się przez git-svn do centralnego repo. Może i
+było lekkie zdziwko, skąd nagle 20 commitów w ciągu minuty, ale generalnie to
+się nie chwaliłem. Nie chciałem spalić tematu i nie czułem jeszcze mocy. Jak już
+trochę okrzepłem (m.in. dzięki [wpisowi
+Arka](http://www.benedykt.net/2013/03/22/kodzic-po-ludzku-czyli-jak-sie-pozbyc-svn-a/)),
+to zacząłem puszczać balony próbne:
 
 -   "Ech, miałoby się git'a to życie stałoby się piękne i nastałaby Światłość"
 -   "Odkryłoby się, że istnieją gałęzie i służą nie tylko do robienia rózg"
 -   "Bo przecież w svn ich nie ma, prawda?"
--   "Nie trzymałoby się już 2 lub więcej kopii roboczych i nie przerzucało pomiędzy nimi źródłowców jak za króla Ćwieczka"
--   "Nie robiłoby się kopii zapasowych przed svn update jak jakieś zaszczute zwierzę"
+-   "Nie trzymałoby się już 2 lub więcej kopii roboczych i nie przerzucało
+    pomiędzy nimi źródłowców jak za króla Ćwieczka"
+-   "Nie robiłoby się kopii zapasowych przed svn update jak jakieś zaszczute
+    zwierzę"
 -   "Gdyby był git, to historia miałaby sens i już nie powracała jako farsa"
--   "A wymęczony po trzech dniach pracy commit nie zmieniałby 3/4 systemu" (z komentarzem "fixes #666")
+-   "A wymęczony po trzech dniach pracy commit nie zmieniałby 3/4 systemu" (z
+    komentarzem "fixes #666")
 
-Itp., itd. za te polskie... tysiące. I nawet obiecałem szkolenie, ale minął jeden miesiąc, potem drugi... Aż przyszedł kryzys, nawał roboty, zbliżająca się Ważna Wystawka i już dłużej nie dało rady. Ja tu śmigam jak tarzan po 5 gałęziach jednocześnie a inni się męczą i nawet o tym nie wiedzą. Gorzej! Dobrze im z tym, uśmiechają się, obraza boska po prostu. Więc poszedłem na spontan i zrobiłem szkolenie z marszu na tydzień przed Wystawką.
+Itp., itd. za te polskie... tysiące. I nawet obiecałem szkolenie, ale minął
+jeden miesiąc, potem drugi... Aż przyszedł kryzys, nawał roboty, zbliżająca się
+Ważna Wystawka i już dłużej nie dało rady. Ja tu śmigam jak tarzan po 5
+gałęziach jednocześnie a inni się męczą i nawet o tym nie wiedzą. Gorzej! Dobrze
+im z tym, uśmiechają się, obraza boska po prostu. Więc poszedłem na spontan i
+zrobiłem szkolenie z marszu na tydzień przed Wystawką.
 
-Postanowiłem skupić się na podstawach a jednocześnie pokazać wszystko (to był chyba błąd). Pierwsze zdaje się zadziałało. Zaczerpnąłem pełnymi garściami z prezentacji ["Git For Ages 4 And Up"](http://www.youtube.com/watch?v=1ffBJ4sVUb4) i tylko podparłem się [GitViz'em](https://github.com/Readify/GitViz) zamiast tych fajnych kloczuszków. A na koniec miało być pokazanie, że git jest genialny w swojej prostocie także od podszewki - czyli o strukturze repo. Moje nieociosane notatki są dostępne na [GitHub'ie](https://github.com/orient-man/git-jest-git).
+Postanowiłem skupić się na podstawach a jednocześnie pokazać wszystko (to był
+chyba błąd). Pierwsze zdaje się zadziałało. Zaczerpnąłem pełnymi garściami z
+prezentacji ["Git For Ages 4 And
+Up"](http://www.youtube.com/watch?v=1ffBJ4sVUb4) i tylko podparłem się
+[GitViz'em](https://github.com/Readify/GitViz) zamiast tych fajnych kloczuszków.
+A na koniec miało być pokazanie, że git jest genialny w swojej prostocie także
+od podszewki - czyli o strukturze repo. Moje nieociosane notatki są dostępne na
+[GitHub'ie](https://github.com/orient-man/git-jest-git).
 
 ## Podsumowanie
 
 ### Plusy dodatnie
 
--   wałkowałem ten graf acykliczny i podstawowe operacje na nim chyba wystarczająco długo (IMHO gdy już to się załapie, to reszta to pikuś)
+-   wałkowałem ten graf acykliczny i podstawowe operacje na nim chyba
+    wystarczająco długo (IMHO gdy już to się załapie, to reszta to pikuś)
 -   sam chyba też załapałem :)
--   nigdzie się nie zaciąłem i git mnie nie zawiódł (zawiodła natomiast pierwsza komenda `cd katalog`, która za każdym razem wieszała ConEmu tak, że pomógł tylko restart)
--   publiczność reagowała żywiołowo i chyba przez większość czasu dyskutowaliśmy (gdy spojrzałem potem na [historię poleceń](https://github.com/orient-man/git-jest-git/blob/master/cmd-history.csv) to byłem w szoku, że tylko tyle przez 3h nastukałem)
+-   nigdzie się nie zaciąłem i git mnie nie zawiódł (zawiodła natomiast pierwsza
+    komenda `cd katalog`, która za każdym razem wieszała ConEmu tak, że pomógł
+    tylko restart)
+-   publiczność reagowała żywiołowo i chyba przez większość czasu dyskutowaliśmy
+    (gdy spojrzałem potem na [historię
+    poleceń](https://github.com/orient-man/git-jest-git/blob/master/cmd-history.csv)
+    to byłem w szoku, że tylko tyle przez 3h nastukałem)
 
 ### Plusy ujemne
 
--   zabrakło agendy - gdybym najpierw powiedział punkt po punkcie o czym zamierzam mówić i dlaczego w tej kolejności to nie musiałbym robić tylu dygresji
--   przykłady zmian i komentarze do commit'ów były od czapy (miałem to przygotować, ale zabrakło czasu i na żywca nic sensowniejszego niż "foo bla bla" mi do głowy nie przychodziło)
+-   zabrakło agendy - gdybym najpierw powiedział punkt po punkcie o czym
+    zamierzam mówić i dlaczego w tej kolejności to nie musiałbym robić tylu
+    dygresji
+-   przykłady zmian i komentarze do commit'ów były od czapy (miałem to
+    przygotować, ale zabrakło czasu i na żywca nic sensowniejszego niż "foo bla
+    bla" mi do głowy nie przychodziło)
 -   zabrakło wstępu "po co" przed prezentacją bebechów (_.git/objects_ itp.)
 
 ## Co dalej
 
-Wygląda na to, że przynajmniej w moim projekcie przejdziemy wszyscy najpierw na git-svn, a potem się zobaczy. Obiecałem już prezentację pt. "Git w praktyce" ([git-flow i tym podobne](https://www.atlassian.com/git/workflows)).
+Wygląda na to, że przynajmniej w moim projekcie przejdziemy wszyscy najpierw na
+git-svn, a potem się zobaczy. Obiecałem już prezentację pt. "Git w praktyce"
+([git-flow i tym podobne](https://www.atlassian.com/git/workflows)).
 
-PS Plusy ujemne zawdzięczam głównie Michałowi Żmijewskiemu, Adamowi Kruszewskiemu i Hubertowi Trzewikowi - wielkie dzięki!
+PS Plusy ujemne zawdzięczam głównie Michałowi Żmijewskiemu, Adamowi
+Kruszewskiemu i Hubertowi Trzewikowi - wielkie dzięki!

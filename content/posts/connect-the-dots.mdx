@@ -24,7 +24,10 @@ comments:
     content: "Yep, my choice is very limiting - even in the example above I've used all letters :). I did it for simplicity. Another idea was to use spaces before symbols to add some additional settings."
 ---
 
-Recently I came across a great [blog post](http://cocoamine.net/blog/2015/03/20/replacing-photoshop-with-nsstring/ "Replacing Photoshop With NSString") introducing [ASCIImage](http://asciimage.org/) program. What does it do? Given:
+Recently I came across a great [blog
+post](http://cocoamine.net/blog/2015/03/20/replacing-photoshop-with-nsstring/
+"Replacing Photoshop With NSString") introducing
+[ASCIImage](http://asciimage.org/) program. What does it do? Given:
 
 ```ascii
 . . . . . . . . . . .
@@ -41,16 +44,24 @@ Recently I came across a great [blog post](http://cocoamine.net/blog/2015/03/20/
 . . . . . . . . . . .
 ```
 
-Then: [![chevron](/images/posts/connect-the-dots/chevron.png)](/images/posts/connect-the-dots/chevron.png) Yay! Now every programmer can be an icon designer ...and it makes for decent F# kata.
+Then:
+[![chevron](/images/posts/connect-the-dots/chevron.png)](/images/posts/connect-the-dots/chevron.png)
+Yay! Now every programmer can be an icon designer ...and it makes for decent F#
+kata.
 
 We need to connect the dots (denoted by letters) and the following rules apply:
 
 - A single isolated dot encodes 1 pixel
-- A sequence of dots (i.e. consecutive letters: A, B, C...) translates to a polygon
+- A sequence of dots (i.e. consecutive letters: A, B, C...) translates to a
+  polygon
 - A dot repeated four times defines an ellipse
 - Finally, a dot repeated two times defines a line
 
-I decided to introduce some minor format changes. I wanted the input format to be self-contained without the need for providing additional code (i.e. blocks in Objective-C version). Just create a text file, run program and voilà, see the result. I choose to support only black (solid) and white (transparent) shapes. Now letters A..Z encode the former and a..z the latter.
+I decided to introduce some minor format changes. I wanted the input format to
+be self-contained without the need for providing additional code (i.e. blocks in
+Objective-C version). Just create a text file, run program and voilà, see the
+result. I choose to support only black (solid) and white (transparent) shapes.
+Now letters A..Z encode the former and a..z the latter.
 
 Let's start with [type-first approach](http://tomasp.net/blog/type-first-development.aspx/):
 
@@ -68,7 +79,9 @@ type Opacity = Solid | Transparent
 type ParserApi = string [] -> (Opacity * Shape) list
 ```
 
-Our goal is to implement _ParserApi_ function transforming ASCII representation into list of shapes. We can start by extracting dots with their positions (_string \[\] -> ((Dot \* Opacity) \* int) list_):
+Our goal is to implement _ParserApi_ function transforming ASCII representation
+into list of shapes. We can start by extracting dots with their positions
+(_string \[\] -> ((Dot \* Opacity) \* int) list_):
 
 ```fsharp
 let ascii2dots (arr : string []) =
@@ -85,9 +98,14 @@ let ascii2dots (arr : string []) =
               | _ -> () ]
 ```
 
-As you can see, F# features like pattern matching, active patterns (|InRange|) and defining list with "yields" (\[ for … \]) make for very concise and readable code.
+As you can see, F# features like pattern matching, active patterns (|InRange|)
+and defining list with "yields" (\[ for … \]) make for very concise and readable
+code.
 
-Let's pretend that we have an active pattern for every rule. Those patterns would examine the beginning of the list and if matched return one or more dots making the shape, its opacity and the tail - list of unmatched dots. Given that we could write parser in just a few lines:
+Let's pretend that we have an active pattern for every rule. Those patterns
+would examine the beginning of the list and if matched return one or more dots
+making the shape, its opacity and the tail - list of unmatched dots. Given that
+we could write parser in just a few lines:
 
 ```fsharp
 let rec parse dots =
@@ -101,9 +119,11 @@ let rec parse dots =
 let api : ParserApi = fun rep -> rep |> ascii2dots |> List.sortBy snd |> parse
 ```
 
-Recursive list definition with yield bang - sweet! And now the time has come for remaining patterns.
+Recursive list definition with yield bang - sweet! And now the time has come for
+remaining patterns.
 
-The dot is considered "single" if the next one is skipped (e.g. A, C, E...) or is the last one. Piece of cake:
+The dot is considered "single" if the next one is skipped (e.g. A, C, E...) or
+is the last one. Piece of cake:
 
 ```fsharp
 let (|Single|_|) = function
@@ -127,7 +147,8 @@ let (|Duo|_|) = function
 
 Beware, they must be applied in order.
 
-The most difficult pattern is the sequence because we need to collect unspecified number of consecutive dots:
+The most difficult pattern is the sequence because we need to collect
+unspecified number of consecutive dots:
 
 ```fsharp
 let (|Sequence|_|) dots =
@@ -144,13 +165,18 @@ let (|Sequence|_|) dots =
     collect [] dots
 ```
 
-That's all - parser is ready. What's left is to generate bitmap from list of shapes. But drawing is boring: mostly an API driven code. I'll show you only the type signature (the rest is on [GitHub](https://github.com/orient-man/AsciiImageFsharp/blob/master/DrawingImplementation.fs)):
+That's all - parser is ready. What's left is to generate bitmap from list of
+shapes. But drawing is boring: mostly an API driven code. I'll show you only the
+type signature (the rest is on
+[GitHub](https://github.com/orient-man/AsciiImageFsharp/blob/master/DrawingImplementation.fs)):
 
 ```fsharp
 type DrawingApi = Parser.ParserApi -> int -> string [] -> System.Drawing.Bitmap
 ```
 
-Given a parser, scale and ASCII representation, _DrawingApi_ implementation should return a bitmap. Drawing module depends only on a parser abstraction. In the composition root (aka main) you tie it together:
+Given a parser, scale and ASCII representation, _DrawingApi_ implementation
+should return a bitmap. Drawing module depends only on a parser abstraction. In
+the composition root (aka main) you tie it together:
 
 ```fsharp
 open System
@@ -174,7 +200,10 @@ You can find full source code on [GitHub](https://github.com/orient-man/AsciiIma
 
 #### Final thoughts
 
-Code above is twice as long as my first attempt. For example, you could inline all the active patterns and make it one complicated recursive function. But I wanted it to be explicit - no comments, the code should speak for itself. Oh, almost forgot. Let's draw some [familiar](http://devtalk.pl/) logo :)
+Code above is twice as long as my first attempt. For example, you could inline
+all the active patterns and make it one complicated recursive function. But I
+wanted it to be explicit - no comments, the code should speak for itself. Oh,
+almost forgot. Let's draw some [familiar](http://devtalk.pl/) logo :)
 
 ```ascii
 . . H # I A # . . . .

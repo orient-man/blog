@@ -11,7 +11,10 @@ tags:
 format: standard
 ---
 
-In our application we have input data validation implemented in business layer (separate dll). Because we need to report results to user (our UI layer is ASP.NET MVC application) I came up with following interfaces (simplified version):
+In our application we have input data validation implemented in business layer
+(separate dll). Because we need to report results to user (our UI layer is
+ASP.NET MVC application) I came up with following interfaces (simplified
+version):
 
 ```csharp
 namespace MyCompany.Infrastructure.Validation
@@ -45,7 +48,10 @@ public bool Validate(IValidationListener listener)
 }
 ```
 
-Validator stops on first error as it should but it doesn't collect all warnings because of "short-circuit" evaluation of "&&". I couldn't use "&" operator because it would change semantics (i.e. evaluate all validators regardless of possible errors). Instead I wanted something like this:
+Validator stops on first error as it should but it doesn't collect all warnings
+because of "short-circuit" evaluation of "&&". I couldn't use "&" operator
+because it would change semantics (i.e. evaluate all validators regardless of
+possible errors). Instead I wanted something like this:
 
 ```csharp
 public bool Validate(IValidationListener listener)
@@ -55,7 +61,8 @@ public bool Validate(IValidationListener listener)
 }
 ```
 
-How to do this without changing all implementations of IValidationListener? With extension method and dynamic proxy of course:
+How to do this without changing all implementations of IValidationListener? With
+extension method and dynamic proxy of course:
 
 ```csharp
 using Castle.DynamicProxy;

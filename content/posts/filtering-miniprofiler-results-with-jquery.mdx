@@ -14,7 +14,12 @@ tags:
 format: standard
 ---
 
-Today I had to optimize a slow running page. We use [MiniProfiler](http://miniprofiler.com/ "MiniProfiler") which makes finding such issues a breeze. But this time it was a little bit more difficult: MiniProfiler showed over 200 SQL queries. How to find the slow ones? Maybe I miss something but it seems there is no built in way to filter MiniProfiler results. I came up with quick jQuery snippet to do just that:
+Today I had to optimize a slow running page. We use
+[MiniProfiler](http://miniprofiler.com/ "MiniProfiler") which makes finding such
+issues a breeze. But this time it was a little bit more difficult: MiniProfiler
+showed over 200 SQL queries. How to find the slow ones? Maybe I miss something
+but it seems there is no built in way to filter MiniProfiler results. I came up
+with quick jQuery snippet to do just that:
 
 ```javascript
 // show only slow rows (100ms+)
@@ -30,4 +35,5 @@ $('.profiler-info div:last-child')
     .hide(); // tr.profiler-gap-info
 ```
 
-Just run it inside browser's Console window and result should look like this: [![filtering-mini-profiler](/images/posts/filtering-miniprofiler-results-with-jquery/filtering-mini-profiler1.gif)](/images/posts/filtering-miniprofiler-results-with-jquery/filtering-mini-profiler1.gif)
+Just run it inside browser's Console window and result should look like this:
+[![filtering-mini-profiler](/images/posts/filtering-miniprofiler-results-with-jquery/filtering-mini-profiler1.gif)](/images/posts/filtering-miniprofiler-results-with-jquery/filtering-mini-profiler1.gif)
