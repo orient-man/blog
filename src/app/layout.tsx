@@ -13,6 +13,7 @@ import {
   getAllPosts,
   getCurrentlyReading,
 } from "@/lib/content";
+import { siteConfig } from "@/lib/siteConfig";
 
 const lora = Lora({
   subsets: ["latin", "latin-ext"],
@@ -24,13 +25,12 @@ const lora = Lora({
 
 export const metadata: Metadata = {
   title: {
-    default: "Just A Programmer",
-    template: "%s | Just A Programmer",
+    default: siteConfig.title,
+    template: siteConfig.titleTemplate,
   },
-  description:
-    "Don Quixote fighting entropy — a programming blog by Marcin Malinowski",
+  description: siteConfig.description,
   openGraph: {
-    siteName: "Just A Programmer",
+    siteName: siteConfig.title,
     type: "website",
   },
   alternates: {
@@ -71,7 +71,7 @@ export default function RootLayout({
         {/* GoatCounter analytics — privacy-first, cookieless, GDPR-compliant */}
         <Script
           src="//gc.zgo.at/count.js"
-          data-goatcounter="https://orientman.goatcounter.com/count"
+          data-goatcounter={`https://${siteConfig.goatcounterId}.goatcounter.com/count`}
           strategy="afterInteractive"
         />
 
@@ -84,10 +84,10 @@ export default function RootLayout({
             <div className="max-w-5xl mx-auto px-4 py-6 flex items-center justify-between">
               <Link href="/" className="group block">
                 <h1 className="text-2xl font-serif italic font-bold tracking-tight group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
-                  Just A Programmer
+                  {siteConfig.title}
                 </h1>
                 <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
-                  ~ Don Quixote fighting entropy
+                  {siteConfig.tagline}
                 </p>
               </Link>
               <nav className="hidden sm:flex items-center gap-4 text-sm">
@@ -158,7 +158,7 @@ export default function RootLayout({
           <footer className="border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950">
             <div className="max-w-5xl mx-auto px-4 py-6 text-sm text-gray-500 dark:text-gray-400 flex flex-col sm:flex-row justify-between gap-2">
               <span>
-                &copy; {new Date().getFullYear()} Marcin Malinowski. Migrated
+                &copy; {new Date().getFullYear()} {siteConfig.author}. Migrated
                 from WordPress.
               </span>
               <nav className="flex gap-4">

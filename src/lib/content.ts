@@ -3,6 +3,7 @@ import path from "path";
 
 import matter from "gray-matter";
 
+import { siteConfig } from "./siteConfig";
 import type {
   Post,
   StaticPage,
@@ -74,7 +75,7 @@ function loadPosts(): Post[] {
         data.date instanceof Date
           ? data.date.toISOString().slice(0, 10)
           : String(data.date ?? "1970-01-01"),
-      author: data.author ?? "Marcin Malinowski",
+      author: data.author ?? siteConfig.author,
       category: (data.category ?? "posts-in-english") as CategorySlug,
       tags: tagSlugs,
       format: data.format ?? "standard",

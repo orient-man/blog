@@ -3,18 +3,16 @@
  *
  * Generates public/sitemap.xml and public/feed.xml from content.
  * Run this as a prebuild step: "prebuild": "tsx scripts/generate-feeds.ts"
- *
- * Note: Does NOT import from src/ (Next.js path aliases) — uses raw fs/matter
- * directly for portability.
  */
 import fs from "fs";
 import path from "path";
 
 import matter from "gray-matter";
 
+import { siteConfig } from "../src/lib/siteConfig";
+
 // ── Config ────────────────────────────────────────────────────────────────────
 
-const SITE_URL = "https://blog.orientman.com";
 const POSTS_DIR = path.join(process.cwd(), "content", "posts");
 const PAGES_DIR = path.join(process.cwd(), "content", "pages");
 const PUBLIC_DIR = path.join(process.cwd(), "public");
@@ -45,7 +43,7 @@ function loadPosts(): PostMeta[] {
       const y = d.getUTCFullYear();
       const m = String(d.getUTCMonth() + 1).padStart(2, "0");
       const day = String(d.getUTCDate()).padStart(2, "0");
-      const url = `${SITE_URL}/${y}/${m}/${day}/${slug}/`;
+      const url = `${siteConfig.siteUrl}/${y}/${m}/${day}/${slug}/`;
 
       const stripped = content
         .replace(/^---[\s\S]*?---\n?/, "")
@@ -76,7 +74,7 @@ function loadPages(): { slug: string; url: string }[] {
       const raw = fs.readFileSync(path.join(PAGES_DIR, f), "utf8");
       const { data } = matter(raw);
       const slug = data.slug ?? path.basename(f, ".mdx");
-      return { slug, url: `${SITE_URL}/page/${slug}/` };
+      return { slug, url: `${siteConfig.siteUrl}/page/${slug}/` };
     });
 }
 
@@ -101,8 +99,8 @@ function buildSitemap(
   );
 
   const staticUrls = [
-    `  <url>\n    <loc>${SITE_URL}/</loc>\n    <changefreq>daily</changefreq>\n  </url>`,
-    `  <url>\n    <loc>${SITE_URL}/search/</loc>\n    <changefreq>monthly</changefreq>\n  </url>`,
+    `  <url>\n    <loc>${siteConfig.siteUrl}/</loc>\n    <changefreq>daily</changefreq>\n  </url>`,
+    `  <url>\n    <loc>${siteConfig.siteUrl}/search/</loc>\n    <changefreq>monthly</changefreq>\n  </url>`,
     ...pages.map(
       (p) =>
         `  <url>\n    <loc>${escapeXml(p.url)}</loc>\n    <changefreq>monthly</changefreq>\n  </url>`,
@@ -124,7 +122,7 @@ function buildRss(posts: PostMeta[]): string {
     .join("\n");
 
   const now = new Date().toUTCString();
-  return `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0">\n  <channel>\n    <title>Just A Programmer</title>\n    <link>${SITE_URL}/</link>\n    <description>Don Quixote fighting entropy — a programming blog by Marcin Malinowski</description>\n    <language>en</language>\n    <lastBuildDate>${now}</lastBuildDate>\n${items}\n  </channel>\n</rss>\n`;
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0">\n  <channel>\n    <title>${escapeXml(siteConfig.title)}</title>\n    <link>${siteConfig.siteUrl}/</link>\n    <description>${escapeXml(siteConfig.description)}</description>\n    <language>en</language>\n    <lastBuildDate>${now}</lastBuildDate>\n${items}\n  </channel>\n</rss>\n`;
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────────

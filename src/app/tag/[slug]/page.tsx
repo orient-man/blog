@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 
 import { PostList } from "@/components/PostList";
 import { getPostsByTag, getAllTags } from "@/lib/content";
+import { siteConfig } from "@/lib/siteConfig";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -17,7 +18,7 @@ export async function generateMetadata({ params }: Props) {
   const tags = getAllTags();
   const tag = tags.find((t) => t.slug === slug);
   if (!tag) return {};
-  return { title: `Posts tagged "${tag.name}" — Just A Programmer` };
+  return { title: `Posts tagged "${tag.name}" — ${siteConfig.title}` };
 }
 
 export default async function TagPage({ params }: Props) {

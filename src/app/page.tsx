@@ -1,9 +1,10 @@
 import { PostList } from "@/components/PostList";
 import { getAllPosts } from "@/lib/content";
+import { siteConfig } from "@/lib/siteConfig";
 
 export const metadata = {
-  title: "Just A Programmer",
-  description: "Don Quixote fighting entropy",
+  title: siteConfig.title,
+  description: siteConfig.tagline,
 };
 
 export default function HomePage() {

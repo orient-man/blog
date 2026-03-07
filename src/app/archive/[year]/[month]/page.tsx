@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 
 import { PostList } from "@/components/PostList";
 import { getPostsByMonth, getArchiveMonths } from "@/lib/content";
+import { siteConfig } from "@/lib/siteConfig";
 import { formatMonthYear, pad2 } from "@/lib/utils";
 
 interface Props {
@@ -21,7 +22,7 @@ export async function generateMetadata({ params }: Props) {
   const year = parseInt(yearStr, 10);
   const month = parseInt(monthStr, 10);
   const label = formatMonthYear(year, month);
-  return { title: `Archive: ${label} — Just A Programmer` };
+  return { title: `Archive: ${label} — ${siteConfig.title}` };
 }
 
 export default async function ArchivePage({ params }: Props) {

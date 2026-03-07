@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 
 import { PostList } from "@/components/PostList";
 import { getPostsByCategory } from "@/lib/content";
+import { siteConfig } from "@/lib/siteConfig";
 import { CATEGORIES, CategorySlug } from "@/lib/types";
 
 interface Props {
@@ -16,7 +17,7 @@ export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
   const category = CATEGORIES.find((c) => c.slug === slug);
   if (!category) return {};
-  return { title: `${category.name} — Just A Programmer` };
+  return { title: `${category.name} — ${siteConfig.title}` };
 }
 
 export default async function CategoryPage({ params }: Props) {
