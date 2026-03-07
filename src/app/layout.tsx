@@ -10,6 +10,7 @@ import {
   getArchiveMonths,
   getBlogroll,
   getAllPosts,
+  getCurrentlyReading,
 } from "@/lib/content";
 
 const lora = Lora({
@@ -47,6 +48,7 @@ export default function RootLayout({
   const archiveMonths = getArchiveMonths();
   const blogroll = getBlogroll();
   const recentPosts = getAllPosts().slice(0, 5);
+  const currentlyReading = getCurrentlyReading();
 
   return (
     <html lang="en" className={lora.variable} suppressHydrationWarning>
@@ -114,6 +116,7 @@ export default function RootLayout({
                   archiveMonths={archiveMonths}
                   blogroll={blogroll}
                   recentPosts={recentPosts}
+                  currentlyReading={currentlyReading}
                 />
               </div>
             </div>

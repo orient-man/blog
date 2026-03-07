@@ -1,0 +1,78 @@
+{
+  "books": [
+    {
+      "title": "Rzym. Wędrówki z historią w tle",
+      "author": "Bożena Fabiani",
+      "coverUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1542744587l/42883001._SX98_.jpg",
+      "url": "https://www.goodreads.com/review/show/8412813704"
+    },
+    {
+      "title": "Kolos z Maroussi",
+      "author": "Henry Miller",
+      "coverUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1265050704l/7674961._SX98_.jpg",
+      "url": "https://www.goodreads.com/review/show/8269253994"
+    },
+    {
+      "title": "Jedna prosta rzecz. Nowe spojrzenie na nauki jogi i ich wpływ na twoje życie",
+      "author": "Eddie Stern",
+      "coverUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1654688877l/61249920._SX98_.jpg",
+      "url": "https://www.goodreads.com/review/show/8172473325"
+    },
+    {
+      "title": "O nacjonalizmie",
+      "author": "Eric J. Hobsbawm",
+      "coverUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1648583558l/60530170._SX98_.jpg",
+      "url": "https://www.goodreads.com/review/show/8096690604"
+    },
+    {
+      "title": "Python for Data Analysis",
+      "author": "Wes McKinney",
+      "coverUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1356132971l/14744694._SX98_.jpg",
+      "url": "https://www.goodreads.com/review/show/4216545110"
+    },
+    {
+      "title": "Creative Drawing and Painting (English and German Edition)",
+      "author": "Brian   Bagnall",
+      "coverUrl": null,
+      "url": "https://www.goodreads.com/review/show/8049240572"
+    },
+    {
+      "title": "Rower to jest świat",
+      "author": "Karol Werner",
+      "coverUrl": null,
+      "url": "https://www.goodreads.com/review/show/7115539556"
+    },
+    {
+      "title": "Dwie wieże (Władca Pierścieni, #2)",
+      "author": "J.R.R. Tolkien",
+      "coverUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1454019361l/1892802._SX98_.jpg",
+      "url": "https://www.goodreads.com/review/show/7326857663"
+    },
+    {
+      "title": "Ghiblioteka. Nieoficjalny przewodnik po świecie filmów studia Ghibli",
+      "author": "Michael Leader",
+      "coverUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1728468774l/220249289._SX98_.jpg",
+      "url": "https://www.goodreads.com/review/show/7115570413"
+    },
+    {
+      "title": "The Staff Engineer's Path: A Guide for Individual Contributors Navigating Growth and Change",
+      "author": "Tanya Reilly",
+      "coverUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1661205628l/61058107._SX98_.jpg",
+      "url": "https://www.goodreads.com/review/show/5034945297"
+    },
+    {
+      "title": "Bogowie Grecji. Obraz boskości w zwierciadle greckiego ducha",
+      "author": "Walter F. Otto",
+      "coverUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1652430836l/61084382._SX98_.jpg",
+      "url": "https://www.goodreads.com/review/show/5246841758"
+    },
+    {
+      "title": "Site Reliability Engineering: How Google Runs Production Systems",
+      "author": "Betsy Beyer",
+      "coverUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1459115220l/27968891._SX98_.jpg",
+      "url": "https://www.goodreads.com/review/show/3062647912"
+    }
+  ],
+  "shelfUrl": "https://www.goodreads.com/review/list/13930842?shelf=currently-reading",
+  "fetchedAt": "2026-03-07T14:58:23.697Z"
+}

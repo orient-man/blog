@@ -82,3 +82,18 @@ export interface ArchiveMonth {
   month: number;
   count: number;
 }
+
+// ── Currently Reading ─────────────────────────────────────────────────────────
+
+export interface CurrentlyReadingBook {
+  title: string;
+  author: string;
+  coverUrl: string | null;
+  url: string;
+}
+
+export interface CurrentlyReadingData {
+  books: CurrentlyReadingBook[];
+  shelfUrl: string;
+  fetchedAt: string;
+}

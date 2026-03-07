@@ -1,9 +1,16 @@
 import Link from "next/link";
 
-import type { Tag, ArchiveMonth, BlogrollEntry, Post } from "@/lib/types";
+import type {
+  Tag,
+  ArchiveMonth,
+  BlogrollEntry,
+  Post,
+  CurrentlyReadingData,
+} from "@/lib/types";
 import { CATEGORIES } from "@/lib/types";
 import { formatMonthYear, postUrlPath, pad2 } from "@/lib/utils";
 
+import CurrentlyReading from "./CurrentlyReading";
 import TagCloud from "./TagCloud";
 
 interface SidebarProps {
@@ -11,6 +18,7 @@ interface SidebarProps {
   archiveMonths: ArchiveMonth[];
   blogroll: BlogrollEntry[];
   recentPosts: Post[];
+  currentlyReading: CurrentlyReadingData;
 }
 
 export default function Sidebar({
@@ -18,6 +26,7 @@ export default function Sidebar({
   archiveMonths,
   blogroll,
   recentPosts,
+  currentlyReading,
 }: SidebarProps) {
   return (
     <aside className="space-y-8 text-sm">
@@ -98,6 +107,19 @@ export default function Sidebar({
             Tags
           </h2>
           <TagCloud tags={allTags} maxTags={20} />
+        </section>
+      )}
+
+      {/* ── Currently Reading ─────────────────────────────────── */}
+      {currentlyReading.books.length > 0 && (
+        <section>
+          <h2 className="font-semibold text-gray-900 dark:text-gray-100 mb-3 uppercase tracking-wide text-xs">
+            Currently Reading
+          </h2>
+          <CurrentlyReading
+            books={currentlyReading.books}
+            shelfUrl={currentlyReading.shelfUrl}
+          />
         </section>
       )}
 
