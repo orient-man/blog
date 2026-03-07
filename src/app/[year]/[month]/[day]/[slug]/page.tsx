@@ -123,7 +123,10 @@ export default async function PostPage({
     <article className="max-w-prose mx-auto" data-pagefind-body>
       {/* ── Post header ──────────────────────────────────────────────────── */}
       <header className="mb-8">
-        <h1 className="text-3xl font-bold font-serif leading-tight mb-3">
+        <h1
+          className="text-3xl font-bold font-serif leading-tight mb-3"
+          data-pagefind-meta="title"
+        >
           {post.title}
         </h1>
 
@@ -228,14 +231,21 @@ export default async function PostPage({
 
       {/* ── Comments ─────────────────────────────────────────────────────── */}
       {post.comments && post.comments.length > 0 && (
-        <CommentList comments={post.comments} />
+        <div data-pagefind-ignore>
+          <CommentList comments={post.comments} />
+        </div>
       )}
 
       {/* ── Related Posts ──────────────────────────────────────────────────── */}
-      <RelatedPosts posts={getRelatedPosts(post.slug, 3)} />
+      <div data-pagefind-ignore>
+        <RelatedPosts posts={getRelatedPosts(post.slug, 3)} />
+      </div>
 
       {/* ── Post navigation ───────────────────────────────────────────────── */}
-      <nav className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800 flex justify-between gap-4 text-sm">
+      <nav
+        className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800 flex justify-between gap-4 text-sm"
+        data-pagefind-ignore
+      >
         <div className="flex-1 text-left">
           {olderPost && (
             <>
