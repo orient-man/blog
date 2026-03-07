@@ -12,6 +12,7 @@ import type {
   ArchiveMonth,
   CategorySlug,
   Comment,
+  CurrentlyReadingData,
 } from "./types";
 import { CATEGORIES } from "./types";
 import {
@@ -30,6 +31,12 @@ const BLOGROLL_PATH = path.join(
   "content",
   "data",
   "blogroll.json",
+);
+const CURRENTLY_READING_PATH = path.join(
+  process.cwd(),
+  "content",
+  "data",
+  "currently-reading.json",
 );
 
 // ── Internal helpers ──────────────────────────────────────────────────────────
@@ -245,4 +252,22 @@ export function getBlogroll(): BlogrollEntry[] {
   const raw = fs.readFileSync(BLOGROLL_PATH, "utf8");
   _blogrollCache = JSON.parse(raw) as BlogrollEntry[];
   return _blogrollCache;
+}
+
+// ── Currently Reading ─────────────────────────────────────────────────────────
+
+const EMPTY_CURRENTLY_READING: CurrentlyReadingData = {
+  books: [],
+  shelfUrl: "",
+  fetchedAt: "",
+};
+
+let _currentlyReadingCache: CurrentlyReadingData | null = null;
+
+export function getCurrentlyReading(): CurrentlyReadingData {
+  if (_currentlyReadingCache) return _currentlyReadingCache;
+  if (!fs.existsSync(CURRENTLY_READING_PATH)) return EMPTY_CURRENTLY_READING;
+  const raw = fs.readFileSync(CURRENTLY_READING_PATH, "utf8");
+  _currentlyReadingCache = JSON.parse(raw) as CurrentlyReadingData;
+  return _currentlyReadingCache;
 }

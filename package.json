@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "tsx scripts/generate-feeds.ts",
+    "prebuild": "tsx scripts/generate-feeds.ts && tsx scripts/fetch-currently-reading.ts",
     "build": "next build --webpack",
     "postbuild": "npx pagefind --site out",
     "start": "next start",
