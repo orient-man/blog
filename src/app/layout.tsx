@@ -93,9 +93,33 @@ export default function RootLayout({
                 >
                   CV
                 </Link>
+                <Link
+                  href="/search/"
+                  className="text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+                >
+                  Search
+                </Link>
                 <DarkModeToggle />
               </nav>
-              <div className="sm:hidden">
+              <div className="sm:hidden flex items-center gap-4 text-sm">
+                <Link
+                  href="/"
+                  className="text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+                >
+                  Home
+                </Link>
+                <Link
+                  href="/page/curriculum-vitae-pl/"
+                  className="text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+                >
+                  CV
+                </Link>
+                <Link
+                  href="/search/"
+                  className="text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+                >
+                  Search
+                </Link>
                 <DarkModeToggle />
               </div>
             </div>
@@ -134,16 +158,16 @@ export default function RootLayout({
                   Home
                 </Link>
                 <Link
-                  href="/search/"
-                  className="hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
-                >
-                  Search
-                </Link>
-                <Link
                   href="/page/curriculum-vitae-pl/"
                   className="hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
                 >
                   CV
+                </Link>
+                <Link
+                  href="/search/"
+                  className="hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+                >
+                  Search
                 </Link>
               </nav>
             </div>
