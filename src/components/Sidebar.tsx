@@ -26,6 +26,7 @@ export default function Sidebar({
         <h2 className="font-semibold text-gray-900 dark:text-gray-100 mb-3 uppercase tracking-wide text-xs">
           About
         </h2>
+        {/* eslint-disable-next-line @next/next/no-img-element -- static export, next/image optimisation unavailable */}
         <img
           src="https://gravatar.com/avatar/78d50dc34ae3edcfa5449ff9ad47f0a2?s=128&d=mp"
           alt="Marcin Malinowski"

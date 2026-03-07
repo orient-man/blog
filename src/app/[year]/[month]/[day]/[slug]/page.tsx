@@ -197,6 +197,19 @@ export default async function PostPage({
         )}
       </header>
 
+      {/* ── Cover image (review posts) ───────────────────────────────── */}
+      {post.coverImage && (
+        <figure className="my-8 flex justify-center">
+          {/* eslint-disable-next-line @next/next/no-img-element -- static export, next/image optimisation unavailable */}
+          <img
+            src={post.coverImage}
+            alt={post.title}
+            loading="lazy"
+            className="max-w-xs rounded shadow-sm"
+          />
+        </figure>
+      )}
+
       {/* ── Post content ─────────────────────────────────────────────────── */}
       <div className="prose prose-gray dark:prose-invert max-w-none">
         {post.format === "quote" ? (

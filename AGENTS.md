@@ -74,9 +74,19 @@ Project context and per-artifact rules are configured in
 
 ## Build / Lint / Test
 
-No build system, linter, or test framework exists yet. When application
-code is added, update this section with the actual build, lint, and test
-commands.
+```bash
+npm run build          # Next.js static export → out/
+npm run lint           # ESLint (flat config, v9)
+npx prettier --check . # Prettier format check
+```
+
+**Agents MUST run `npm run lint` before considering any code change
+complete.** All warnings and errors must be resolved — either by fixing
+the code or by adding a targeted `eslint-disable-next-line` comment with
+a justification (e.g., `-- static export, next/image optimisation
+unavailable`). Do not disable rules globally or at the file level.
+
+No test framework exists yet.
 
 ## Code Style: Markdown / Specs
 

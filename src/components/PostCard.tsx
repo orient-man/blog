@@ -18,6 +18,7 @@ interface PostCardProps {
     | "format"
     | "wordpressUrl"
     | "rating"
+    | "coverImage"
   >;
 }
 
@@ -50,6 +51,7 @@ export function PostCard({ post }: PostCardProps) {
     tags,
     format,
     rating,
+    coverImage,
   } = post;
   const url = postUrlPath(date, slug);
   const visibleTags = tags.slice(0, MAX_TAGS);
@@ -155,6 +157,24 @@ export function PostCard({ post }: PostCardProps) {
             )}
           </div>
         </div>
+
+        {/* ── Cover thumbnail (review posts only) ──────────────────── */}
+        {coverImage && (
+          <Link
+            href={url}
+            className="shrink-0 self-start"
+            aria-hidden="true"
+            tabIndex={-1}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element -- static export, next/image optimisation unavailable */}
+            <img
+              src={coverImage}
+              alt=""
+              loading="lazy"
+              className="w-12 sm:w-16 md:w-20 rounded object-cover"
+            />
+          </Link>
+        )}
       </div>
     </article>
   );
