@@ -1,5 +1,7 @@
 "use client";
 
+import { Suspense } from "react";
+
 import { usePageParam } from "@/hooks/use-page-param";
 import type { Post } from "@/lib/types";
 
@@ -13,7 +15,19 @@ interface PostListProps {
 
 const DEFAULT_PAGE_SIZE = 10;
 
-export function PostList({
+/**
+ * Public wrapper — provides the Suspense boundary required by
+ * `useSearchParams()` inside `usePageParam`.
+ */
+export function PostList(props: PostListProps) {
+  return (
+    <Suspense>
+      <PostListInner {...props} />
+    </Suspense>
+  );
+}
+
+function PostListInner({
   posts,
   pageSize = DEFAULT_PAGE_SIZE,
   title,
