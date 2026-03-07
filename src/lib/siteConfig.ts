@@ -9,6 +9,17 @@ export interface SocialLink {
   label: string;
 }
 
+export interface GiscusConfig {
+  /** GitHub repository in "owner/name" format */
+  repo: string;
+  /** Repository ID from https://giscus.app */
+  repoId: string;
+  /** Discussion category name */
+  category: string;
+  /** Discussion category ID from https://giscus.app */
+  categoryId: string;
+}
+
 export interface SiteConfig {
   title: string;
   titleTemplate: string;
@@ -18,6 +29,7 @@ export interface SiteConfig {
   siteUrl: string;
   gravatarHash: string;
   goatcounterId: string;
+  giscus: GiscusConfig;
   socialLinks: SocialLink[];
 }
 
@@ -33,6 +45,12 @@ export const siteConfig: SiteConfig = {
   siteUrl: "https://blog.orientman.com",
   gravatarHash: "78d50dc34ae3edcfa5449ff9ad47f0a2",
   goatcounterId: "orientman",
+  giscus: {
+    repo: "orient-man/blog",
+    repoId: "R_kgDORahAUg",
+    category: "Blog Comments",
+    categoryId: "DIC_kwDORahAUs4C35SY",
+  },
   socialLinks: [
     {
       platform: "x",
