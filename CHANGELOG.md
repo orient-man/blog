@@ -9,6 +9,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 > new user-visible features and content migrations, PATCH for bug fixes,
 > content corrections, and developer tooling changes.
 
+## [1.21.0] - 2026-03-08
+
+### Added
+
+- Personal visual identity inspired by retro pixel art, adventure games, and hacker culture
+- Warm indigo/amber/teal color palette replacing the generic developer theme
+- Pixelify Sans and VT323 decorative fonts for UI chrome (body text unchanged)
+- Beveled retro panel styling evoking adventure-game verb bars
+- Dithered gradient accent bar, pixel-style dividers, and CRT scanline overlays
+- Terminal-prompt footer line and adventure-game themed 404 page
+- Accessibility: `prefers-reduced-motion` guards and WCAG AA contrast compliance
+
+### Fixed
+
+- PostCard calendar dates barely readable at small pixel-font sizes
+
+## [1.20.2] - 2026-03-08
+
+### Added
+
+- English CV page at `/page/curriculum-vitae/` alongside existing Polish version
+
+### Changed
+
+- CV navigation links updated from `/page/curriculum-vitae-pl/` to `/page/curriculum-vitae/`
+
+## [1.20.1] - 2026-03-08
+
+### Changed
+
+- Site title rebranded to "Just AI Programmer" with highlighted red "I" reflecting the AI-augmented development theme
+
 ## [1.20.0] - 2026-03-07
 
 ### Added

@@ -34,7 +34,7 @@ export default function Sidebar({
     <aside className="space-y-8 text-sm">
       {/* ── About ─────────────────────────────────────────────── */}
       <section>
-        <h2 className="font-semibold text-gray-900 dark:text-gray-100 mb-3 uppercase tracking-wide text-xs">
+        <h2 className="font-pixel font-semibold text-gray-900 dark:text-gray-100 mb-3 uppercase tracking-wide text-xs border-b-2 border-current pb-1">
           About
         </h2>
         {/* eslint-disable-next-line @next/next/no-img-element -- static export, next/image optimisation unavailable */}
@@ -85,7 +85,7 @@ export default function Sidebar({
       {/* ── Recent Posts ─────────────────────────────────────── */}
       {recentPosts.length > 0 && (
         <section>
-          <h2 className="font-semibold text-gray-900 dark:text-gray-100 mb-3 uppercase tracking-wide text-xs">
+          <h2 className="font-pixel font-semibold text-gray-900 dark:text-gray-100 mb-3 uppercase tracking-wide text-xs border-b-2 border-current pb-1">
             Recent Posts
           </h2>
           <ul className="space-y-2">
@@ -105,7 +105,7 @@ export default function Sidebar({
 
       {/* ── Categories ───────────────────────────────────────── */}
       <section>
-        <h2 className="font-semibold text-gray-900 dark:text-gray-100 mb-3 uppercase tracking-wide text-xs">
+        <h2 className="font-pixel font-semibold text-gray-900 dark:text-gray-100 mb-3 uppercase tracking-wide text-xs border-b-2 border-current pb-1">
           Categories
         </h2>
         <ul className="space-y-1">
@@ -125,7 +125,7 @@ export default function Sidebar({
       {/* ── Tag Cloud ─────────────────────────────────────────── */}
       {allTags.length > 0 && (
         <section>
-          <h2 className="font-semibold text-gray-900 dark:text-gray-100 mb-3 uppercase tracking-wide text-xs">
+          <h2 className="font-pixel font-semibold text-gray-900 dark:text-gray-100 mb-3 uppercase tracking-wide text-xs border-b-2 border-current pb-1">
             Tags
           </h2>
           <TagCloud tags={allTags} maxTags={20} />
@@ -135,7 +135,7 @@ export default function Sidebar({
       {/* ── Currently Reading ─────────────────────────────────── */}
       {currentlyReading.books.length > 0 && (
         <section>
-          <h2 className="font-semibold text-gray-900 dark:text-gray-100 mb-3 uppercase tracking-wide text-xs">
+          <h2 className="font-pixel font-semibold text-gray-900 dark:text-gray-100 mb-3 uppercase tracking-wide text-xs border-b-2 border-current pb-1">
             Currently Reading
           </h2>
           <CurrentlyReading
@@ -148,7 +148,7 @@ export default function Sidebar({
       {/* ── Archive ───────────────────────────────────────────── */}
       {archiveMonths.length > 0 && (
         <section>
-          <h2 className="font-semibold text-gray-900 dark:text-gray-100 mb-3 uppercase tracking-wide text-xs">
+          <h2 className="font-pixel font-semibold text-gray-900 dark:text-gray-100 mb-3 uppercase tracking-wide text-xs border-b-2 border-current pb-1">
             Archive
           </h2>
           <ul className="space-y-1">
@@ -172,7 +172,7 @@ export default function Sidebar({
       {/* ── Blogroll ─────────────────────────────────────────── */}
       {blogroll.length > 0 && (
         <section>
-          <h2 className="font-semibold text-gray-900 dark:text-gray-100 mb-3 uppercase tracking-wide text-xs">
+          <h2 className="font-pixel font-semibold text-gray-900 dark:text-gray-100 mb-3 uppercase tracking-wide text-xs border-b-2 border-current pb-1">
             Blogs I Follow
           </h2>
           <ul className="space-y-1">
@@ -194,7 +194,7 @@ export default function Sidebar({
 
       {/* ── Search ───────────────────────────────────────────── */}
       <section>
-        <h2 className="font-semibold text-gray-900 dark:text-gray-100 mb-3 uppercase tracking-wide text-xs">
+        <h2 className="font-pixel font-semibold text-gray-900 dark:text-gray-100 mb-3 uppercase tracking-wide text-xs border-b-2 border-current pb-1">
           Search
         </h2>
         <Link

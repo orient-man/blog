@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Lora } from "next/font/google";
+import { Lora, Pixelify_Sans, VT323 } from "next/font/google";
 import Link from "next/link";
 import Script from "next/script";
 
@@ -20,6 +20,20 @@ const lora = Lora({
   weight: ["400", "700"],
   style: ["normal", "italic"],
   variable: "--font-lora",
+  display: "swap",
+});
+
+const pixelifySans = Pixelify_Sans({
+  subsets: ["latin", "latin-ext"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-pixel",
+  display: "swap",
+});
+
+const vt323 = VT323({
+  subsets: ["latin", "latin-ext"],
+  weight: "400",
+  variable: "--font-terminal",
   display: "swap",
 });
 
@@ -73,7 +87,11 @@ export default function RootLayout({
   const currentlyReading = getCurrentlyReading();
 
   return (
-    <html lang="en" className={lora.variable} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${lora.variable} ${pixelifySans.variable} ${vt323.variable}`}
+      suppressHydrationWarning
+    >
       <head />
       <body className="bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100 antialiased">
         {/* Dark-mode init script — runs before paint to avoid flash */}
@@ -98,13 +116,13 @@ export default function RootLayout({
 
         <div className="min-h-screen flex flex-col">
           {/* ── Top accent border ──────────────────────────────────────── */}
-          <div className="h-1 w-full bg-brand-500" />
+          <div className="w-full dithered-accent-bar" />
 
           {/* ── Header ─────────────────────────────────────────────────── */}
           <header className="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950">
             <div className="max-w-5xl mx-auto px-4 py-6 flex items-center justify-between">
               <Link href="/" className="group block">
-                <h1 className="text-2xl font-serif italic font-bold tracking-tight group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
+                <h1 className="text-2xl font-pixel font-bold tracking-tight group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
                   Just A
                   <span className="text-red-600 dark:text-red-400 font-normal">
                     I
@@ -118,19 +136,19 @@ export default function RootLayout({
               <nav className="hidden sm:flex items-center gap-4 text-sm">
                 <Link
                   href="/"
-                  className="text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+                  className="font-pixel bevel-panel bevel-panel-interactive px-3 py-1 text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors bg-white dark:bg-gray-900"
                 >
                   Home
                 </Link>
                 <Link
                   href="/page/curriculum-vitae/"
-                  className="text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+                  className="font-pixel bevel-panel bevel-panel-interactive px-3 py-1 text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors bg-white dark:bg-gray-900"
                 >
                   CV
                 </Link>
                 <Link
                   href="/search/"
-                  className="text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+                  className="font-pixel bevel-panel bevel-panel-interactive px-3 py-1 text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors bg-white dark:bg-gray-900"
                 >
                   Search
                 </Link>
@@ -139,19 +157,19 @@ export default function RootLayout({
               <div className="sm:hidden flex items-center gap-4 text-sm">
                 <Link
                   href="/"
-                  className="text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+                  className="font-pixel bevel-panel bevel-panel-interactive px-3 py-1 text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors bg-white dark:bg-gray-900"
                 >
                   Home
                 </Link>
                 <Link
                   href="/page/curriculum-vitae/"
-                  className="text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+                  className="font-pixel bevel-panel bevel-panel-interactive px-3 py-1 text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors bg-white dark:bg-gray-900"
                 >
                   CV
                 </Link>
                 <Link
                   href="/search/"
-                  className="text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+                  className="font-pixel bevel-panel bevel-panel-interactive px-3 py-1 text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors bg-white dark:bg-gray-900"
                 >
                   Search
                 </Link>
@@ -181,30 +199,37 @@ export default function RootLayout({
 
           {/* ── Footer ─────────────────────────────────────────────────── */}
           <footer className="border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950">
-            <div className="max-w-5xl mx-auto px-4 py-6 text-sm text-gray-500 dark:text-gray-400 flex flex-col sm:flex-row justify-between gap-2">
-              <span>
-                &copy; 2011&ndash;{new Date().getFullYear()} {siteConfig.author}
+            <div className="max-w-5xl mx-auto px-4 py-6 text-sm text-gray-500 dark:text-gray-400 flex flex-col gap-2">
+              <span className="font-terminal text-base text-[var(--accent)] opacity-70">
+                visitor@blog.orientman.com:~${" "}
+                <span className="animate-pulse">_</span>
               </span>
-              <nav className="flex gap-4">
-                <Link
-                  href="/"
-                  className="hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
-                >
-                  Home
-                </Link>
-                <Link
-                  href="/page/curriculum-vitae/"
-                  className="hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
-                >
-                  CV
-                </Link>
-                <Link
-                  href="/search/"
-                  className="hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
-                >
-                  Search
-                </Link>
-              </nav>
+              <div className="flex flex-col sm:flex-row justify-between gap-2">
+                <span>
+                  &copy; 2011&ndash;{new Date().getFullYear()}{" "}
+                  {siteConfig.author}
+                </span>
+                <nav className="flex gap-4">
+                  <Link
+                    href="/"
+                    className="hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+                  >
+                    Home
+                  </Link>
+                  <Link
+                    href="/page/curriculum-vitae/"
+                    className="hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+                  >
+                    CV
+                  </Link>
+                  <Link
+                    href="/search/"
+                    className="hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+                  >
+                    Search
+                  </Link>
+                </nav>
+              </div>
             </div>
           </footer>
         </div>
