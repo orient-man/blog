@@ -29,7 +29,7 @@ export default function TagCloud({ tags, maxTags = 20 }: TagCloudProps) {
             <Link
               key={tag.slug}
               href={`/tag/${tag.slug}/`}
-              className="inline-flex items-center px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-brand-100 dark:hover:bg-brand-900 hover:text-brand-700 dark:hover:text-brand-300 transition-colors leading-snug"
+              className="font-pixel inline-flex items-center px-2 py-0.5 bevel-panel bevel-panel-interactive bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:text-brand-700 dark:hover:text-brand-300 transition-colors leading-snug"
               style={{ fontSize: `${size.toFixed(2)}rem` }}
               title={`${tag.count} post${tag.count === 1 ? "" : "s"}`}
             >

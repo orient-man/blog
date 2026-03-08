@@ -10,21 +10,21 @@
   --border: #e2e8f0;
   --card-bg: #f8fafc;
   --code-bg: #f1f5f9;
-  --link: #4d7c0f;
-  --link-hover: #88c34b;
-  --accent: #88c34b;
+  --link: #0a7e7a;
+  --link-hover: #996b07;
+  --accent: #996b07;
 }
 
 .dark {
-  --bg: #0f172a;
-  --fg: #f1f5f9;
-  --muted: #94a3b8;
-  --border: #1e293b;
-  --card-bg: #1e293b;
-  --code-bg: #1e293b;
-  --link: #a3e635;
-  --link-hover: #bef264;
-  --accent: #a3e635;
+  --bg: #1a1a2e;
+  --fg: #e8d5b7;
+  --muted: #9d8f79;
+  --border: #2a2a4a;
+  --card-bg: #1e1e38;
+  --code-bg: #16213e;
+  --link: #5bc0be;
+  --link-hover: #7ee8e5;
+  --accent: #e8a849;
 }
 
 /* ── Pagefind UI theme integration ───────────────────────────────── */
@@ -39,7 +39,7 @@
 }
 
 .dark .pagefind-ui mark {
-  background-color: rgba(163, 230, 53, 0.3);
+  background-color: rgba(232, 168, 73, 0.3);
   color: var(--fg);
 }
 
@@ -90,8 +90,11 @@ body {
 
 [data-rehype-pretty-code-title] {
   @apply text-sm font-medium rounded-t-lg px-4 py-2;
-  background-color: var(--border);
-  color: var(--muted);
+  font-family: var(--font-terminal), "VT323", monospace;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  background-color: var(--code-bg);
+  color: var(--accent);
   border-bottom: 1px solid var(--border);
 }
 
@@ -153,6 +156,95 @@ code[data-theme*=" "] span {
   white-space: nowrap;
   font-size: 0.7rem;
   color: hsl(142 70% 45%);
+}
+
+/* ── Dithered accent bar (D4) ────────────────────────────────────── */
+.dithered-accent-bar {
+  height: 6px;
+  background:
+    repeating-conic-gradient(rgba(0, 0, 0, 0.18) 0% 25%, transparent 0% 50%) 0
+      0 / 4px 4px,
+    linear-gradient(to right, #d4940a, #0a7e7a);
+}
+
+.dark .dithered-accent-bar {
+  background:
+    repeating-conic-gradient(rgba(0, 0, 0, 0.25) 0% 25%, transparent 0% 50%) 0
+      0 / 4px 4px,
+    linear-gradient(to right, #e8a849, #5bc0be);
+}
+
+/* ── Bevel panel (D5) ────────────────────────────────────────────── */
+.bevel-panel {
+  border: 2px solid #3a3a5c;
+  box-shadow:
+    inset 1px 1px 0 #4a4a7a,
+    inset -1px -1px 0 #1a1a3a,
+    2px 2px 0 #0a0a1e;
+}
+
+.bevel-panel-pressed {
+  border: 2px solid #3a3a5c;
+  box-shadow:
+    inset -1px -1px 0 #4a4a7a,
+    inset 1px 1px 0 #1a1a3a;
+}
+
+.bevel-panel-interactive:hover {
+  box-shadow:
+    inset -1px -1px 0 #4a4a7a,
+    inset 1px 1px 0 #1a1a3a;
+}
+
+/* ── Pixel divider HR (FR-018) ───────────────────────────────────── */
+hr.pixel-divider,
+.pixel-divider {
+  border: none;
+  height: 3px;
+  background: repeating-linear-gradient(
+    to right,
+    var(--accent) 0px 3px,
+    transparent 3px 6px
+  );
+  opacity: 0.5;
+}
+
+/* ── CRT scanline overlay for code blocks (D6) ───────────────────── */
+[data-rehype-pretty-code-figure] pre {
+  position: relative;
+}
+
+[data-rehype-pretty-code-figure] pre::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 2px,
+    rgba(0, 0, 0, 0.06) 2px,
+    rgba(0, 0, 0, 0.06) 4px
+  );
+  pointer-events: none;
+  opacity: 0.4;
+  border-radius: inherit;
+}
+
+/* ── Reduced motion guard (FR-008) ───────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Pixel art crisp scaling ──────────────────────────────────────── */
+.image-pixelated {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
 }
 
 /* ── Scrollbar ───────────────────────────────────────────────────── */

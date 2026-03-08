@@ -66,15 +66,15 @@ export function PostCard({ post }: PostCardProps) {
 
   return (
     <article
-      className={`rounded-lg border bg-white dark:bg-gray-800 p-5 shadow-sm transition-shadow hover:shadow-md ${
+      className={`bevel-panel rounded-lg bg-white dark:bg-gray-800 p-5 transition-shadow hover:shadow-md ${
         format === "quote"
-          ? "border-l-4 border-l-brand-500 dark:border-l-brand-400 border-gray-200 dark:border-gray-700"
-          : "border-gray-200 dark:border-gray-700"
+          ? "border-l-4 border-l-brand-500 dark:border-l-brand-400"
+          : ""
       }`}
     >
       <div className="flex gap-4">
         {/* ── Date block ────────────────────────────────────────── */}
-        <div className="hidden sm:flex flex-col items-center justify-start w-16 shrink-0 pt-1">
+        <div className="hidden sm:flex flex-col items-center justify-start w-16 shrink-0 pt-1 font-pixel">
           <span className="text-2xl font-bold text-brand-600 dark:text-brand-400 leading-none">
             {day}
           </span>
@@ -109,7 +109,7 @@ export function PostCard({ post }: PostCardProps) {
           {/* Mobile-only inline date */}
           <time
             dateTime={date}
-            className="sm:hidden text-sm text-gray-500 dark:text-gray-400"
+            className="sm:hidden text-sm font-pixel text-gray-500 dark:text-gray-400"
           >
             {weekday}, {month} {day}, {year}
           </time>

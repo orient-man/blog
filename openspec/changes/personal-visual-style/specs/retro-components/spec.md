@@ -61,7 +61,7 @@ The date font size SHALL remain proportional to the surrounding content to avoid
 ### Requirement: FR-014 Terminal-style footer
 
 The site footer SHALL include a decorative terminal prompt line rendered in VT323.
-The prompt SHALL follow the pattern `visitor@just-a-programmer.pl:~$` or similar.
+The prompt SHALL follow the pattern `visitor@blog.orientman.com:~$` or similar.
 The footer MUST remain accessible (the terminal prompt is decorative; core footer links MUST NOT be hidden or obscured).
 
 #### Scenario: Footer shows terminal prompt
