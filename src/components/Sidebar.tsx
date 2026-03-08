@@ -53,7 +53,7 @@ export default function Sidebar({
         <p className="mt-2 text-gray-600 dark:text-gray-400 leading-relaxed">
           A programming blog by{" "}
           <Link
-            href="/page/curriculum-vitae-pl/"
+            href="/page/curriculum-vitae/"
             className="text-brand-600 dark:text-brand-400 hover:underline"
           >
             {siteConfig.author}

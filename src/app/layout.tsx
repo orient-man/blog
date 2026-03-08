@@ -119,7 +119,7 @@ export default function RootLayout({
                   Home
                 </Link>
                 <Link
-                  href="/page/curriculum-vitae-pl/"
+                  href="/page/curriculum-vitae/"
                   className="text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
                 >
                   CV
@@ -140,7 +140,7 @@ export default function RootLayout({
                   Home
                 </Link>
                 <Link
-                  href="/page/curriculum-vitae-pl/"
+                  href="/page/curriculum-vitae/"
                   className="text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
                 >
                   CV
@@ -189,7 +189,7 @@ export default function RootLayout({
                   Home
                 </Link>
                 <Link
-                  href="/page/curriculum-vitae-pl/"
+                  href="/page/curriculum-vitae/"
                   className="hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
                 >
                   CV
