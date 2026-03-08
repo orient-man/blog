@@ -123,7 +123,11 @@ export default function RootLayout({
             <div className="max-w-5xl mx-auto px-4 py-6 flex items-center justify-between">
               <Link href="/" className="group block">
                 <h1 className="text-2xl font-pixel font-bold tracking-tight group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
-                  {siteConfig.title}
+                  Just A
+                  <span className="text-red-600 dark:text-red-400 font-normal">
+                    I
+                  </span>{" "}
+                  Programmer
                 </h1>
                 <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
                   {siteConfig.tagline}
@@ -137,7 +141,7 @@ export default function RootLayout({
                   Home
                 </Link>
                 <Link
-                  href="/page/curriculum-vitae-pl/"
+                  href="/page/curriculum-vitae/"
                   className="font-pixel bevel-panel bevel-panel-interactive px-3 py-1 text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors bg-white dark:bg-gray-900"
                 >
                   CV
@@ -158,7 +162,7 @@ export default function RootLayout({
                   Home
                 </Link>
                 <Link
-                  href="/page/curriculum-vitae-pl/"
+                  href="/page/curriculum-vitae/"
                   className="font-pixel bevel-panel bevel-panel-interactive px-3 py-1 text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors bg-white dark:bg-gray-900"
                 >
                   CV
@@ -213,7 +217,7 @@ export default function RootLayout({
                     Home
                   </Link>
                   <Link
-                    href="/page/curriculum-vitae-pl/"
+                    href="/page/curriculum-vitae/"
                     className="hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
                   >
                     CV
