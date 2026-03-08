@@ -105,7 +105,11 @@ export default function RootLayout({
             <div className="max-w-5xl mx-auto px-4 py-6 flex items-center justify-between">
               <Link href="/" className="group block">
                 <h1 className="text-2xl font-serif italic font-bold tracking-tight group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
-                  {siteConfig.title}
+                  Just A
+                  <span className="text-red-600 dark:text-red-400 font-normal">
+                    I
+                  </span>{" "}
+                  Programmer
                 </h1>
                 <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
                   {siteConfig.tagline}

@@ -36,8 +36,8 @@ export interface SiteConfig {
 // ── Config ────────────────────────────────────────────────────────────────────
 
 export const siteConfig: SiteConfig = {
-  title: "Just A Programmer",
-  titleTemplate: "%s | Just A Programmer",
+  title: "Just A(I) Programmer",
+  titleTemplate: "%s | Just A(I) Programmer",
   description:
     "Don Quixote fighting entropy — a programming blog by Marcin Malinowski",
   author: "Marcin Malinowski",
