@@ -78,10 +78,10 @@ export function PostCard({ post }: PostCardProps) {
           <span className="text-2xl font-bold text-brand-600 dark:text-brand-400 leading-none">
             {day}
           </span>
-          <span className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide mt-0.5">
+          <span className="text-sm text-gray-500 dark:text-gray-400 uppercase tracking-wide mt-0.5">
             {weekday}
           </span>
-          <span className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
+          <span className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
             {month} {year}
           </span>
         </div>
