@@ -226,12 +226,21 @@ hr.pixel-divider,
     to bottom,
     transparent 0px,
     transparent 2px,
-    rgba(0, 0, 0, 0.06) 2px,
-    rgba(0, 0, 0, 0.06) 4px
+    rgba(0, 0, 0, 0.04) 2px,
+    rgba(0, 0, 0, 0.04) 4px
   );
   pointer-events: none;
-  opacity: 0.4;
   border-radius: inherit;
+}
+
+.dark [data-rehype-pretty-code-figure] pre::after {
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 2px,
+    rgba(255, 255, 255, 0.04) 2px,
+    rgba(255, 255, 255, 0.04) 4px
+  );
 }
 
 /* ── Reduced motion guard (FR-008) ───────────────────────────────── */
