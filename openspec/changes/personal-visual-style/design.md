@@ -1,6 +1,6 @@
 ## Context
 
-The blog (`just-a-programmer.pl`) is a statically exported Next.js site using Tailwind CSS for styling and CSS custom properties for theming.
+The blog (`blog.orientman.com`) is a statically exported Next.js site using Tailwind CSS for styling and CSS custom properties for theming.
 The current visual identity is a generic developer template aesthetic: cool slate backgrounds, lime-green accents, and system-default styling on all components.
 
 The goal is to layer personal cultural identity (pixel art, point-and-click adventure games, retro computing, cyberpunk) into the existing layout through CSS-only techniques and Google Fonts.
