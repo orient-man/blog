@@ -126,6 +126,27 @@ Historical branches used `NNN-kebab-case` (001 through 006) but new work uses th
 
 No remote is currently configured. No CI/CD pipeline exists.
 
+## Versioning
+
+The project maintains a `CHANGELOG.md` in the repository root following
+[Keep a Changelog](https://keepachangelog.com/) format with
+[Semantic Versioning](https://semver.org/).
+
+**Agents MUST bump the version in `CHANGELOG.md` as part of every change
+that modifies site behaviour, adds a feature, or fixes a bug.** The
+changelog entry MUST be included in the same change — not as a follow-up.
+
+Version bumps follow these rules:
+
+- **MAJOR** (`x.0.0`): Platform-level overhauls (e.g., complete visual
+  redesign, architecture change).
+- **MINOR** (`0.x.0`): New user-visible features, content migrations.
+- **PATCH** (`0.0.x`): Bug fixes, content corrections, developer tooling
+  changes.
+
+Each change maps to exactly one new version entry. Use the Keep a
+Changelog section headings: `Added`, `Changed`, `Fixed`, `Removed`.
+
 ## Important Constraints
 
 - The project constitution (`openspec/constitution.md`) is the authoritative
