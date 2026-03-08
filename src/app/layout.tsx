@@ -200,10 +200,30 @@ export default function RootLayout({
           {/* ── Footer ─────────────────────────────────────────────────── */}
           <footer className="border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950">
             <div className="max-w-5xl mx-auto px-4 py-6 text-sm text-gray-500 dark:text-gray-400 flex flex-col gap-2">
-              <span className="font-terminal text-base text-[var(--accent)] opacity-70">
-                visitor@blog.orientman.com:~${" "}
-                <span className="animate-pulse">_</span>
-              </span>
+              <div className="flex items-center gap-3">
+                {/* eslint-disable-next-line @next/next/no-img-element -- static export, next/image optimisation unavailable */}
+                <img
+                  src="/images/decorations/footer-lantern.png"
+                  alt=""
+                  aria-hidden="true"
+                  width={32}
+                  height={32}
+                  className="image-pixelated hidden sm:block"
+                />
+                <span className="font-terminal text-base text-[var(--accent)] opacity-70">
+                  visitor@blog.orientman.com:~${" "}
+                  <span className="animate-pulse">_</span>
+                </span>
+                {/* eslint-disable-next-line @next/next/no-img-element -- static export, next/image optimisation unavailable */}
+                <img
+                  src="/images/decorations/footer-potion.png"
+                  alt=""
+                  aria-hidden="true"
+                  width={32}
+                  height={32}
+                  className="image-pixelated hidden sm:block"
+                />
+              </div>
               <div className="flex flex-col sm:flex-row justify-between gap-2">
                 <span>
                   &copy; 2011&ndash;{new Date().getFullYear()}{" "}

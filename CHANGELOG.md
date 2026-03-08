@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 > new user-visible features and content migrations, PATCH for bug fixes,
 > content corrections, and developer tooling changes.
 
+## [1.22.0] - 2026-03-08
+
+### Added
+
+- Pixel art decorations: subtle cross-hatch background tile, 8 sidebar section icons, and 2 footer scene props (lantern + potion)
+- All decorative assets hand-crafted in the amber/teal brand palette at 16-48px with pixelated rendering
+- Footer props hidden on mobile viewports for clean responsive layout
+
 ## [1.21.0] - 2026-03-08
 
 ### Added

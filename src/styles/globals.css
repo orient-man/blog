@@ -49,6 +49,10 @@ body {
   font-feature-settings:
     "liga" 1,
     "kern" 1;
+  background-image: url("/images/decorations/bg-tile.png");
+  background-repeat: repeat;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
 }
 
 /* ── Prose overrides (Tailwind Typography) ───────────────────────── */
