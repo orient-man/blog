@@ -35,21 +35,34 @@ A very different feel than coding on your own.
 Over 12 days the agent and I had **230 sessions**, exchanged **6,633 messages**, produced **156 commits**, migrated **63 posts**, and wrote about **4,012 lines** of TypeScript/TSX.
 Of all tracked changes, **58% needed no human correction at all**.
 
-But the most surprising number: **56% of sessions produced no code**.
-The agent's primary role was not code generator -- it was thinking partner.
-Exploring ideas, writing specs, planning changes, investigating problems.
+A caveat: blog migration sits close to the ideal task for agentic coding -- repetitive structure, independent units (posts), a maximally-represented tech stack (Next.js / React / Tailwind / MDX), static output you can visually verify, and low production risk.
+That 58% clean rate is likely a ceiling, not a baseline you should expect elsewhere.
+
+**56% of sessions produced no code.**
+That number sounds like the agent was a "thinking partner," but the honest framing is more mundane: most of the non-code sessions were SDD framework overhead -- writing proposals, designs, and task lists.
+For complex changes (the initial migration, the visual redesign) the upfront spec work genuinely paid off.
+For small bug fixes it was ceremony.
 
 It's either lots of waiting or lots of multitasking.
 I ended up with multiple (up to 6) git worktrees across separate terminal tabs with OpenCode sessions, waiting for a notification to switch to the one that needed my attention (answering an agent question, reviewing a spec or code, etc.)
 
+## What is Spec-Driven Development?
+
+When an agent can generate hundreds of lines of code in seconds, the bottleneck shifts from writing code to knowing *what* to write.
+Specification-Driven Development (SDD) gives the human--agent pair a shared structure: specs define the problem before the agent starts solving it, and both sides can point to the same document when things drift.
+
+[Birgitta Böckeler's article on Martin Fowler's site](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html) describes a useful taxonomy.
+**Spec-first** means you write a specification before implementation begins.
+**Spec-anchored** goes further: the specs persist after implementation and get updated by future changes, so they remain a living reference rather than a one-time plan.
+
+Both spec-kit and OpenSpec are spec-first.
+OpenSpec also tries to be spec-anchored -- after implementation, it retains short feature specifications that can be updated by future changes.
+I find this useful for both myself and the model because it keeps assumptions and requirements that are not deducible from code alone.
+
 ## Spec-kit vs OpenSpec
 
-Specification-Driven Development frameworks give both human and agent a structure without which both can get lost.
+SDD frameworks give both human and agent a structure without which both can get lost.
 Yet for many tasks they are overkill.
-
-Using the taxonomy from [Birgitta Böckeler's article on Martin Fowler's site](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html): both spec-kit and OpenSpec are **spec-first**.
-OpenSpec also tries to be **spec-anchored** -- after implementation, it retains short feature specifications that can be updated by future changes.
-I find this useful for both myself and the model because it keeps assumptions and requirements that are not deducible from code alone.
 
 | Dimension | Spec-kit (days 1--5) | OpenSpec (days 5--12) |
 |---|---|---|
@@ -70,6 +83,28 @@ Practical notes:
 In short: spec-kit produced ~7.5 artifacts averaging 6 files per change; OpenSpec cut that to ~3 artifacts and 3 files.
 Less ceremony, faster feedback.
 
+## Where the agent stumbles
+
+The [analysis page](/page/agentic-coding-analysis/) is the agent's own self-review -- it classified every change, identified failure patterns, and graded itself.
+Its self-assessment is mostly accurate, though it over-counts over-engineering: of the four cases it flags, only the favicon saga was genuinely over-engineered.
+The pagination fix actually needed the more complex solution the agent built.
+
+Three failure modes stood out to me as the human in the loop:
+
+**Visual judgment is absent.**
+The agent cannot tell whether something looks right.
+Six changes required multiple rounds of "no, the color is wrong" or "that text isn't centered."
+The most efficient pattern was providing a screenshot and iterating on specifics, rather than describing the desired look in words.
+
+**Fixes tend to be partial.**
+The agent would address the visible symptom but miss the root cause -- fixing one blockquote layer when two needed removing, or patching a date format but not the fallback.
+A follow-up nudge ("still broken, see screenshot") was usually enough, but it means you can't trust the first fix without verifying.
+
+**Self-verification isn't automatic.**
+Three times I had to tell the agent to run lint or check the deployed result.
+This improved after I added an explicit lint requirement to AGENTS.md mid-project -- the agent reliably follows rules that are written down, but doesn't invent verification steps on its own.
+That's probably the most generalizable lesson: if you want the agent to check something, put it in the instructions.
+
 ## Tools used
 
 - [OpenCode](https://opencode.ai/) + Claude Opus 4.6
@@ -79,5 +114,9 @@ Less ceremony, faster feedback.
 
 ## One more thing
 
-I let OpenCode review its own work, pointing out that it keeps all the session history and could tell me how the human--AI cooperation went.
-The full analysis -- failure modes, effectiveness data, raw session stats -- is here: [Agentic Coding Analysis: orientman-blog](/page/agentic-coding-analysis/).
+The analysis page linked above -- with its 513 lines, 7 failure categories, effectiveness spectrum, and raw session data -- was written entirely by the agent reviewing its own work.
+I pointed it at the session database and git history and asked it to tell me how the human--AI cooperation went.
+
+Which is itself a mild case of the over-engineering the agent identifies as its signature failure mode.
+I asked for a retrospective; it produced a research paper.
+The full self-review is here: [Agentic Coding Analysis: orientman-blog](/page/agentic-coding-analysis/).
