@@ -16,11 +16,11 @@ format: standard
 ---
 
 I have posts scattered across WordPress, LinkedIn, Facebook, Goodreads, LibraryThing.
-I wanted them all in one place under my own jurisdiction -- not owned by a social media platform.
+I wanted them all in one place under my own jurisdiction — not owned by a social media platform.
 GitHub Pages is also a platform, but given it's just a repo, I can easily host it from my own NAS or another place.
 
 The migration wasn't the real treat.
-I wanted to fully embrace agentic coding -- [OpenCode](https://opencode.ai/) with Claude Opus 4.6 -- and test whether Spec-Driven Development actually helps when you're working with an AI agent.
+I wanted to fully embrace agentic coding — [OpenCode](https://opencode.ai/) with Claude Opus 4.6 — and test whether Spec-Driven Development actually helps when you're working with an AI agent.
 I tried two frameworks: [spec-kit](https://github.com/github/spec-kit) and [OpenSpec](https://openspec.dev/).
 
 I chose to tackle my blog migration rather than a completely new idea, because it was something "easy" for me to specify or do myself, given enough time.
@@ -34,14 +34,14 @@ A very different feel than coding on your own.
 Over 12 days the agent and I had **230 sessions**, exchanged **6,633 messages**, produced **156 commits**, migrated **63 posts**, and wrote about **4,012 lines** of TypeScript/TSX.
 Of all tracked changes, **58% needed no human correction at all**.
 
-A caveat: blog migration sits close to the ideal task for agentic coding -- repetitive structure, independent units, a maximally-represented tech stack (Next.js / React / Tailwind / MDX), static output you can visually verify, and low production risk.
+One caveat: blog migration sits close to the ideal task for agentic coding — repetitive structure, independent units, a maximally-represented tech stack (Next.js / React / Tailwind / MDX), static output you can visually verify, and low production risk.
 That 58% clean rate is likely a ceiling, not a baseline you should expect elsewhere.
 
 **56% of sessions produced no code.**
-That's less about the agent being a "thinking partner" and more about context engineering -- curating what the agent sees when it starts coding.
+That says less about the agent being a “thinking partner” and more about the importance of context engineering — curating what the agent sees when it starts coding.
 A spec session produces artifacts; then you start a fresh implementation session with a clean context window: no brainstorming residue, no rejected alternatives, just the distilled spec and the codebase.
 For complex changes this deliberate split paid off clearly.
-For small bug fixes it was ceremony -- but even there, a fresh session beats a bloated one.
+For small bug fixes, it felt ceremonial—but even there, a fresh session was better than a bloated one.
 
 It's either lots of waiting or lots of multitasking.
 I ended up with multiple (up to 6) git worktrees across separate terminal tabs with OpenCode sessions, waiting for a notification to switch to the one that needed my attention (answering an agent question, reviewing a spec or code, etc.)
@@ -49,14 +49,14 @@ I ended up with multiple (up to 6) git worktrees across separate terminal tabs w
 ## What is Spec-Driven Development?
 
 When an agent can generate hundreds of lines of code in seconds, the bottleneck shifts from writing code to knowing *what* to write.
-Specification-Driven Development (SDD) gives the human--agent pair a shared structure: specs define the problem before the agent starts solving it, and both sides can point to the same document when things drift.
+Specification-Driven Development (SDD) gives the human—agent pair a shared structure: specs define the problem before the agent starts solving it, and both sides can point to the same document when things drift.
 
 [Birgitta Böckeler's article on Martin Fowler's site](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html) describes a useful taxonomy.
 **Spec-first** means you write a specification before implementation begins.
 **Spec-anchored** goes further: the specs persist after implementation and get updated by future changes, so they remain a living reference rather than a one-time plan.
 
 Both spec-kit and OpenSpec are spec-first.
-OpenSpec also tries to be spec-anchored -- after implementation, it retains short feature specifications that can be updated by future changes.
+OpenSpec also tries to be spec-anchored — after implementation, it retains short feature specifications that can be updated by future changes.
 I find this useful for both myself and the model because it keeps assumptions and requirements that are not deducible from code alone.
 
 ## Spec-kit vs OpenSpec
@@ -64,20 +64,20 @@ I find this useful for both myself and the model because it keeps assumptions an
 SDD frameworks give both human and agent a structure without which both can get lost.
 Yet for many tasks they are overkill.
 
-| Dimension | Spec-kit (days 1--5) | OpenSpec (days 5--12) |
+| Dimension | Spec-kit (days 1—5) | OpenSpec (days 5—12) |
 |---|---|---|
 | Changes completed | 6 | 29 |
 | Velocity (changes/day) | **1.2** | **4.1** |
 | Artifacts per change | ~7.5 | ~3 |
 
-The velocity jump is partly misleading -- OpenSpec changes were smaller on average.
+The velocity jump is partly misleading — OpenSpec changes were smaller on average.
 The real impact was on **feedback loop speed**: under spec-kit, the agent spent multiple sessions generating artifacts before implementation began; under OpenSpec, proposal-to-implementation typically completed within a single session.
 
 Practical notes:
 
 - Both are simple to set up and work OOTB.
 - Spec-kit automatically creates git branches, which is a problem if you use worktrees or want to wait with branch creation until the spec is fully baked.
-- Spec-kit feels heavier. The specify phase sometimes exhausted the context window, causing its compaction. After compaction the agent can lose the thread and jump straight into implementation, skipping the rest of the specification phase. I'm not sure whether this is an OpenCode, Claude, or framework issue. Tip: monitor context usage and start a new session before it fills up -- session splitting solves exactly this problem.
+- Spec-kit feels heavier. The specify phase sometimes exhausted the context window, causing its compaction. After compaction the agent can lose the thread and jump straight into implementation, skipping the rest of the specification phase. I'm not sure whether this is an OpenCode, Claude, or framework issue. In practice, it helps to monitor context usage and start a fresh session before the window fills up.
 - Both support a "constitution" file with key assumptions always in play, overlapping with OpenCode's AGENTS.md.
 
 In short: spec-kit produced ~7.5 artifacts averaging 6 files per change; OpenSpec cut that to ~3 artifacts which were also shorter.
@@ -85,7 +85,7 @@ Less ceremony, faster feedback.
 
 ## Where the agent stumbles
 
-The [analysis page](/page/agentic-coding-analysis/) is the agent's own self-review -- it classified every change, identified failure patterns, and graded itself.
+The [analysis page](/page/agentic-coding-analysis/) is the agent's own self-review — it classified every change, identified failure patterns, and graded itself.
 Its self-assessment is mostly accurate, though it over-counts over-engineering: of the four cases it flags, only the favicon saga was genuinely over-engineered.
 The pagination fix actually needed the more complex solution the agent built.
 
@@ -97,26 +97,26 @@ Six changes required multiple rounds of "no, the color is wrong" or "that text i
 The most efficient pattern was providing a screenshot and iterating on specifics, rather than describing the desired look in words.
 
 **Fixes tend to be partial.**
-The agent would address the visible symptom but miss the root cause -- fixing one blockquote layer when two needed removing, or patching a date format but not the fallback.
+The agent would address the visible symptom but miss the root cause — fixing one blockquote layer when two needed removing, or patching a date format but not the fallback.
 A follow-up nudge ("still broken, see screenshot") was usually enough, but it means you can't trust the first fix without verifying.
 
 **Self-verification isn't automatic.**
 Three times I had to tell the agent to run lint or check the deployed result.
-This improved after I added an explicit lint requirement to AGENTS.md mid-project -- the agent reliably follows rules that are written down, but doesn't invent verification steps on its own.
+This improved after I added an explicit lint requirement to AGENTS.md mid-project — the agent reliably follows rules that are written down, but doesn't invent verification steps on its own.
 That's probably the most generalizable lesson: if you want the agent to check something, put it in the instructions.
-Agentic coding turns out to be less about prompt engineering and more about context engineering -- shaping what the agent sees matters more than how you phrase what you ask.
+Agentic coding turns out to be less about prompt engineering and more about context engineering — shaping what the agent sees matters more than how you phrase what you ask.
 
 ## Tools used
 
 - [OpenCode](https://opencode.ai/) + Claude Opus 4.6
 - OpenCode plugins:
-  - [opencode-worktree](https://github.com/kdcokenny/opencode-worktree) -- wrapper over `git worktree`, essential for running parallel agent sessions.
-  - [opencode-notify](https://github.com/kdcokenny/opencode-notify) -- native OS notifications when tasks complete or the AI needs input. Makes the multitasking workflow practical.
+  - [opencode-worktree](https://github.com/kdcokenny/opencode-worktree) — wrapper over `git worktree`, essential for running parallel agent sessions.
+  - [opencode-notify](https://github.com/kdcokenny/opencode-notify) — native OS notifications when tasks complete or the AI needs input. Makes the multitasking workflow practical.
 
 ## One more thing
 
-The analysis page linked above -- with its 513 lines, 7 failure categories, effectiveness spectrum, and raw session data -- was written entirely by the agent reviewing its own work.
-I pointed it at the session database and git history and asked it to tell me how the human--AI cooperation went.
+The analysis page linked above — with its 513 lines, 7 failure categories, effectiveness spectrum, and raw session data — was written entirely by the agent reviewing its own work.
+I pointed it at the session database and git history and asked it to tell me how the human—AI cooperation went.
 
 Which is itself a mild case of the over-engineering the agent identifies as its signature failure mode.
 I asked for a retrospective; it produced a research paper.
