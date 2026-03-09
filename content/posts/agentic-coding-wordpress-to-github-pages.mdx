@@ -38,9 +38,10 @@ A caveat: blog migration sits close to the ideal task for agentic coding -- repe
 That 58% clean rate is likely a ceiling, not a baseline you should expect elsewhere.
 
 **56% of sessions produced no code.**
-That number sounds like the agent was a "thinking partner," but the honest framing is more mundane: most of the non-code sessions were SDD framework overhead -- writing proposals, designs, and task lists.
-For complex changes (the initial migration, the visual redesign) the upfront spec work genuinely paid off.
-For small bug fixes it was ceremony.
+That's less about the agent being a "thinking partner" and more about context engineering -- curating what the agent sees when it starts coding.
+A spec session produces artifacts; then you start a fresh implementation session with a clean context window: no brainstorming residue, no rejected alternatives, just the distilled spec and the codebase.
+For complex changes this deliberate split paid off clearly.
+For small bug fixes it was ceremony -- but even there, a fresh session beats a bloated one.
 
 It's either lots of waiting or lots of multitasking.
 I ended up with multiple (up to 6) git worktrees across separate terminal tabs with OpenCode sessions, waiting for a notification to switch to the one that needed my attention (answering an agent question, reviewing a spec or code, etc.)
@@ -76,7 +77,7 @@ Practical notes:
 
 - Both are simple to set up and work OOTB.
 - Spec-kit automatically creates git branches, which is a problem if you use worktrees or want to wait with branch creation until the spec is fully baked.
-- Spec-kit feels heavier. The specify phase sometimes exhausted the context window, causing its compaction. After compaction the agent can lose the thread and jump straight into implementation, skipping the rest of the specification phase. I'm not sure whether this is an OpenCode, Claude, or framework issue. Tip: monitor context usage and start a new session before it fills up.
+- Spec-kit feels heavier. The specify phase sometimes exhausted the context window, causing its compaction. After compaction the agent can lose the thread and jump straight into implementation, skipping the rest of the specification phase. I'm not sure whether this is an OpenCode, Claude, or framework issue. Tip: monitor context usage and start a new session before it fills up -- session splitting solves exactly this problem.
 - Both support a "constitution" file with key assumptions always in play, overlapping with OpenCode's AGENTS.md.
 
 In short: spec-kit produced ~7.5 artifacts averaging 6 files per change; OpenSpec cut that to ~3 artifacts which were also shorter.
@@ -103,6 +104,7 @@ A follow-up nudge ("still broken, see screenshot") was usually enough, but it me
 Three times I had to tell the agent to run lint or check the deployed result.
 This improved after I added an explicit lint requirement to AGENTS.md mid-project -- the agent reliably follows rules that are written down, but doesn't invent verification steps on its own.
 That's probably the most generalizable lesson: if you want the agent to check something, put it in the instructions.
+Agentic coding turns out to be less about prompt engineering and more about context engineering -- shaping what the agent sees matters more than how you phrase what you ask.
 
 ## Tools used
 
