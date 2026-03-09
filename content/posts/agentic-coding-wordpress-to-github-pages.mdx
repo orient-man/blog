@@ -15,17 +15,16 @@ tags:
 format: standard
 ---
 
-## Non-technical goals
+I have posts scattered across WordPress, LinkedIn, Facebook, Goodreads, LibraryThing.
+I wanted them all in one place under my own jurisdiction -- not owned by a social media platform.
+GitHub Pages is also a platform, but given it's just a repo, I can easily host it from my own NAS or another place.
 
-Create my internet archive of all my posts published in different places (WordPress, LinkedIn, Facebook, Goodreads/LibraryThing, etc.) that's under my own jurisdiction -- not owned by a social media platform.
-GitHub Pages is also another platform, but given it's just a repo, I can easily host it from my own NAS server or another place.
+The migration wasn't the real treat.
+I wanted to fully embrace agentic coding -- [OpenCode](https://opencode.ai/) with Claude Opus 4.6 -- and test whether Spec-Driven Development actually helps when you're working with an AI agent.
+I tried two frameworks: [spec-kit](https://github.com/github/spec-kit) and [OpenSpec](https://openspec.dev/).
 
-## Technical goals
-
-- Fully embrace Agentic Coding in [OpenCode](https://opencode.ai/) with Claude Opus 4.6
-- Assess the usefulness of Spec-Driven Development and test two popular frameworks: [spec-kit](https://github.com/github/spec-kit) and [OpenSpec](https://openspec.dev/)
-
-I chose the blog migration task not as a completely new idea, but because I wanted something that would be "easy" for me to specify or do myself (given enough time), so I could focus solely on interactions with the AI agent (verifying its work) and learning new tools.
+I chose to tackle my blog migration rather than a completely new idea, because it was something "easy" for me to specify or do myself, given enough time.
+That let me focus solely on the interactions with the agent and learning the tools.
 
 ## How did it go?
 
@@ -35,7 +34,7 @@ A very different feel than coding on your own.
 Over 12 days the agent and I had **230 sessions**, exchanged **6,633 messages**, produced **156 commits**, migrated **63 posts**, and wrote about **4,012 lines** of TypeScript/TSX.
 Of all tracked changes, **58% needed no human correction at all**.
 
-A caveat: blog migration sits close to the ideal task for agentic coding -- repetitive structure, independent units (posts), a maximally-represented tech stack (Next.js / React / Tailwind / MDX), static output you can visually verify, and low production risk.
+A caveat: blog migration sits close to the ideal task for agentic coding -- repetitive structure, independent units, a maximally-represented tech stack (Next.js / React / Tailwind / MDX), static output you can visually verify, and low production risk.
 That 58% clean rate is likely a ceiling, not a baseline you should expect elsewhere.
 
 **56% of sessions produced no code.**
@@ -77,10 +76,10 @@ Practical notes:
 
 - Both are simple to set up and work OOTB.
 - Spec-kit automatically creates git branches, which is a problem if you use worktrees or want to wait with branch creation until the spec is fully baked.
-- Spec-kit feels heavier. The specify phase sometimes exhausted the context window, causing its compaction.
+- Spec-kit feels heavier. The specify phase sometimes exhausted the context window, causing its compaction. After compaction the agent can lose the thread and jump straight into implementation, skipping the rest of the specification phase. I'm not sure whether this is an OpenCode, Claude, or framework issue. Tip: monitor context usage and start a new session before it fills up.
 - Both support a "constitution" file with key assumptions always in play, overlapping with OpenCode's AGENTS.md.
 
-In short: spec-kit produced ~7.5 artifacts averaging 6 files per change; OpenSpec cut that to ~3 artifacts and 3 files.
+In short: spec-kit produced ~7.5 artifacts averaging 6 files per change; OpenSpec cut that to ~3 artifacts which were also shorter.
 Less ceremony, faster feedback.
 
 ## Where the agent stumbles
