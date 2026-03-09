@@ -120,7 +120,7 @@ export default function RootLayout({
 
           {/* ── Header ─────────────────────────────────────────────────── */}
           <header className="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950">
-            <div className="max-w-5xl mx-auto px-4 py-6 flex items-center justify-between">
+            <div className="max-w-5xl mx-auto px-4 py-6 flex flex-col sm:flex-row sm:items-center sm:justify-between">
               <Link href="/" className="group block">
                 <h1 className="text-2xl font-pixel font-bold tracking-tight group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
                   Just A
@@ -133,7 +133,7 @@ export default function RootLayout({
                   {siteConfig.tagline}
                 </p>
               </Link>
-              <nav className="hidden sm:flex items-center gap-4 text-sm">
+              <nav className="flex self-end mt-3 sm:mt-0 items-center gap-4 text-sm">
                 <Link
                   href="/"
                   className="font-pixel bevel-panel bevel-panel-interactive px-3 py-1 text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors bg-white dark:bg-gray-900"
@@ -154,27 +154,6 @@ export default function RootLayout({
                 </Link>
                 <DarkModeToggle />
               </nav>
-              <div className="sm:hidden flex items-center gap-4 text-sm">
-                <Link
-                  href="/"
-                  className="font-pixel bevel-panel bevel-panel-interactive px-3 py-1 text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors bg-white dark:bg-gray-900"
-                >
-                  Home
-                </Link>
-                <Link
-                  href="/page/curriculum-vitae/"
-                  className="font-pixel bevel-panel bevel-panel-interactive px-3 py-1 text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors bg-white dark:bg-gray-900"
-                >
-                  CV
-                </Link>
-                <Link
-                  href="/search/"
-                  className="font-pixel bevel-panel bevel-panel-interactive px-3 py-1 text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors bg-white dark:bg-gray-900"
-                >
-                  Search
-                </Link>
-                <DarkModeToggle />
-              </div>
             </div>
           </header>
 

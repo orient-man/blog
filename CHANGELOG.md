@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 > new user-visible features and content migrations, PATCH for bug fixes,
 > content corrections, and developer tooling changes.
 
+## [1.22.1] - 2026-03-09
+
+### Fixed
+
+- Header navigation buttons colliding with site title on mobile viewports (375-414px); nav now stacks below the title on narrow screens and stays side-by-side on desktop
+- Removed duplicated mobile nav markup — single responsive `<nav>` element for all breakpoints
+
 ## [1.22.0] - 2026-03-08
 
 ### Added
