@@ -136,6 +136,10 @@ The project maintains a `CHANGELOG.md` in the repository root following
 that modifies site behaviour, adds a feature, or fixes a bug.** The
 changelog entry MUST be included in the same change — not as a follow-up.
 
+**Exception:** New blog posts and static pages (content-only additions in
+`content/posts/` or `content/pages/`) do NOT require a changelog entry
+or version bump.
+
 Version bumps follow these rules:
 
 - **MAJOR** (`x.0.0`): Platform-level overhauls (e.g., complete visual

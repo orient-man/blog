@@ -9,18 +9,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 > new user-visible features and content migrations, PATCH for bug fixes,
 > content corrections, and developer tooling changes.
 
-## [1.23.0] - 2026-03-09
-
-### Added
-
-- Blog post "Agentic Coding: From WordPress to GitHub Pages with AI" documenting the migration experience with OpenCode + Claude Opus 4.6
-- Full AI-generated cooperation analysis published as static page at `/page/agentic-coding-analysis/`
-- Quantitative metrics from 230 sessions, 6,633 messages, and 156 commits across 12 days of human-AI collaboration
-
-### Removed
-
-- Raw draft file `blog-post-polished.md` (superseded by the published `.mdx` post)
-
 ## [1.22.1] - 2026-03-09
 
 ### Fixed
