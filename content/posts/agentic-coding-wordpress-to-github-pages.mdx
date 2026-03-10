@@ -1,5 +1,5 @@
 ---
-title: "Blog Migration from WordPress to GitHub Pages -- an Agentic Coding Experiment"
+title: "Blog Migration from WordPress to GitHub Pages — an Agentic Coding Experiment"
 date: 2026-03-09
 author: orientman
 slug: agentic-coding-wordpress-to-github-pages
@@ -8,7 +8,7 @@ category: posts-in-english
 tags:
   - agentic-coding
   - opencode
-  - spec-driven-development
+  - sdd
   - ai
   - wordpress
   - github-pages
@@ -28,22 +28,22 @@ That let me focus solely on the interactions with the agent and learning the too
 
 ## How did it go?
 
-Surprisingly smooth, and yet it wasn't boring at all!
+Surprisingly smooth, and yet it wasn't boring at all.
 A very different feel than coding on your own.
 
 Over 12 days the agent and I had **230 sessions**, exchanged **6,633 messages**, produced **156 commits**, migrated **63 posts**, and wrote about **4,012 lines** of TypeScript/TSX.
 Of all tracked changes, **58% needed no human correction at all**.
 
-One caveat: blog migration sits close to the ideal task for agentic coding — repetitive structure, independent units, a maximally-represented tech stack (Next.js / React / Tailwind / MDX), static output you can visually verify, and low production risk.
+One caveat: blog migration sits close to the ideal task for agentic coding — repetitive structure, independent units, a very common tech stack (Next.js / React / Tailwind / MDX), static output you can visually verify, and low production risk.
 That 58% clean rate is likely a ceiling, not a baseline you should expect elsewhere.
 
 **56% of sessions produced no code.**
-That says less about the agent being a “thinking partner” and more about the importance of context engineering — curating what the agent sees when it starts coding.
-A spec session produces artifacts; then you start a fresh implementation session with a clean context window: no brainstorming residue, no rejected alternatives, just the distilled spec and the codebase.
+That says a lot about the importance of context engineering — curating what the agent sees when it starts coding.
+A spec session produces artifacts; then you start a fresh implementation session with a clean context window: no brainstorming relics, no rejected alternatives, just the distilled spec and the codebase.
 For complex changes this deliberate split paid off clearly.
 For small bug fixes, it felt ceremonial—but even there, a fresh session was better than a bloated one.
 
-It's either lots of waiting or lots of multitasking.
+Agentic coding is either lots of waiting or lots of multitasking.
 I ended up with multiple (up to 6) git worktrees across separate terminal tabs with OpenCode sessions, waiting for a notification to switch to the one that needed my attention (answering an agent question, reviewing a spec or code, etc.)
 
 ## What is Spec-Driven Development?
@@ -62,7 +62,6 @@ I find this useful for both myself and the model because it keeps assumptions an
 ## Spec-kit vs OpenSpec
 
 SDD frameworks give both human and agent a structure without which both can get lost.
-Yet for many tasks they are overkill.
 
 | Dimension | Spec-kit (days 1—5) | OpenSpec (days 5—12) |
 |---|---|---|
@@ -71,13 +70,14 @@ Yet for many tasks they are overkill.
 | Artifacts per change | ~7.5 | ~3 |
 
 The velocity jump is partly misleading — OpenSpec changes were smaller on average.
+Spec-kit handled initial migration and setup, which were more complex; OpenSpec mostly did smaller follow-up changes.
 The real impact was on **feedback loop speed**: under spec-kit, the agent spent multiple sessions generating artifacts before implementation began; under OpenSpec, proposal-to-implementation typically completed within a single session.
 
 Practical notes:
 
 - Both are simple to set up and work OOTB.
 - Spec-kit automatically creates git branches, which is a problem if you use worktrees or want to wait with branch creation until the spec is fully baked.
-- Spec-kit feels heavier. The specify phase sometimes exhausted the context window, causing its compaction. After compaction the agent can lose the thread and jump straight into implementation, skipping the rest of the specification phase. I'm not sure whether this is an OpenCode, Claude, or framework issue. In practice, it helps to monitor context usage and start a fresh session before the window fills up.
+- Spec-kit feels heavier. The specification phase sometimes exhausted the context window, causing its compaction. After compaction the agent can lose the thread and jump straight into implementation, skipping the rest of the specification phase. I'm not sure whether this is an OpenCode, Claude, or framework issue. In practice, it helps to monitor context usage and start a fresh session before the window fills up.
 - Both support a "constitution" file with key assumptions always in play, overlapping with OpenCode's AGENTS.md.
 
 In short: spec-kit produced ~7.5 artifacts averaging 6 files per change; OpenSpec cut that to ~3 artifacts which were also shorter.
