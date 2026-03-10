@@ -16,7 +16,7 @@ export default function QuotePost({ children }: QuotePostProps) {
       {/* Decorative opening quotation mark */}
       <span
         aria-hidden="true"
-        className="absolute -top-4 -left-2 text-7xl font-serif text-brand-200 dark:text-brand-900 select-none leading-none pointer-events-none"
+        className="absolute -top-4 -left-2 text-7xl text-brand-200 dark:text-brand-900 select-none leading-none pointer-events-none"
       >
         &ldquo;
       </span>
@@ -26,7 +26,7 @@ export default function QuotePost({ children }: QuotePostProps) {
       {/* Decorative closing quotation mark */}
       <span
         aria-hidden="true"
-        className="absolute -bottom-6 right-0 text-7xl font-serif text-brand-200 dark:text-brand-900 select-none leading-none pointer-events-none"
+        className="absolute -bottom-6 right-0 text-7xl text-brand-200 dark:text-brand-900 select-none leading-none pointer-events-none"
       >
         &rdquo;
       </span>
