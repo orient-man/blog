@@ -84,7 +84,7 @@ body {
 }
 
 [data-rehype-pretty-code-figure] code {
-  font-family: "JetBrains Mono", Menlo, monospace;
+  font-family: var(--font-ibm-plex-mono), Menlo, monospace;
   counter-reset: line;
 }
 

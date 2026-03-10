@@ -61,7 +61,7 @@ export default function GiscusComments() {
 
   return (
     <section className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800">
-      <h2 className="text-xl font-bold font-serif mb-6">Comments</h2>
+      <h2 className="text-xl font-bold mb-6">Comments</h2>
       <div ref={sentinelRef}>
         {isVisible && (
           <Giscus

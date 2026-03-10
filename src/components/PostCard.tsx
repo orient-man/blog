@@ -90,14 +90,14 @@ export function PostCard({ post }: PostCardProps) {
         <div className="flex-1 min-w-0">
           {format === "quote" && (
             <span
-              className="text-brand-500 dark:text-brand-400 text-2xl font-serif leading-none select-none"
+              className="text-brand-500 dark:text-brand-400 text-2xl leading-none select-none"
               aria-hidden="true"
             >
               &ldquo;
             </span>
           )}
 
-          <h2 className="text-xl font-semibold font-serif mt-1 mb-2">
+          <h2 className="text-xl font-semibold mt-1 mb-2">
             <Link
               href={url}
               className="text-gray-900 dark:text-gray-100 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"

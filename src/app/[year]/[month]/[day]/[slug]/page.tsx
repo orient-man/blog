@@ -129,7 +129,7 @@ export default async function PostPage({
       {/* ── Post header ──────────────────────────────────────────────────── */}
       <header className="mb-8">
         <h1
-          className="text-3xl font-bold font-serif leading-tight mb-3"
+          className="text-3xl font-bold leading-tight mb-3"
           data-pagefind-meta="title"
         >
           {post.title}
