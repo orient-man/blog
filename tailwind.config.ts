@@ -12,9 +12,8 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"],
-        serif: ["var(--font-lora)", "Georgia", "serif"],
-        mono: ["JetBrains Mono", "Menlo", "monospace"],
+        sans: ["var(--font-ibm-plex-mono)", "monospace"],
+        mono: ["var(--font-ibm-plex-mono)", "Menlo", "monospace"],
         pixel: ["var(--font-pixel)", "monospace"],
         terminal: ["var(--font-terminal)", "monospace"],
       },

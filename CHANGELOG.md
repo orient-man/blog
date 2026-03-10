@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 > new user-visible features and content migrations, PATCH for bug fixes,
 > content corrections, and developer tooling changes.
 
+## [1.22.2] - 2026-03-10
+
+### Changed
+
+- Replaced main body and code font with IBM Plex Mono (loaded via `next/font/google`)
+- Removed Lora serif font — body text, post titles, and code blocks all use IBM Plex Mono
+- Pixelify Sans (headings/nav) and VT323 (terminal accent) remain unchanged
+
 ## [1.22.1] - 2026-03-09
 
 ### Fixed

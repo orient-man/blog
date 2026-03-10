@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Lora, Pixelify_Sans, VT323 } from "next/font/google";
+import { IBM_Plex_Mono, Pixelify_Sans, VT323 } from "next/font/google";
 import Link from "next/link";
 import Script from "next/script";
 
@@ -15,11 +15,11 @@ import {
 } from "@/lib/content";
 import { siteConfig } from "@/lib/siteConfig";
 
-const lora = Lora({
+const ibmPlexMono = IBM_Plex_Mono({
   subsets: ["latin", "latin-ext"],
-  weight: ["400", "700"],
+  weight: ["400", "500", "700"],
   style: ["normal", "italic"],
-  variable: "--font-lora",
+  variable: "--font-ibm-plex-mono",
   display: "swap",
 });
 
@@ -89,7 +89,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${lora.variable} ${pixelifySans.variable} ${vt323.variable}`}
+      className={`${ibmPlexMono.variable} ${pixelifySans.variable} ${vt323.variable}`}
       suppressHydrationWarning
     >
       <head />
