@@ -9,6 +9,8 @@ tags:
   - agentic-coding
   - opencode
   - sdd
+  - spec-kit
+  - openspec
   - ai
   - wordpress
   - github-pages
@@ -95,22 +97,21 @@ Spec-kit builds artifacts incrementally across three commands, each typically a 
 |---|---|---|
 | Changes completed | 6 | 29 |
 | Velocity (changes/day) | **1.2** | **4.1** |
-| Artifacts per change | ~7.5 | ~3 |
 
 The velocity jump is partly misleading — OpenSpec changes were smaller on average.
-Spec-kit handled initial migration and setup, which were more complex; OpenSpec mostly did smaller follow-up changes.
+Spec-kit handled the initial migration and setup, which were more complex; OpenSpec mostly did smaller follow-up changes.
 The real impact was on **feedback loop speed**: under spec-kit, the agent spent multiple sessions generating artifacts before implementation began; under OpenSpec, proposal-to-implementation typically completed within a single session.
 
 Practical notes:
 
 - Both are simple to set up and work OOTB.
-- Spec-kit automatically creates git branches, which is a problem if you use worktrees or want to wait with branch creation until the spec is fully baked.
-- Spec-kit *feels* heavier. The specification phase sometimes exhausted the context window, causing its compaction. After compaction the agent can lose the thread and jump straight into implementation, skipping the rest of the specification phase. I'm not sure whether this is an OpenCode, Claude, or framework issue. In practice, it helps to monitor context usage and start a fresh session before the window fills up.
-- Both support a "constitution" file with key assumptions always in play, overlapping with OpenCode's AGENTS.md.
+- Spec-kit automatically creates git branches, which is an obstacle if you use worktrees or want to wait to create branches until the spec is fully baked.
+- Spec-kit *feels* heavier. The specification phase sometimes exceeded the context window, causing it to be compacted. After compaction, the agent can lose the thread and jump straight into implementation, skipping the rest of the specification phase. I'm not sure whether this is an OpenCode, Claude, or framework issue. In practice, it helps to monitor context usage and start a fresh session before the window fills up.
+- Both support a "constitution" file with key assumptions always in play, though it's an overlapping concept with [AGENTS.md](https://agents.md/), which OpenCode supports.
 
-In short: spec-kit produced ~7.5 artifacts averaging 6 files per change; OpenSpec cut that to ~3 artifacts which were also shorter.
+In summary, spec-kit produces more artifacts, requires more steps and sessions (context window!). OpenSpec is much better in this respect.
 **Less ceremony, faster feedback.**
-The `[archive]` step is what makes OpenSpec spec-anchored: completed specs are synced into a living `openspec/specs/` directory that future changes can reference and update.
+The `archive` step is what makes OpenSpec spec-anchored: completed specs are synced into a living `openspec/specs/` directory that future changes can reference and update.
 
 ## Where the agent stumbles
 
@@ -137,7 +138,7 @@ Agentic coding turns out to be less about *prompt engineering* and more about *c
 
 ## Tools used
 
-- [OpenCode](https://opencode.ai/) + Claude Opus 4.6
+- [OpenCode TUI](https://opencode.ai/) + Claude Opus 4.6
 - OpenCode plugins:
   - [opencode-worktree](https://github.com/kdcokenny/opencode-worktree) — wrapper over `git worktree`, essential for running parallel agent sessions.
   - [opencode-notify](https://github.com/kdcokenny/opencode-notify) — native OS notifications when tasks complete or the AI needs input. Makes the multitasking workflow practical.
