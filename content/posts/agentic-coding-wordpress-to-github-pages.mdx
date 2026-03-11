@@ -35,12 +35,27 @@ One caveat: blog migration is a close fit for agentic coding — repetitive stru
 
 Agentic coding is either a lot of waiting or a lot of multitasking. I ended up with multiple (up to 6) git worktrees across separate terminal tabs with OpenCode sessions, waiting for a notification to switch to the one that needed my attention (answering an agent question, giving permission, reviewing a spec or code, etc.)
 
+## The blog that agent built
+
+Those 156 commits weren't all the same kind of work:
+
+| Category | Examples |
+|---|---|
+| Content migration | 40+ WordPress posts, 27 LibraryThing book reviews, LinkedIn articles, Goodreads reading list |
+| UI components | Star ratings, weighted tag cloud, related posts, social sharing, rich excerpts, URL-aware pagination |
+| Infrastructure | GitHub Pages deploy pipeline, Pagefind search, RSS + sitemap, GoatCounter analytics, Giscus comments |
+| Framework upgrade | Next.js 14 → 16, React 18 → 19, async params migration |
+| Developer tooling | ESLint v9, Prettier, CI lint step, import ordering |
+| Visual identity | Retro pixel-art theme, dark mode, custom 404 page, CRT-scanline code blocks, pixel art decorations |
+
+32 distinct features, each formally specified before implementation began. Which leads to the question:
+
 ## What is Spec-Driven Development?
 
 When an agent can generate hundreds of lines of code in seconds, the bottleneck shifts from writing code to knowing *what* to write.
 Specification-Driven Development (SDD) gives the human—agent pair a shared structure: specs define the problem before the agent starts solving it, and both sides can point to the same document when things drift.
 
-[Birgitta Böckeler's article on Martin Fowler's site](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html) describes a useful taxonomy.
+[Birgitta Böckeler's article on martinfowler.com](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html) describes a useful taxonomy.
 **Spec-first** means you write a specification before implementation begins.
 **Spec-anchored** goes further: the specs persist after implementation and get updated by future changes, so they remain a living reference rather than a one-time plan.
 
