@@ -1,6 +1,6 @@
 ---
-title: "Blog Migration from WordPress to GitHub Pages — an Agentic Coding Experiment"
-date: 2026-03-09
+title: "Spec-Driven, Agent-Built: A Blog Migration Story"
+date: 2026-03-11
 author: orientman
 slug: agentic-coding-wordpress-to-github-pages
 wordpressUrl: ""
@@ -31,7 +31,7 @@ Over 12 days, the agent and I had **230 sessions**, exchanged **6,633 messages**
 
 One caveat: blog migration is a close fit for agentic coding — repetitive structure, independent units, a very common tech stack (Next.js / React / Tailwind / MDX), and static output you can quickly visually verify. That 58% clean rate is likely a *ceiling*, not a *baseline* you should expect elsewhere.
 
-**56% of sessions produced no code.** That says a lot about the importance of context engineering — curating what the agent sees when it starts coding. A spec session produces artifacts; then you start a fresh implementation session with a clean context window: no brainstorming relics, no rejected alternatives, just the distilled spec and the codebase. For complex changes, this deliberate split clearly paid off. For small bug fixes, it felt ceremonial—but even there, a fresh session was better than a bloated one.
+**56% of sessions produced no code.** That says a lot about the importance of context engineering — curating what the agent sees when it starts coding. A spec session produces artifacts; then you start a fresh implementation session with a clean context window: no brainstorming relics, no rejected alternatives, just the distilled spec and the codebase. For complex changes, this deliberate split clearly paid off. For small bug fixes, it felt ceremonial — but even there, a fresh session was better than a bloated one.
 
 Agentic coding is either a lot of waiting or a lot of multitasking. I ended up with multiple (up to 6) [git worktrees](https://git-scm.com/docs/git-worktree) across separate terminal tabs with OpenCode sessions, waiting for a notification to switch to the one that needed my attention (answering an agent question, giving permission, reviewing a spec or code, etc.)
 
@@ -109,7 +109,7 @@ OpenSpec:
 
 Spec-kit builds artifacts incrementally across three commands, each typically a separate session; OpenSpec produces all four in a single `propose` step.
 
-| Dimension | Spec-kit (days 1—5) | OpenSpec (days 5—12) |
+| Dimension | Spec-kit (days 1–5) | OpenSpec (days 5–12) |
 |---|---|---|
 | Changes completed | 6 | 29 |
 | Velocity (changes/day) | 1.2 | **4.1** |
@@ -141,7 +141,7 @@ Three failure modes kept recurring:
 The agent cannot tell whether something looks right. The most efficient pattern was to provide a screenshot and iterate on specifics, rather than describing the desired look in words.
 
 **Fixes tend to be partial.**
-The agent would address the visible symptom but miss the root cause, and does not bother to check other related areas. A follow-up nudge ("still broken, see screenshot") was usually enough, but it meant you couldn't trust the first fix without verification.
+The agent would address the visible symptom but miss the root cause, and did not bother to check other related areas. A follow-up nudge ("still broken, see screenshot") was usually enough, but it meant you couldn't trust the first fix without verification.
 
 **The agent has no memory.**
 Yet I keep forgetting that. Every session starts from zero. The agent doesn't remember that it broke the layout last time, that a particular CSS trick didn't work, or that it should run lint before declaring victory. When an issue recurs, or the agent struggles to figure something out, the fix isn't to tell it again — it's to write the lesson down where every future session can see it: AGENTS.md, the project constitution, a spec, or a reusable skill.
@@ -156,5 +156,5 @@ Yet I keep forgetting that. Every session starts from zero. The agent doesn't re
 ## One more thing
 
 Data and some of the insights in this post come from the agent reviewing its own work.
-I pointed it at the session database and git history and asked it to tell me how the human—AI cooperation went.
+I pointed it at the session database and git history and asked it to tell me how the human-AI cooperation went.
 The full self-review is here: [Agentic Coding Analysis: orientman-blog](/page/agentic-coding-analysis/).
