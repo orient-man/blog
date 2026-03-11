@@ -33,7 +33,7 @@ One caveat: blog migration is a close fit for agentic coding — repetitive stru
 
 **56% of sessions produced no code.** That says a lot about the importance of context engineering — curating what the agent sees when it starts coding. A spec session produces artifacts; then you start a fresh implementation session with a clean context window: no brainstorming relics, no rejected alternatives, just the distilled spec and the codebase. For complex changes, this deliberate split clearly paid off. For small bug fixes, it felt ceremonial—but even there, a fresh session was better than a bloated one.
 
-Agentic coding is either a lot of waiting or a lot of multitasking. I ended up with multiple (up to 6) git worktrees across separate terminal tabs with OpenCode sessions, waiting for a notification to switch to the one that needed my attention (answering an agent question, giving permission, reviewing a spec or code, etc.)
+Agentic coding is either a lot of waiting or a lot of multitasking. I ended up with multiple (up to 6) [git worktrees](https://git-scm.com/docs/git-worktree) across separate terminal tabs with OpenCode sessions, waiting for a notification to switch to the one that needed my attention (answering an agent question, giving permission, reviewing a spec or code, etc.)
 
 ## The blog that Agent built
 
@@ -115,7 +115,7 @@ Spec-kit builds artifacts incrementally across three commands, each typically a 
 | Velocity (changes/day) | 1.2 | **4.1** |
 | Tokens per change | **25M** | 9M |
 
-_Numbers from OpenCode's session database and git history._
+_Numbers from OpenCode's session database._
 
 The velocity jump is partly misleading — OpenSpec changes were smaller on average.
 Spec-kit handled the initial migration and setup, which were more complex; OpenSpec mostly did smaller follow-up changes.
