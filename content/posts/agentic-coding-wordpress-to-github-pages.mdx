@@ -26,13 +26,14 @@ I chose to tackle my blog migration rather than a completely new idea, because i
 ## How did it go?
 
 Surprisingly smooth, yet not boring at all. A very different feel than coding on your own.
+
 Over 12 days, the agent and I had **230 sessions**, exchanged **6,633 messages**, produced **156 commits**, migrated **63 posts**, and wrote about **4,012 lines** of TypeScript. Of all tracked changes, **58% needed no human correction at all**.
 
 One caveat: blog migration is a close fit for agentic coding — repetitive structure, independent units, a very common tech stack (Next.js / React / Tailwind / MDX), and static output you can quickly visually verify. That 58% clean rate is likely a *ceiling*, not a *baseline* you should expect elsewhere.
 
 **56% of sessions produced no code.** That says a lot about the importance of context engineering — curating what the agent sees when it starts coding. A spec session produces artifacts; then you start a fresh implementation session with a clean context window: no brainstorming relics, no rejected alternatives, just the distilled spec and the codebase. For complex changes, this deliberate split clearly paid off. For small bug fixes, it felt ceremonial—but even there, a fresh session was better than a bloated one.
 
-Agentic coding is either a lot of waiting or a lot of multitasking. I ended up with multiple (up to 6) git worktrees across separate terminal tabs with OpenCode sessions, waiting for a notification to switch to the one that needed my attention (answering an agent question, reviewing a spec or code, etc.)
+Agentic coding is either a lot of waiting or a lot of multitasking. I ended up with multiple (up to 6) git worktrees across separate terminal tabs with OpenCode sessions, waiting for a notification to switch to the one that needed my attention (answering an agent question, giving permission, reviewing a spec or code, etc.)
 
 ## What is Spec-Driven Development?
 
