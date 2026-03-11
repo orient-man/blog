@@ -135,26 +135,16 @@ The `archive` step is what makes OpenSpec spec-anchored: completed specs are dis
 
 ## Where the agent stumbles
 
-The [analysis page](/page/agentic-coding-analysis/) is the agent's own self-review — it classified every change, identified failure patterns, and graded itself.
-Its self-assessment is mostly accurate, though it over-counts over-engineering: of the four cases it flags, only the favicon saga was genuinely over-engineered.
-The pagination fix actually needed the more complex solution the agent built.
-
-Three failure modes stood out to me as the human in the loop:
+Three failure modes kept recurring:
 
 **Visual judgment is absent.**
-The agent cannot tell whether something looks right.
-Six changes required multiple rounds of "no, the color is wrong" or "that text isn't centered."
-The most efficient pattern was providing a screenshot and iterating on specifics, rather than describing the desired look in words.
+The agent cannot tell whether something looks right. The most efficient pattern was to provide a screenshot and iterate on specifics, rather than describing the desired look in words.
 
 **Fixes tend to be partial.**
-The agent would address the visible symptom but miss the root cause — fixing one blockquote layer when two needed removing, or patching a date format but not the fallback.
-A follow-up nudge ("still broken, see screenshot") was usually enough, but it means you can't trust the first fix without verifying.
+The agent would address the visible symptom but miss the root cause, and does not bother to check other related areas. A follow-up nudge ("still broken, see screenshot") was usually enough, but it meant you couldn't trust the first fix without verification.
 
-**Self-verification isn't automatic.**
-Three times I had to tell the agent to run lint or check the deployed result.
-This improved after I added an explicit lint requirement to AGENTS.md mid-project — the agent reliably follows rules that are written down, but doesn't invent verification steps on its own.
-That's probably the most generalizable lesson: **if you want the agent to check something, put it in the instructions.**
-Agentic coding turns out to be less about *prompt engineering* and more about *context engineering* — shaping what the agent sees matters more than how you phrase what you ask.
+**The agent has no memory.**
+Yet I keep forgetting that. Every session starts from zero. The agent doesn't remember that it broke the layout last time, that a particular CSS trick didn't work, or that it should run lint before declaring victory. When an issue recurs, or the agent struggles to figure something out, the fix isn't to tell it again — it's to write the lesson down where every future session can see it: AGENTS.md, the project constitution, a spec, or a reusable skill.
 
 ## Tools used
 
