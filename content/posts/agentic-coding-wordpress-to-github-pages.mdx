@@ -1,0 +1,164 @@
+---
+title: "Spec-Driven, Agent-Built: A Blog Migration Story"
+date: 2026-03-11
+author: orientman
+slug: agentic-coding-wordpress-to-github-pages
+wordpressUrl: ""
+category: posts-in-english
+tags:
+  - agentic-coding
+  - opencode
+  - sdd
+  - spec-kit
+  - openspec
+  - ai
+  - wordpress
+  - github-pages
+format: standard
+---
+
+I have posts scattered across WordPress, LinkedIn, Facebook, Goodreads, and LibraryThing. I wanted them all in one place under my own jurisdiction — not owned by a social media platform. GitHub Pages is also a platform, but since it's just a repository with a simple pipeline that generates a static site, I can easily host it on my own NAS or elsewhere.
+
+The migration wasn't the real treat. I wanted to fully embrace agentic coding — [OpenCode](https://opencode.ai/) with Claude Opus 4.6 — and test whether Spec-Driven Development actually helps when you're working with an AI agent. I tried two frameworks: [spec-kit](https://github.com/github/spec-kit) and [OpenSpec](https://openspec.dev/).
+
+I chose to tackle my blog migration rather than a completely new idea, because it was something *easy* for me to specify or do myself, given enough time. That let me focus solely on the interactions with the agent and learning the tools.
+
+## How did it go?
+
+Surprisingly smooth, yet not boring at all. A very different feel than coding on your own.
+
+Over 12 days, the agent and I had **230 sessions**, exchanged **6,633 messages**, produced **156 commits**, migrated **63 posts**, and wrote about **4,012 lines** of TypeScript. Of all tracked changes, **58% needed no human correction at all**.
+
+One caveat: blog migration is a close fit for agentic coding — repetitive structure, independent units, a very common tech stack (Next.js / React / Tailwind / MDX), and static output you can quickly visually verify. That 58% clean rate is likely a *ceiling*, not a *baseline* you should expect elsewhere.
+
+**56% of sessions produced no code.** That says a lot about the importance of context engineering — curating what the agent sees when it starts coding. A spec session produces artifacts; then you start a fresh implementation session with a clean context window: no brainstorming relics, no rejected alternatives, just the distilled spec and the codebase. For complex changes, this deliberate split clearly paid off. For small bug fixes, it felt ceremonial — but even there, a fresh session was better than a bloated one.
+
+Agentic coding is either a lot of waiting or a lot of multitasking. I ended up with multiple (up to 6) [git worktrees](https://git-scm.com/docs/git-worktree) across separate terminal tabs with OpenCode sessions, waiting for a notification to switch to the one that needed my attention (answering an agent question, giving permission, reviewing a spec or code, etc.)
+
+## The blog that Agent built
+
+Those 156 commits weren't all the same kind of work:
+
+| Category | Examples |
+|---|---|
+| Content migration | 40+ WordPress posts, 27 LibraryThing book reviews, LinkedIn articles, Goodreads reading list |
+| UI components | Star ratings, weighted tag cloud, related posts, social sharing, rich excerpts, URL-aware pagination |
+| Infrastructure | GitHub Pages deploy pipeline, Pagefind search, RSS + sitemap, GoatCounter analytics, Giscus comments |
+| Framework upgrade | Next.js 14 → 16, React 18 → 19, async params migration |
+| Developer tooling | ESLint v9, Prettier, CI lint step, import ordering |
+| Visual identity | Retro pixel-art theme, dark mode, custom 404 page, CRT-scanline code blocks, pixel art decorations |
+
+35 distinct features, each formally specified before implementation began. Which leads to the question:
+
+## What is Spec-Driven Development?
+
+When an agent can generate hundreds of lines of code in seconds, the bottleneck shifts from writing code to knowing *what* to write.
+Specification-Driven Development (SDD) gives the human—agent pair a shared structure: specs define the problem before the agent starts solving it, and both sides can point to the same document when things drift.
+
+[Birgitta Böckeler's article on martinfowler.com](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html) describes a useful taxonomy.
+**Spec-first** means you write a specification before implementation begins.
+**Spec-anchored** goes further: the specs persist after implementation and get updated by future changes, so they remain a living reference rather than a one-time plan.
+
+Both spec-kit and OpenSpec are spec-first.
+OpenSpec also tries to be spec-anchored — after implementation, it retains short feature specifications that can be updated by future changes.
+I find this useful for both myself and the model because it keeps assumptions and requirements that are not deducible from code alone.
+
+## Spec-kit vs OpenSpec
+
+SDD frameworks give both human and agent a structure without which both can get lost.
+Each framework generates a different set of artifacts per change:
+
+**Spec-kit** (~7–8 files per change):
+
+| Artifact | Purpose |
+|---|---|
+| `spec.md` + `checklists/requirements.md` | Requirements and quality gate |
+| `research.md` | Investigation findings |
+| `plan.md` | Implementation plan |
+| `data-model.md` | Entity definitions |
+| `quickstart.md` | Developer setup |
+| `contracts/` | Component APIs, routes |
+| `tasks.md` | Task breakdown |
+
+**OpenSpec** (~4 files per change):
+
+| Artifact | Purpose |
+|---|---|
+| `proposal.md` | Motivation, scope, impact |
+| `specs/*/spec.md` | Formal requirements |
+| `design.md` | Architecture decisions |
+| `tasks.md` | Task breakdown |
+
+Their workflows differ in how many steps it takes to get from idea to code:
+
+```
+Spec-kit:
+
+  specify ──▶ plan ──▶ tasks ──▶ implement
+  (1 cmd)    (1 cmd)  (1 cmd)
+  ── 3 commands, often 3 separate sessions ──
+
+
+OpenSpec:
+
+  [explore] ──▶ propose ──▶ apply ──▶ [archive]
+   optional      all 4       code      sync specs to
+   thinking      artifacts   + verify  living reference
+                 at once
+```
+
+Spec-kit builds artifacts incrementally across three commands, each typically a separate session; OpenSpec produces all four in a single `propose` step.
+
+| Dimension | Spec-kit (days 1–5) | OpenSpec (days 5–12) |
+|---|---|---|
+| Changes completed | 6 | 29 |
+| Velocity (changes/day) | 1.2 | **4.1** |
+| Tokens per change | **25M** | 9M |
+
+_Numbers from OpenCode's session database._
+
+The velocity jump is partly misleading — OpenSpec changes were smaller on average.
+Spec-kit handled the initial migration and setup, which were more complex; OpenSpec mostly did smaller follow-up changes.
+The real impact was on **feedback loop speed**: under spec-kit, the agent spent multiple sessions generating artifacts before implementation began; under OpenSpec, proposal-to-implementation typically completed within a single session.
+
+Practical notes:
+
+- Both are simple to set up and work OOTB.
+- Spec-kit automatically creates git branches, which is handy but may be an obstacle if you use worktrees or want to wait until the spec is fully baked.
+- Spec-kit *feels* heavier. The specification phase sometimes exceeded the context window, causing it to be compacted. After compaction, the agent can lose the thread and jump straight into implementation, skipping the rest of the specification phase. I'm not sure whether this is an OpenCode, Claude, or framework issue. In practice, it helps to monitor context usage and start a fresh session before the window fills up.
+- Both support a "constitution" file with key assumptions always in play, though it's an overlapping concept with [AGENTS.md](https://agents.md/), which OpenCode supports.
+
+In summary, spec-kit produces more artifacts, requires more steps and sessions (context window!). OpenSpec is much better in this respect.
+**Less ceremony, faster feedback.**
+In both frameworks, the artifacts are scaffolding — they guide the agent during development.
+The `archive` step is what makes OpenSpec spec-anchored: completed specs are distilled into a living `openspec/specs/` directory that future changes can reference and update.
+
+## Where the agent stumbles
+
+Three failure modes kept recurring:
+
+**Visual judgment is absent.**
+The agent cannot tell whether something looks right. The most efficient pattern was to provide a screenshot and iterate on specifics, rather than describing the desired look in words.
+
+**Fixes tend to be partial.**
+The agent would address the visible symptom but miss the root cause, and did not bother to check other related areas. A follow-up nudge ("still broken, see screenshot") was usually enough, but it meant you couldn't trust the first fix without verification.
+
+**The agent has no memory.**
+Yet I keep forgetting that. Every session starts from zero. The agent doesn't remember that it broke the layout last time, that a particular CSS trick didn't work, or that it should run lint before declaring victory. When an issue recurs, or the agent struggles to figure something out, the fix isn't to tell it again — it's to write the lesson down where every future session can see it: AGENTS.md, the project constitution, a spec, or a reusable skill.
+
+## Tools used
+
+- [OpenCode TUI](https://opencode.ai/) + Claude Opus 4.6
+- OpenCode plugins:
+  - [opencode-worktree](https://github.com/kdcokenny/opencode-worktree) — wrapper over `git worktree`, essential for running parallel agent sessions.
+  - [opencode-notify](https://github.com/kdcokenny/opencode-notify) — native OS notifications when tasks complete or the AI needs input. Makes the multitasking workflow practical.
+
+## One more thing
+
+Data and some of the insights in this post come from the agent reviewing its own work.
+I pointed it at the session database and git history and asked it to tell me how the human-AI cooperation went.
+The full self-review is here: [Agentic Coding Analysis: orientman-blog](/page/agentic-coding-analysis/).
+
+---
+
+Congratulations on making it to the end of this long post! And thank you — human readers are becoming a scarce resource as AI-generated content steals our attention.
