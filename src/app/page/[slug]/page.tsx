@@ -2,7 +2,9 @@ import { evaluate } from "@mdx-js/mdx";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import * as runtime from "react/jsx-runtime";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrettyCode from "rehype-pretty-code";
+import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 
 import { getAllPages, getPageBySlug } from "@/lib/content";
@@ -58,6 +60,8 @@ export default async function StaticPage({
       format: "md",
       remarkPlugins: [remarkGfm],
       rehypePlugins: [
+        rehypeSlug,
+        [rehypeAutolinkHeadings, { behavior: "wrap" }],
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         [rehypePrettyCode as any, prettyCodeOptions],
         rehypeCopyButton,

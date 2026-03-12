@@ -56,6 +56,28 @@ body {
 }
 
 /* ── Prose overrides (Tailwind Typography) ───────────────────────── */
+
+/* ── Heading anchor links (rehype-autolink-headings, wrap mode) ──── */
+.prose :where(h2, h3, h4, h5, h6)[id] {
+  scroll-margin-top: 5rem;
+}
+
+.prose :where(h2, h3, h4, h5, h6) > a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.prose :where(h2, h3, h4, h5, h6) > a::after {
+  content: " #";
+  opacity: 0;
+  color: var(--muted);
+  transition: opacity 0.15s;
+}
+
+.prose :where(h2, h3, h4, h5, h6) > a:hover::after {
+  opacity: 1;
+}
+
 .prose {
   --tw-prose-body: var(--fg);
   --tw-prose-headings: var(--fg);
