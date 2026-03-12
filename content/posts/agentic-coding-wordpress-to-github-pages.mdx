@@ -48,7 +48,7 @@ Those 156 commits weren't all the same kind of work:
 | Developer tooling | ESLint v9, Prettier, CI lint step, import ordering |
 | Visual identity | Retro pixel-art theme, dark mode, custom 404 page, CRT-scanline code blocks, pixel art decorations |
 
-35 distinct features, each formally specified before implementation began. Which leads to the question:
+35 distinct features — see [changelog](https://github.com/orient-man/blog/blob/main/CHANGELOG.md) for details — each formally specified before implementation began. Which leads to the question:
 
 ## What is Spec-Driven Development?
 
@@ -132,6 +132,8 @@ In summary, spec-kit produces more artifacts, requires more steps and sessions (
 **Less ceremony, faster feedback.**
 In both frameworks, the artifacts are scaffolding — they guide the agent during development.
 The `archive` step is what makes OpenSpec spec-anchored: completed specs are distilled into a living `openspec/specs/` directory that future changes can reference and update.
+
+For a concrete comparison, see a [spec-kit change](https://github.com/orient-man/blog/tree/main/specs/002-gh-pages-deploy) (7 files for a deploy pipeline) and an [OpenSpec change](https://github.com/orient-man/blog/tree/main/openspec/changes/archive/2026-03-07-add-giscus-comments) (4 files for Giscus comments) — plus the [living spec](https://github.com/orient-man/blog/blob/main/openspec/specs/live-comments/spec.md) that survived archiving.
 
 ## Where the agent stumbles
 
