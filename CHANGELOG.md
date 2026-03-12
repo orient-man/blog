@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 > new user-visible features and content migrations, PATCH for bug fixes,
 > content corrections, and developer tooling changes.
 
+## [1.23.0] - 2026-03-12
+
+### Added
+
+- Automatic anchor links on h2–h6 headings in blog posts and static pages — each heading gets a slug-based `id` and a clickable `<a>` wrapper for direct linking
+- Hover `#` indicator appears to the right of headings on mouseover (CSS-only, `::after` pseudo-element)
+- `scroll-margin-top` on anchored headings so linked headings clear the top of the viewport
+
 ## [1.22.2] - 2026-03-10
 
 ### Changed

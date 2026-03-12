@@ -1,5 +1,7 @@
 import createMDX from "@next/mdx";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrettyCode from "rehype-pretty-code";
+import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import { visit } from "unist-util-visit";
 
@@ -39,7 +41,12 @@ const prettyCodeOptions = {
 const withMDX = createMDX({
   options: {
     remarkPlugins: [remarkGfm],
-    rehypePlugins: [[rehypePrettyCode, prettyCodeOptions], rehypeCopyButton],
+    rehypePlugins: [
+      rehypeSlug,
+      [rehypeAutolinkHeadings, { behavior: "wrap" }],
+      [rehypePrettyCode, prettyCodeOptions],
+      rehypeCopyButton,
+    ],
   },
 });
 
