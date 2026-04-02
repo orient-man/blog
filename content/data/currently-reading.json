@@ -1,16 +1,22 @@
 {
   "books": [
     {
+      "title": "John Coltrane: Opowieść o brzmieniu",
+      "author": "Ben Ratliff",
+      "coverUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1759839631l/242492498._SX98_.jpg",
+      "url": "https://www.goodreads.com/review/show/8385018017"
+    },
+    {
+      "title": "Alternatywa dla Niemiec czy zagrożenie dla świata? Kulisy marszu AfD po władzę",
+      "author": "Łukasz Grajewski",
+      "coverUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1765212498l/244948187._SX98_.jpg",
+      "url": "https://www.goodreads.com/review/show/8453597389"
+    },
+    {
       "title": "Rzym. Wędrówki z historią w tle",
       "author": "Bożena Fabiani",
       "coverUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1542744587l/42883001._SX98_.jpg",
       "url": "https://www.goodreads.com/review/show/8412813704"
-    },
-    {
-      "title": "Kolos z Maroussi",
-      "author": "Henry Miller",
-      "coverUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1265050704l/7674961._SX98_.jpg",
-      "url": "https://www.goodreads.com/review/show/8269253994"
     },
     {
       "title": "Jedna prosta rzecz. Nowe spojrzenie na nauki jogi i ich wpływ na twoje życie",
@@ -74,5 +80,5 @@
     }
   ],
   "shelfUrl": "https://www.goodreads.com/review/list/13930842?shelf=currently-reading",
-  "fetchedAt": "2026-03-11T17:24:36.862Z"
+  "fetchedAt": "2026-04-02T17:20:48.043Z"
 }
