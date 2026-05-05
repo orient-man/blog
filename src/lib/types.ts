@@ -52,6 +52,7 @@ export interface Post {
   wordpressUrl: string;
   externalLinks?: { label: string; url: string }[];
   coverImage?: string;
+  coverSize?: "full";
   rating?: number;
   comments?: Comment[];
 

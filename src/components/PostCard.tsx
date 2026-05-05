@@ -19,6 +19,7 @@ interface PostCardProps {
     | "wordpressUrl"
     | "rating"
     | "coverImage"
+    | "coverSize"
   >;
 }
 
@@ -52,6 +53,7 @@ export function PostCard({ post }: PostCardProps) {
     format,
     rating,
     coverImage,
+    coverSize,
   } = post;
   const url = postUrlPath(date, slug);
   const visibleTags = tags.slice(0, MAX_TAGS);
@@ -171,7 +173,7 @@ export function PostCard({ post }: PostCardProps) {
               src={coverImage}
               alt=""
               loading="lazy"
-              className="w-12 sm:w-16 md:w-20 rounded object-cover"
+              className={`${coverSize === "full" ? "w-20 sm:w-28 md:w-36" : "w-12 sm:w-16 md:w-20"} rounded object-cover`}
             />
           </Link>
         )}

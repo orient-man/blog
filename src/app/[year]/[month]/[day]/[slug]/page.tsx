@@ -208,7 +208,7 @@ export default async function PostPage({
             src={post.coverImage}
             alt={post.title}
             loading="lazy"
-            className="max-w-xs rounded shadow-sm"
+            className={`${post.coverSize === "full" ? "max-w-2xl" : "max-w-sm"} w-full rounded shadow-sm`}
           />
         </figure>
       )}

@@ -87,6 +87,7 @@ function loadPosts(): Post[] {
         ? (data.externalLinks as { label: string; url: string }[])
         : undefined,
       coverImage: data.coverImage ? String(data.coverImage) : undefined,
+      coverSize: data.coverSize === "full" ? "full" : undefined,
       rating: data.rating != null ? Number(data.rating) : undefined,
       comments: Array.isArray(data.comments)
         ? data.comments.map((c: Record<string, unknown>) => ({
