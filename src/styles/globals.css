@@ -148,6 +148,20 @@ code[data-theme*=" "] span {
   font-variant-numeric: tabular-nums;
 }
 
+/* ASCII-art diagrams: no line numbers, tight line-height, box-drawing font */
+[data-rehype-pretty-code-figure] code[data-language="ascii-art"] [data-line]::before {
+  display: none;
+}
+
+[data-rehype-pretty-code-figure] code[data-language="ascii-art"] {
+  font-family: "JetBrains Mono", "Fira Code", Menlo, "DejaVu Sans Mono", monospace;
+  line-height: 1.2;
+}
+
+[data-rehype-pretty-code-figure] code[data-language="ascii-art"] [data-line] {
+  padding-left: 0;
+}
+
 /* Copy button */
 [data-rehype-pretty-code-figure] {
   position: relative;
