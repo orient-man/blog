@@ -1,0 +1,159 @@
+---
+title: "Agentic Frameworks vs. Agentic Coding Tools"
+date: 2026-05-05
+author: orientman
+slug: agentic-frameworks-vs-agentic-coding-tools
+wordpressUrl: ""
+category: posts-in-english
+tags:
+  - agentic-coding
+  - ai
+  - software-engineering
+format: standard
+coverImage: /images/posts/agentic-frameworks-vs-agentic-coding-tools/cover.png
+coverSize: full
+---
+
+[Last time](/2026/04/02/you-dont-need-an-app-for-that/), I concluded that "a universal app is right around the corner" and that traditional software is losing ground to AI agents. The great irony is that the best runtime for these agents is currently agentic coding tools, whose main goal is to write more software! But there is more to that: what half a year ago seemed like a perfect fit for agentic frameworks—namely, Google ADK and LangGraph—can now be addressed with agentic coding tools.
+
+It's amazing to see how quickly these tools—Claude Code, Copilot, and OpenCode—are evolving. They now handle tasks that once required custom solutions, such as orchestrating agents, creating sub-agents, and managing complex workflows. They bring so much value by managing context, offering extensibility with tools and plugins, and supporting self-learning patterns—all with minimal engineering effort. Finally, they are offered alongside advanced models such as Claude Opus 4.6.
+
+Let's look closely at these two approaches.
+
+## Two Paradigms for Building AI Agents
+
+**Agent Frameworks (Code-First)** — the traditional approach. Engineers write Python code that imports a framework such as [Google ADK](https://adk.dev/), [LangGraph](https://docs.langchain.com/oss/python/langgraph/overview), or another framework of choice. They define agents, tools, and orchestration logic in code, then deploy the result as a service. The LLM is a *component* inside a software system — called via API, constrained by typed interfaces, wrapped in error handling.
+
+**Agentic Coding Platforms (Prompt-First)** — the emerging approach. Instead of writing application code, teams author agent definitions, skills, and domain knowledge as Markdown files. A coding agent — GitHub Copilot, [OpenCode](https://opencode.ai/), Claude Code — interprets these definitions at runtime, using MCP (Model Context Protocol) servers, CLI tools, or plain API calls for external integrations. There is no application code to compile, test, or deploy.
+
+The difference is the runtime. In the framework approach, it's your deterministic Python code — you control the execution path, the error handling, and the state management. In agentic coding, *the runtime is the LLM itself*. The Markdown files are instructions, not programs. The LLM decides how to interpret them, which tools to call, and how to recover from errors.
+
+This isn't just a tooling preference. It changes who can build agents, how fast they iterate, what you can test, and where the system runs.
+
+To illustrate the similarities and differences, here are two cases from [Allegro](https://about.allegro.eu/) FinTech.
+
+## Case A: The KYC Agent
+
+We have built an agent that automates bank statement verification for KYC (Know Your Customer) of sales partners. This is a well-defined, high-stakes workflow: ingest bank documents, extract structured data, run it through a series of verification checks, and produce a compliance decision. Wrong answers have regulatory consequences.
+
+We built it with Google ADK. The architecture is a pipeline of six LLM agents, each handling a distinct verification step — document parsing, data extraction, cross-referencing, anomaly detection, scoring, and decision synthesis. A few thousand lines of Python, deployed as a containerized microservice on Azure Kubernetes Service (AKS).
+
+Pipeline mixes deterministic (e.g., OCR) and non-deterministic steps. Includes LLM-as-a-judge with fallbacks, retries, and explicit error handling. Human-in-the-loop for uncertain cases.
+
+Most importantly, we've tested it rigorously. We ran the agent against a full year of historical KYC decisions — thousands of real bank statements with known outcomes — and produced a confusion matrix with hard accuracy and F1 metrics. We can *prove* this agent makes correct decisions at a measurable rate. That matters when regulators ask questions.
+
+It also lets us optimize costs by using cheaper models for less demanding tasks without losing accuracy.
+
+The trade-off? It took weeks, not hours. Setting up the ADK project, writing the pipeline logic, building tool interfaces, configuring the k8s deployment, writing tests, and tuning prompts against the evaluation dataset — all of this is real engineering work that requires software engineers with Python and cloud infrastructure skills.
+
+The KYC agent is now a production microservice with SLAs, health checks, structured logging, and horizontal autoscaling. It's exactly what you want for an automated, unsupervised compliance workflow. But it made us wonder: does every AI agent need this level of engineering?
+
+## Case B: Copilot-powered SQL Assistant for Risk Analysts
+
+Meanwhile, a completely different team at Allegro Pay was solving a different problem with a different approach — and the contrast is striking.
+
+Their problem: Risk analysts spend a significant portion of their time writing SQL against Snowflake, querying across multiple data domains: onboarding, credit reports, risk scores, loan performance, limit changes, and national debt registry data. The work is skilled but repetitive — lots of cross-referencing, trend analysis, cohort breakdowns, and vintage performance tracking.
+
+Their solution: a tool that helps analysts query and analyze credit risk data, built entirely inside GitHub Copilot CLI with Claude Opus 4.6 as the model. Zero lines of application code. The entire system — about 20,000 lines — is Markdown.
+
+The architecture: 4 agents, the main one defines a 4-phase workflow with 3 sub-agents for exploration, general analysis, and self-review. 10 skills load dynamically depending on the analysis type. Domain routing ensures the agent queries the correct tables.
+
+What makes it really interesting is the learning loop — the system improves itself after every analysis:
+
+```ascii-art
+              ┌──────────────┐
+              │  Analyst Ask │
+              └──────┬───────┘
+                     │
+                     ▼
+       ┌───────────────────────────┐
+       │   Interactive Analysis    │◀─────────┐
+       │   4 gated phases (HITL)   │          │
+       │   analyst confirms each   │          │
+       └──────┬────────────┬───────┘          │
+              │            │                  │
+              ▼            ▼                  │
+         ┌────────┐   ┌──────────┐            │
+         │ REPORT │   │  SELF-   │            │
+         │ added  │   │  REVIEW  │            │
+         │ to     │   │ 13 qual. │            │
+         │ memory │   │ dims     │            │
+         └───┬────┘   └────┬─────┘            │
+             │             │                  │
+             │        ┌────▼─────┐            │
+             │        │ PROPOSALS│            │
+             │        │ routing, │            │
+             │        │ skills,  │            │
+             │        │ patterns │            │
+             │        └────┬─────┘            │
+             │             │                  │
+             │        ┌────▼─────┐            │
+             │        │ ANALYST  │            │
+             │        │ approve/ │            │
+             │        │ reject   │            │
+             │        └────┬─────┘            │
+             │             │                  │
+             ▼             ▼                  │
+       ┌───────────────────────────┐          │
+       │     KNOWLEDGE BASE        │          │
+       │  routing · skills ·       │──────────┘
+       │  antipatterns · golden    │  feeds next
+       │  examples · past analyses │  analysis
+       └───────────────────────────┘
+```
+
+Every analysis produces two outputs. The report goes to persistent memory (it is committed to the Git repository) — future analyses cross-reference it automatically. A Self-Review agent evaluates the work across 13 quality dimensions and creates improvement proposals when it finds issues. The user is always the gatekeeper — approving or rejecting each proposal. Approved proposals update routing docs, skills, and antipattern lists. Rejected proposals calibrate what the agent stops proposing.
+
+This resembles Andrej Karpathy's [LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) pattern — building systems where every interaction enriches a knowledge base that makes the next interaction better.
+
+Two very different approaches. Let me put them side by side:
+
+## Head-to-Head Comparison
+
+|                          | **KYC Agent**                                        | **Risk SQL Assistant**                                  |
+| ------------------------ | ---------------------------------------------------- | ------------------------------------------------------- |
+| **Paradigm**             | Agent Framework (Google ADK)                         | Agentic Coding (Copilot CLI or OpenCode)                |
+| **Application code**     | Python                                               | **0 lines** — but ~20K lines of Markdown              |
+| **Architecture**         | 6 LLM agents in a pipeline                           | 4 agents, 10 skills, 17 routing files                   |
+| **Deployment**           | Azure Kubernetes Service (ArgoCD, CI/CD)             | **Local only** (analyst workstation)                    |
+| **Testing / Evaluation** | **Strict**: unit tests + eval against 1 year of data | Loose: LLM self-review (13 dimensions), anti-pattern DB |
+| **Determinism**          | **High** — fixed pipeline, typed tools             | Low — LLM behavior varies across runs                 |
+| **Audit trail**          | Structured event logs (Langfuse)                     | Conversation memory (Markdown files)                    |
+| **Maturity**             | Production microservice                              | Internal productivity tool                              |
+
+At a high level, the architectures are surprisingly similar — both are orchestrated sub-agents working toward a solution. But three dimensions deserve attention:
+
+**Testability.** This is where the gap is biggest. The KYC agent ran against a full year of historical decisions — we can produce hard numbers that prove correctness. The Risk SQL Assistant? An LLM evaluates its own work. It's adaptive and self-improving, but you can't put a number on it. That's the difference between "provably correct" and "probably correct."
+
+**Flexibility.** Adding a new agent to the KYC pipeline means writing a Python class, registering it in the orchestration code, writing tests, and deploying. Adding a new capability to the Risk Assistant means editing instructions in plain text. Domain knowledge is a first-class citizen — skills, routing files, and memory are all structured Markdown that non-engineers can maintain directly. Risk experts went from idea to working tool in hours. KYC agent took weeks.
+
+**Cost model.** The framework approach carries infrastructure costs: a Kubernetes cluster, message queues, cloud storage, per-request LLM API charges — all scaling linearly with traffic. The agentic coding approach carries per-seat licensing costs: a Copilot subscription for each analyst, with LLM costs bundled into the license. Development costs are lower (knowledge engineering hours vs. software engineering hours), but operational costs scale with people, not traffic.
+
+## The Decision Framework
+
+After building both, we converged on a simple first question for every new AI initiative: *can this be solved with Copilot or OpenCode?* If someone has an idea, we ask them to try it there first. If it works — ship it as a productivity tool. Don't build a custom agent.
+
+That filter alone can save weeks of engineering effort on problems that don't need it. Here are some criteria to help you decide:
+
+**Choose an agent framework when:**
+
+* The solution must run as a **production service** — automated, unsupervised, handling requests without a human in the loop
+* You need **deterministic behavior**, SLAs, or regulatory audit trails
+* The workflow is **well-defined and repeatable** (e.g., document processing pipelines, compliance checks)
+* **Scale** is a requirement — concurrent requests, horizontal scaling, predictable cost per transaction
+
+**Choose agentic coding when:**
+
+* You are building a **PoC, exploration tool, or productivity aid**
+* **Domain experts** (not engineers) need to define and iterate on agent behavior
+* **Speed to first value** matters more than production hardening
+* The tool is **standalone** — an expert uses it interactively, no downstream systems depend on its output
+* The value is in **complex reasoning over domain knowledge**, not deterministic automation
+
+## Where This Is Going
+
+The boundary between these approaches is moving — and it's moving in one direction. Six months ago, the Risk SQL Assistant would have been attempted in a framework. Today it's 20K lines of Markdown with zero deploy pipeline. What will shift next?
+
+The convergence signals are already here. Both paradigms can share the same MCP servers for tool integration. You can add [OpenTelemetry](https://github.com/open-telemetry/semantic-conventions-genai) to [Copilot CLI](https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-command-reference) or OpenCode (via [plugin](https://github.com/DEVtheOPS/opencode-plugin-otel)) and track token usage, traces, cost, and latency in Langfuse — the same observability stack framework solutions use. Frameworks are getting more flexible: prompt versioning, hot-reloadable agent definitions. Coding agents are getting more deployable: sandboxed, containerized, shippable to Kubernetes.
+
+The decision framework above is accurate *today*. But the "choose agentic coding" column is growing. Next time someone on your team proposes building a custom agent service, ask them: have you tried it in Copilot first?
