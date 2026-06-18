@@ -1,0 +1,168 @@
+---
+title: "LeadDev LDX3 London 2026: Conference Report"
+date: 2026-06-18
+author: orientman
+slug: leaddev-ldx3-london-2026-conference-report
+wordpressUrl: ""
+category: posts-in-english
+tags:
+  - ai
+  - agentic-coding
+  - conferences
+  - harness-engineering
+  - platform-engineering
+  - context-engineering
+  - software-engineering
+format: standard
+coverImage: /images/posts/leaddev-ldx3-london-2026-conference-report/cover.jpg
+coverSize: full
+---
+
+- **Dates:** 2–3 June 2026
+- **Venue:** InterContinental London – The O2
+- **Full agenda:** [https://leaddev.com/leaddev-london/agenda/](https://leaddev.com/leaddev-london/agenda/)
+
+## Conferences are becoming a thing again
+
+In recent years, it has become harder for me to find anything genuinely interesting in them. Too often, everything felt like recycling old ideas or rediscovering things we had already learned.
+
+But the industry has started moving quickly again. That acceleration is forcing people to think faster, experiment more, and question old assumptions. Most new ideas will probably fail, but that is inspiring nonetheless.
+
+At LeadDev LDX3 London 2026, **AI ate around 80–90% of the bandwidth,** primarily focused on agentic coding.
+
+## The recurring themes
+
+The themes recurred across talks; the takes are mine.
+
+### The bottleneck moved — or did it?
+
+As [Birgitta Böckeler](https://leaddev.com/contributor/birgitta-boeckeler/) pointed out, writing code was never the main obstacle. Evolving it was. And it still is.
+
+AI's success in greenfield projects can be misleading. It may look as if the bottleneck has disappeared, but it has mostly relocated.
+
+The most pressing bottleneck now is this: **How do we verify generated code?**
+
+That question came up repeatedly, especially during the panel discussion on AI-generated code. If agents can produce more code faster, then verification, maintainability, and long-term evolution become even more important.
+
+### From prompt engineering to context engineering to harness engineering
+
+Prompt engineering is no longer enough. Context engineering is only partially solved. And now, harness engineering is emerging as a new craft.
+
+By "harness engineering," I mean everything around LLMs: coding agents, the setup, feedback loops, guardrails, verification techniques, supporting tools, and the processes that make AI-generated work useful rather than drudgery (to borrow the title of the panel I keep coming back to).
+
+It sometimes feels like black magic because the results are hard to verify. But several concrete techniques came up repeatedly:
+
+- Unit tests are problematic. Agents can cheat, and they tend to write low-quality tests. **They optimize for green, not for truth.**
+- Higher-level tests aligned with actual requirements seem to work better.
+- Mutation testing, as a way of verifying test-suite quality, is becoming increasingly relevant.
+- `DOGFOOD.md`-style files can guide agents through ad hoc verification steps.
+- The new practice is to require agents to generate and execute smoke test scripts that prove the implementation actually fulfills the specification.
+- Agents should also gather and report all verification evidence — videos, screenshots, logs — for human review.
+- Static code analysis, linters, and every other possible "sensor" should be connected to steer the agent.
+- Small, self-sufficient, deployable commits grouped into reasonable-sized pull requests. The &lt;500 LoC rule emerged as a practical boundary.
+- Risk-profiling PRs and auto-triaging what needs human attention look like good ideas to follow.
+
+The ultimate goal is to build the best feedback loop for an agent, transfer as much human knowledge and intent as possible to it, and apply human judgment only when necessary.
+
+### Code is free as… a puppy
+
+This line comes from [Randy Shoup](https://leaddev.com/contributor/randy-shoup/). More code is a liability, not an asset. AI makes it easier to generate code, but that does not mean we should generate more of it. More code means more maintenance, more surface area, more potential bugs, and more future complexity.
+
+The temptation will be to build useless new features simply because they are now easy to create. We should resist that.
+
+A better use of AI may be cleanup:
+
+- remove dead code,
+- simplify systems,
+- improve quality,
+- run large-scale refactors,
+- reduce accidental complexity.
+
+Focusing on quality also helps build a better AI harness. The cleaner the system, the easier it is to guide, verify, and evolve with agents.
+
+### AI adoption reality check
+
+The conference was full of AI, but beyond the initial buzzwords, people spoke honestly about the challenges.
+
+**Expect 2x productivity, not 10x.** That is still huge. But it is not magic.
+
+Because everything is fluid and evolving, you need to look under the hood. The abstractions are not ready yet. You need to understand what is actually happening: learn how LLMs work and how coding agents are implemented, and study existing AI solutions. People and teams with previous AI or ML product experience are often better at adopting AI coding tools. They are more comfortable with the fact that these systems are probabilistic, context-sensitive, and sometimes unreliable.
+
+The other successful group consists of senior engineers, specifically those who have stayed with the organization longer. They understand the context and recognize that managing AI challenges is not very different from mentoring new team members.
+
+Both groups should help others by sharing their harness setups and by teaching one-to-one.
+
+Fully autonomous agents generating 100% of code are the future, and already exist in some places — but you probably don't meet the requirements yet. _The future is not evenly distributed._
+
+### The classics matter more, not less
+
+My final observation is simple: **classic engineering skills matter more in the AI age, not less.**
+
+Platform engineering matters more, too. Without paved roads and guardrails, autonomous agents are a recipe for disaster. The platform's new job is not only to serve developers but also to serve AI agents as first-class users.
+
+The better your platform, the safer and more productive AI agents can become.
+
+The engineering fundamentals are not obsolete. We need them more than ever.
+
+## My top 5 picks
+
+### 1. The Big Debate: How will we deal with the new drudgery of AI-generated code?
+
+- Panel: [Lawrence Jones](https://leaddev.com/contributor/lawrence-jones/) (incident.io) · [Maude Lemaire](https://leaddev.com/contributor/maude-lemaire/) (Cursor) · [Randy Shoup](https://leaddev.com/contributor/randy-shoup/) (Thrive Market) · [Birgitta Böckeler](https://leaddev.com/contributor/birgitta-boeckeler/) (Thoughtworks)
+- Score: ★★★★★
+
+The panel was the best part of the conference.
+
+[![The Big Debate panel on the LDX3 Solutions Stage](/images/posts/leaddev-ldx3-london-2026-conference-report/the-big-debate.jpg)](/images/posts/leaddev-ldx3-london-2026-conference-report/the-big-debate.jpg)
+
+It was packed with insights and thought-provoking ideas, especially on the verification problem: how to handle the flood of generated code, how to assess quality, and how to determine where human review remains essential. This session shaped many of the notes above.
+
+### 2. Planning next moves: Improving performance when half your stack is someone else's problem
+
+- Speaker: [Maude Lemaire](https://leaddev.com/contributor/maude-lemaire/) (Cursor)
+- Score: ★★★★★
+- [Video](https://leaddev.com/technical-direction/planning-next-moves-improving-performance-when-half-your-stack-is-someone-elses-problem)
+
+Very good talk on improving coding agents' uptime and the reliability of AI solutions. The core topic is especially relevant now that more teams depend on AI tooling and third-party systems outside their direct control. When half your stack is someone else's problem, reliability becomes a product and engineering challenge at the same time.
+
+This talk connected well with the panel, particularly Maude Lemaire's (to quote, "paranoid") approach to making agent-driven work more dependable.
+
+### 3. Platform engineering for developers, architects & the rest of us (AI agents)
+
+[!["This is fine": AI increases the demand for platforms, from Daniel Bryant's talk](/images/posts/leaddev-ldx3-london-2026-conference-report/platform-engineering.jpg)](/images/posts/leaddev-ldx3-london-2026-conference-report/platform-engineering.jpg)
+
+- Speaker: [Daniel Bryant](https://leaddev.com/contributor/daniel-bryant/) (Syntasso)
+- Score: ★★★★½
+- [Video](https://leaddev.com/culture/platform-engineering-for-developers-architects-the-rest-of-us-ai-agents)
+
+This talk helped clarify my thinking on the platform role. If you are looking for clear definitions and focused points amid the many things a platform can do, this is a good place to start.
+
+The speaker's view on AI's impact is also very much in line with our team's observations and guesses. I caught myself wondering whether we still need a platform layer in the age of AI. The talk convinced me that we do — more than ever.
+
+### 4. Accelerating sustainably with AI
+
+[![Lawrence Jones's "prompting archetypes" slide: the Conductor, the Interrogator, and the Operator](/images/posts/leaddev-ldx3-london-2026-conference-report/prompting-archetypes.jpg)](/images/posts/leaddev-ldx3-london-2026-conference-report/prompting-archetypes.jpg)
+
+- Speaker: [Lawrence Jones](https://leaddev.com/contributor/lawrence-jones/) (incident.io)
+- Score: ★★★★½
+- [Video](https://leaddev.com/ai/accelerating-sustainably-with-ai)
+
+A well-documented story of AI adoption. For any company facing adoption challenges (including [Allegro](https://about.allegro.eu/)), it's a useful point of reference. This talk comes as the "reality check" I mentioned in the summary above.
+
+One framing stuck with me — Lawrence's prompting "archetypes": the Conductor, the Interrogator, and the Operator. Which one are you? I'm an Interrogator — the "bad cop" who makes the agent verify its output before moving on.
+
+### 5. Game time: A playbook to (unsuccessfully) 10x in a week and (successfully) 10x in a year
+
+- Speaker: [Plum Ertz](https://leaddev.com/contributor/plum-ertz/) (Ro)
+- Score: ★★★★½
+- [Video](https://leaddev.com/technical-direction/game-time-a-playbook-to-unsuccessfully-10x-in-a-week-and-successfully-10x-in-a-year)
+
+A very entertaining talk about scaling up.
+
+It was one of the few talks that wasn't AI-related, and that made it stand out. Just good old engineering: scaling, trade-offs, pace, and the difference between short-term heroics and sustainable improvement.
+
+The title captures the message well. You probably won't 10x in a week. But with the right foundations, you may be able to change the trajectory over a year.
+
+## Closing thought
+
+The conference left me more optimistic than I expected. Software engineering is more interesting than ever — and there is plenty of work for humans as well.
