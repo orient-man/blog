@@ -1,16 +1,28 @@
 {
   "books": [
     {
-      "title": "Kurtyka. Sztuka wolności",
-      "author": "Bernadette McDonald",
-      "coverUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1513795093l/37641676._SX98_.jpg",
-      "url": "https://www.goodreads.com/review/show/8558087450"
+      "title": "Imię róży",
+      "author": "Umberto Eco",
+      "coverUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1603902602l/55660493._SX98_.jpg",
+      "url": "https://www.goodreads.com/review/show/8855697213"
     },
     {
-      "title": "Thinking In Systems: A Primer",
-      "author": "Donella H. Meadows",
-      "coverUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1390169859l/3828902._SX98_.jpg",
-      "url": "https://www.goodreads.com/review/show/3163008434"
+      "title": "Building a Second Brain: A Proven Method to Organize Your Digital Life and Unlock Your Creative Potential",
+      "author": "Tiago Forte",
+      "coverUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1652891488l/59616977._SX98_.jpg",
+      "url": "https://www.goodreads.com/review/show/8766135470"
+    },
+    {
+      "title": "A Month in the Country",
+      "author": "J.L. Carr",
+      "coverUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1689860086l/193635859._SX98_.jpg",
+      "url": "https://www.goodreads.com/review/show/8656553099"
+    },
+    {
+      "title": "Strategia blekitnego oceanu, wydanie rozszerzone",
+      "author": "W. Chan Kim",
+      "coverUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1549386666l/43845264._SX98_.jpg",
+      "url": "https://www.goodreads.com/review/show/6986418190"
     },
     {
       "title": "Jedna prosta rzecz. Nowe spojrzenie na nauki jogi i ich wpływ na twoje życie",
@@ -74,5 +86,5 @@
     }
   ],
   "shelfUrl": "https://www.goodreads.com/review/list/13930842?shelf=currently-reading",
-  "fetchedAt": "2026-05-05T17:01:11.986Z"
+  "fetchedAt": "2026-08-13T12:11:36.457Z"
 }
